@@ -14,8 +14,8 @@ This application will be built on a Ruby on Rails backend and a Redux/React fron
 
 ## User Private Profile
 
-![Private User Profile](public/readme_pics/Current User Private Profile.png)
+![Private User Profile](public/readme_pics/private_profile.png)
 
 ## User Public Profile
 
-![Example of a Public Profile](public/readme_pics/Public Profile.png)
+![Example of a Public Profile](public/readme_pics/public_profile.png)
