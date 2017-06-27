@@ -1,21 +1,17 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import React, {Component} from 'react';
+import BandList from './BandList'
+import ArtistList from './ArtistList'
 
-const UserList = (props) => {
-  let names = props.userList.map(u => {
-    if (u['artists'].length === 0) {
-      return <li key={u.id}><Link to={`/${u.id}`}>{u.bands[0].name}</Link></li>
-    } else {
-      return <li key={u.id}><Link to={`/${u.id}`}>{u.artists[0].name}</Link></li>
-    }
-  });
+
+const UserList = ({ bands, artists }) => {
 
   return (
-    <ul>
-    {names}
-    </ul>
+    <div>
+      <BandList bands={bands} />
+      <ArtistList artists={artists} />
+    </div>
+
   )
 }
-
 
 export default UserList

@@ -2,20 +2,13 @@ import React, { Component } from 'react';
 import Recommendations from './Recommendations';
 import withAuth from '../hocs//withAuth'
 
-
 class CurrentUserProfile extends Component {
   constructor(props) {
     super(props);
-
   }
 
   determineTypeOfUser() {
-    let user = this.props.user
-    if (user['classification'] === 'band') {
-      return this.renderBand(user.bands[0])
-    } else {
-      return this.renderArtist(user.artists[0])
-    }
+    this.renderBand(this.props.user)
   }
 
   renderBand(band) {
@@ -39,6 +32,21 @@ class CurrentUserProfile extends Component {
         <h2>{artist.genres[0].name}</h2>
       </div>
     )
+  }
+
+  getRecommendation() {
+    fetch('http://localhost:3000/api/v1/bands/searchArtists', {
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'Authorization': localStorage.getItem('jwt')
+      },
+      body: JSON.stringify({
+        band: {
+          instruments: [],
+        }
+      })
+    })
   }
 
   render() {

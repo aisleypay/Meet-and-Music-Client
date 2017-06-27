@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import withAuth from '../hocs/withAuth';
 
 class UserProfile extends Component {
-  constructor(props) {
-    super(props);
-
-  }
 
   determineTypeOfUser() {
     let user = this.props.user
