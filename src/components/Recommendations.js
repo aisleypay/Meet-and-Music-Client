@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import withAuth from '../hocs/withAuth'
 
-const Recommendations = (props) => {
+const Recommendations = ({ recommendations }) => {
   return (
     <div>
     Hello

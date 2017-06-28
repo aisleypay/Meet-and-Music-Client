@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import {Link, Switch, Route} from 'react-router-dom'
+import {Switch, Route, Link} from 'react-router-dom'
 import { UserAdapter } from '../adapters'
 import CurrentUserProfile from '../components/CurrentUserProfile'
 import UserProfile from '../components/UserProfile'
@@ -34,22 +34,27 @@ export default class UsersListContainer extends Component {
   }
 
   render() {
+    if (this.state.bands.length === 0) {
+      return <div>Loading...</div>
+    }
     return (
-      <Switch>
-      <Route exact path='/profile' render={() => {
-        const id = this.props.currentUser.id
-        const user = this.state.users.find(u => u.id === parseInt(id))
-        return <CurrentUserProfile user={user}/>
-      }}/>
-      <Route exact path='/:id' render={(routerProps) => {
-        const id = routerProps.match.params.id
-        debugger
-        const users = this.state.bands + this.state.artists
-        const user = users.find(u => u.user.id === parseInt(id))
-        return <UserProfile user={user}/>
-      }}/>
-      <div><Route path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/>}/></div>
-      </Switch>
+      <div>
+        <Switch>
+          <Route exact path='/profile' render={() => {
+              const id = this.props.currentUser.id
+              const users = this.state.bands.concat(this.state.artists)
+              const user = users.find(u => u.user.id === parseInt(id, 10))
+              return <CurrentUserProfile user={user}/>
+            }}/>
+            <Route exact path='/:id' render={(routerProps) => {
+                const id = routerProps.match.params.id
+                const users = this.state.bands.concat(this.state.artists)
+                const user = users.find(u => u.user.id === parseInt(id, 10))
+                return <UserProfile user={user}/>
+              }}/>
+            <div><Route exact path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/>}/></div>
+            </Switch>
+      </div>
     )
   }
 }

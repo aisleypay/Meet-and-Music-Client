@@ -5,10 +5,30 @@ import withAuth from '../hocs//withAuth'
 class CurrentUserProfile extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      recommendations: []
+    }
+  }
+
+  componentDidMount() {
+    this.getRecommendations()
   }
 
   determineTypeOfUser() {
-    this.renderBand(this.props.user)
+    let user = this.props.user
+    if (user.user.meta_type === 'Band') {
+      return this.renderBand(user)
+    } else {
+      return this.renderArtist(user)
+    }
+  }
+
+  genresList(genres) {
+    return genres.map(g => <li key={g.id}>{g.name}</li>)
+  }
+  instrumentsList(instruments) {
+    return instruments.map(i => <li key={i.id}>{i.name}</li>)
   }
 
   renderBand(band) {
@@ -17,7 +37,7 @@ class CurrentUserProfile extends Component {
         <h1>{band.name}</h1>
         <h2>{band.state}</h2>
         <h2>{band.zipcode}</h2>
-        <h2>{band.genres[0].name}</h2>
+        <ul>{this.genresList(band.genres)}</ul>
       </div>
     )
   }
@@ -28,32 +48,32 @@ class CurrentUserProfile extends Component {
         <h1>{artist.name}</h1>
         <h2>{artist.state}</h2>
         <h2>{artist.zipcode}</h2>
-        <h2>{artist.instruments[0].name}</h2>
-        <h2>{artist.genres[0].name}</h2>
+        <ul>{this.genresList(artist.genres)}</ul>
+        <ul>{this.instrumentsList(artist.instruments)}</ul>
       </div>
     )
   }
 
-  getRecommendation() {
-    fetch('http://localhost:3000/api/v1/bands/searchArtists', {
+  getRecommendations() {
+    fetch(`http://localhost:3000/api/v1/bands/${this.props.user.id}/searchArtists`, {
       headers: {
         'content-type': 'application/json',
         'accept': 'application/json',
-        'Authorization': localStorage.getItem('jwt')
-      },
-      body: JSON.stringify({
-        band: {
-          instruments: [],
-        }
-      })
-    })
+        'Authorization': localStorage.getItem('jwt'),
+        'id': this.props.user
+      }
+    }).then(res => res.json())
+    .then(recommendations => console.log(recommendations))
   }
 
+  // if (this.state.recommendations.length === 0) {
+  //   return <div>Loading.....</div>
+  // }
   render() {
     return (
       <div>
         {this.determineTypeOfUser()}
-        <Recommendations />
+
       </div>
     )
   }
