@@ -38,7 +38,7 @@ export default class UsersListContainer extends Component {
       return <div>Loading...</div>
     }
     return (
-      <div>
+      <div className='container-fluid'>
         <Switch>
           <Route exact path='/profile' render={() => {
               const id = this.props.currentUser.id

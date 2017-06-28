@@ -67,14 +67,17 @@ class CurrentUserProfile extends Component {
     console.log(this.state.recommendations)
   }
 
-  // if (this.state.recommendations.length === 0) {
-  //   return <div>Loading.....</div>
-  // }
   render() {
     return (
       <div>
-        {this.determineTypeOfUser()}
-        <Recommendations recommendations={this.state.recommendations} />
+        <div className='row'>
+          {this.determineTypeOfUser()}
+        </div>
+        <div className='row justify-content-center'>
+          <div className='col-md-10'>
+            <Recommendations recommendations={this.state.recommendations} user={this.props.user} />
+          </div>
+        </div>
       </div>
     )
   }

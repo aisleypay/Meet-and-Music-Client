@@ -6,6 +6,7 @@ import withAuth from '../hocs/withAuth'
 import UsersListContainer from './UsersListContainer'
 import SignUpForm from '../components/SignUpForm'
 import '../App.css';
+import Sidebar from 'react-sidebar';
 
 class App extends Component {
   constructor() {
@@ -14,10 +15,16 @@ class App extends Component {
       auth: {
         isLoggedIn: false,
         user: {}
-      }
+      },
+      sidebarOpen: false
     }
 
     this.logIn = this.logIn.bind(this)
+     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+  }
+
+  onSetSidebarOpen(open) {
+    this.setState({sidebarOpen: open});
   }
 
   componentDidMount() {
@@ -71,8 +78,14 @@ class App extends Component {
   }
 
   render() {
+    var sidebarContent = <b>Sidebar content</b>;
     return (
       <div>
+        <Sidebar sidebar={sidebarContent}
+              open={this.state.sidebarOpen}
+              onSetOpen={this.onSetSidebarOpen}>
+         <b>Main content</b>
+       </Sidebar>
         <nav>
           <Link to='/profile'>Your Profile </Link>
           <Link to='/'>Artists and Bands Listings </Link>
