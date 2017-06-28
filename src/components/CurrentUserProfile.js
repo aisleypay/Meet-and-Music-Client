@@ -63,7 +63,8 @@ class CurrentUserProfile extends Component {
         'id': this.props.user
       }
     }).then(res => res.json())
-    .then(recommendations => console.log(recommendations))
+    .then(recommendations => this.setState({ recommendations }))
+    console.log(this.state.recommendations)
   }
 
   // if (this.state.recommendations.length === 0) {
@@ -73,7 +74,7 @@ class CurrentUserProfile extends Component {
     return (
       <div>
         {this.determineTypeOfUser()}
-
+        <Recommendations recommendations={this.state.recommendations} />
       </div>
     )
   }
