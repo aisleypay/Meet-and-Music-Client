@@ -22,3 +22,11 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.profile-pic {
+  padding: 5px;
+  margin-left: 12px;
+  height: 150px;
+  width: 155px;
+  border-radius: 100px;
+}

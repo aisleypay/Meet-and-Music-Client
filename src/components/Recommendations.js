@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import withAuth from '../hocs/withAuth';
 import '../index.css'
-import Cards, {Card} from 'react-swipe-card'
+
 
 class Recommendations extends Component {
   constructor(props) {
