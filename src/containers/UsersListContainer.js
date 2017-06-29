@@ -1,9 +1,10 @@
-import React, { Component} from 'react';
+import React, {Component} from 'react';
 import {Switch, Route} from 'react-router-dom'
-import { UserAdapter } from '../adapters'
+import {UserAdapter} from '../adapters'
 import CurrentUserProfile from '../components/CurrentUserProfile'
 import UserProfile from '../components/UserProfile'
 import UserList from '../components/UserList'
+import {Container} from 'reactstrap';
 
 export default class UsersListContainer extends Component {
   constructor(props) {
@@ -24,37 +25,47 @@ export default class UsersListContainer extends Component {
   }
 
   retrieveAllBands() {
-    UserAdapter.allBands()
-    .then(bands => this.setState({ bands }))
+    UserAdapter.allBands().then(bands => this.setState({ bands: bands }))
   }
 
-  retrieveAllArtists(){
-    UserAdapter.allArtists()
-    .then(artists => this.setState({ artists }))
+  retrieveAllArtists() {
+    UserAdapter.allArtists().then(artists => this.setState({artists}))
+  }
+
+  currentUserProfile() {
+    const id = this.props.currentUser.id
+    const users = this.state.bands.concat(this.state.artists)
+    const user = users.find(u => u.user.id === parseInt(id, 10))
+    return <CurrentUserProfile user={user}/>
+  }
+
+  publicProfile(routerProps) {
+    const id = routerProps.match.params.id
+    const users = this.state.bands.concat(this.state.artists)
+    const user = users.find(u => u.user.id === parseInt(id, 10))
+    return <UserProfile user={user}/>
   }
 
   render() {
     if (this.state.bands.length === 0) {
       return <div>Loading...</div>
     }
+
     return (
-      <div className='container-fluid'>
+      <Container fluid>
         <Switch>
           <Route exact path='/profile' render={() => {
-              const id = this.props.currentUser.id
-              const users = this.state.bands.concat(this.state.artists)
-              const user = users.find(u => u.user.id === parseInt(id, 10))
-              return <CurrentUserProfile user={user}/>
-            }}/>
-            <Route exact path='/:id' render={(routerProps) => {
-                const id = routerProps.match.params.id
-                const users = this.state.bands.concat(this.state.artists)
-                const user = users.find(u => u.user.id === parseInt(id, 10))
-                return <UserProfile user={user}/>
-              }}/>
-            <div><Route exact path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/>}/></div>
-            </Switch>
-      </div>
+            const id = this.props.currentUser.id
+            const users = this.state.bands.concat(this.state.artists)
+            const user = users.find(u => u.user.id === parseInt(id, 10))
+            return <CurrentUserProfile user={user}/>
+          }}/>
+          <Route exact path='/:id' render={(routerProps) => {
+            this.publicProfile(routerProps)
+          }}/>
+          <div><Route exact path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/>}/></div>
+        </Switch>
+      </Container>
     )
   }
 }

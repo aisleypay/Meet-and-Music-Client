@@ -16,6 +16,7 @@ class CurrentUserProfile extends Component {
   }
 
   determineTypeOfUser() {
+    debugger
     let user = this.props.user
     if (user.user.meta_type === 'Band') {
       return this.renderBand(user)

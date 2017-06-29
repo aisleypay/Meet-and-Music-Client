@@ -7,6 +7,9 @@ import UsersListContainer from './UsersListContainer'
 import SignUpForm from '../components/SignUpForm'
 import '../App.css';
 import Sidebar from 'react-sidebar';
+import { Container, Row, Button, Media } from 'reactstrap';
+import { UserAdapter } from '../adapters'
+
 
 const mql = window.matchMedia(`(min-width: 800px)`);
 
@@ -26,24 +29,25 @@ class App extends Component {
     this.logIn = this.logIn.bind(this)
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+    this.createUser = this.createUser.bind(this)
   }
 
   onSetSidebarOpen(open) {
    this.setState({sidebarOpen: open});
  }
 
- componentWillMount() {
-   mql.addListener(this.mediaQueryChanged);
-   this.setState({mql: mql, sidebarDocked: mql.matches});
- }
+  componentWillMount() {
+     mql.addListener(this.mediaQueryChanged);
+     this.setState({mql: mql, sidebarDocked: mql.matches});
+   }
 
- componentWillUnmount() {
-   this.state.mql.removeListener(this.mediaQueryChanged);
- }
+  componentWillUnmount() {
+     this.state.mql.removeListener(this.mediaQueryChanged);
+   }
 
- mediaQueryChanged() {
-   this.setState({sidebarDocked: this.state.mql.matches});
- }
+  mediaQueryChanged() {
+     this.setState({sidebarDocked: this.state.mql.matches});
+   }
 
   componentDidMount() {
     if (localStorage.getItem('jwt')) {
@@ -75,12 +79,12 @@ class App extends Component {
   }
 
   renderUsers = () => {
-    return (
-      <div>
-        <UsersListContainer currentUser={this.state.auth.user}/>
-      </div>
-    )
-  }
+      return (
+        <div>
+          <UsersListContainer currentUser={this.state.auth.user}/>
+        </div>
+      )
+    }
 
   handleClickSignOut = (e) => {
     e.preventDefault()
@@ -95,21 +99,54 @@ class App extends Component {
     this.props.history.push(`/login`)
   }
 
+  createUser(user, genres, instruments) {
+    let genresList = genres.map(g => { return {genre_id: g} })
+    let instrumentsList = instruments.map(i => { return {instrument_id:i} })
+
+    if (user.type === 'Band') {
+      let band = {
+       name: user.name,
+       state: user.state,
+       zipcode: parseInt(user.zipcode),
+       setList: user.setList,
+       user_genres_attributes: genresList,
+       user_attributes: {username: user.username, password: user.password },
+       band_instrument_preferences_attributes: instrumentsList
+      }
+
+      UserAdapter.createBand(band)
+    } else {
+      let artist = {
+        name: user.name,
+        state: user.state,
+        zipcode: user.zipcode,
+        age: user.age,
+        setList: user.setList,
+        experience_in_years: user.experience_in_years,
+        user_genres_attributes: genresList,
+        artist_instruments_attributes: instrumentsList,
+        user_attributes: {username: user.username, password: user.password }
+      }
+      UserAdapter.createArtist(artist)
+    }
+  }
+
   render() {
     var sidebarContent = (
-      <div className= 'container-fluid'>
-        <img className='profile-pic' alt="Profile Pic" src="https://www.alternativenation.net/wp-content/uploads/2016/04/nirvana93.jpg"/>
-        <div className='row'><Link to='/profile'>Your Profile </Link></div>
-        <div className='row'><Link to='/'>Artists and Bands Listings </Link></div>
+      <Container fluid>
+        <Media object data-src="https://www.alternativenation.net/wp-content/uploads/2016/04/nirvana93.jpg" alt="Generic placeholder image" />
+        <Row><Link to='/profile'>Your Profile </Link></Row>
+        <Row><Link to='/'>Artists and Bands Listings </Link></Row>
         <div>
           <form className="form-inline">
             <input className="form-control mr-sm-2" type="text" placeholder="Search" />
             <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
-        <div className='row'><Link to='/login'>Sign In</Link></div>
-        <div className='row'><input type="button" onClick={this.handleClickSignOut} value='Sign Out'/></div>
-      </div>
+        <Row><Link to='/login'>Sign In</Link></Row>
+        <Row><Button onClick={this.handleClickSignOut}>Sign Out</Button></Row>
+        <Row><Link to='/signup'>Sign Up</Link></Row>
+      </Container>
     )
 
     const sidebarStyles = {
@@ -117,6 +154,7 @@ class App extends Component {
         width: 200
       }
     };
+
     var sidebarProps = {
       sidebar: this.state.sidebarOpen,
       docked: this.state.sidebarDocked,
@@ -124,24 +162,20 @@ class App extends Component {
     };
 
     return (
-      <div>
-        <div>
-          <Sidebar sidebar={sidebarContent}
-              styles={sidebarStyles}
-               open={this.state.sidebarOpen}
-               docked={this.state.sidebarDocked}
-               onSetOpen={this.onSetSidebarOpen}>
+      <Sidebar sidebar={sidebarContent}
+        styles={sidebarStyles}
+         open={this.state.sidebarOpen}
+         docked={this.state.sidebarDocked}
+         onSetOpen={this.onSetSidebarOpen}>
 
-               <div className='container'>
-                 <Switch>
-                   <Route path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
-                   <Route path='/signup' render={() => <SignUpForm onSubmit={this.createUser} />} />
-                   <Route path='/' render={() => <UsersListContainer currentUser={this.state.auth.user}/>} />
-                 </Switch>
-               </div>
-          </Sidebar>
-        </div>
-      </div>
+         <Container>
+           <Switch>
+             <Route path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
+             <Route path='/signup' render={() => <SignUpForm onSubmit={this.createUser} />} />
+             <Route path='/' render={() => <UsersListContainer currentUser={this.state.auth.user}/>} />
+           </Switch>
+         </Container>
+      </Sidebar>
     );
   }
 }
