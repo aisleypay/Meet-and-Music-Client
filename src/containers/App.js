@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom'
 import { AuthAdapter } from '../adapters'
+import withAuth from '../hocs/withAuth'
 import LoginForm from '../components/LoginForm'
 import UsersListContainer from './UsersListContainer'
 import SignUpForm from '../components/SignUpForm'
-import '../App.css';
 import Sidebar from 'react-sidebar';
 import { Container, Row, Button, Media } from 'reactstrap';
-import { UserAdapter } from '../adapters'
+import { UserAdapter, SearchAdapter } from '../adapters'
+import SearchBar from '../components/SearchBar';
+import SearchResults from '../components/SearchResults.js'
+import '../App.css';
 
 
 const mql = window.matchMedia(`(min-width: 800px)`);
@@ -22,7 +25,8 @@ class App extends Component {
       },
       mql: mql,
       docked: props.docked,
-      open: props.open
+      open: props.open,
+      searchedUsers: []
     }
 
     this.logIn = this.logIn.bind(this)
@@ -77,15 +81,6 @@ class App extends Component {
     })
   }
 
-  renderUsers = () => {
-    debugger
-      return (
-        <div>
-          <UsersListContainer currentUser={this.state.auth.user}/>
-        </div>
-      )
-    }
-
   handleClickSignOut = (e) => {
     e.preventDefault()
     localStorage.clear()
@@ -133,18 +128,25 @@ class App extends Component {
     }
   }
 
+  searchUsers = (searchTerms) => {
+    if (searchTerms.selectedUserType === 'Artist') {
+      SearchAdapter.searchArtists(searchTerms)
+      .then(searchedUsers => this.setState({ searchedUsers }))
+      this.props.history.push('/search-results')
+    } else {
+      SearchAdapter.searchBands(searchTerms)
+      .then(searchedUsers => this.setState({ searchedUsers }))
+      this.props.history.push('/search-results')
+    }
+  }
+
   render() {
     var sidebarContent = (
-      <Container fluid>
+      <Container>
         <Media object data-src="https://www.alternativenation.net/wp-content/uploads/2016/04/nirvana93.jpg" alt="Generic placeholder image" />
         <Row><Link to='/profile'>Your Profile </Link></Row>
         <Row><Link to='/'>Artists and Bands Listings </Link></Row>
-        <div>
-          <form className="form-inline">
-            <input className="form-control mr-sm-2" type="text" placeholder="Search" />
-            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
+        <SearchBar handleSearch={this.searchUsers}/>
         <Row><Link to='/login'>Sign In</Link></Row>
         <Row><Button onClick={this.handleClickSignOut}>Sign Out</Button></Row>
         <Row><Link to='/signup'>Sign Up</Link></Row>
@@ -153,7 +155,7 @@ class App extends Component {
 
     const sidebarStyles = {
       sidebar: {
-        width: 200
+        width: 240
       }
     };
 
@@ -164,22 +166,18 @@ class App extends Component {
     };
 
     return (
-      <Sidebar sidebar={sidebarContent}
-        styles={sidebarStyles}
-         open={this.state.sidebarOpen}
-         docked={this.state.sidebarDocked}
-         onSetOpen={this.onSetSidebarOpen}>
-
-         <Container>
-           <Switch>
-             <Route path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
-             <Route path='/signup' render={() => <SignUpForm onSubmit={this.createUser} />} />
-             <Route path='/' render={() => <UsersListContainer currentUser={this.state.auth.user}/>} />
-           </Switch>
-         </Container>
+      <Sidebar sidebar={sidebarContent} styles={sidebarStyles} open={this.state.sidebarOpen} docked={this.state.sidebarDocked} onSetOpen={this.onSetSidebarOpen}>
+       <Container>
+         <Switch>
+           <Route path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
+           <Route path='/signup' render={() => <SignUpForm onSubmit={this.createUser}/> }/>
+           <Route path='/search-results' render={() => <SearchResults results={this.state.searchUsers} /> }/>
+           <Route path='/' render={() => <UsersListContainer currentUser={this.state.auth.user} searchedUsers={this.state.searchUsers} />} />
+         </Switch>
+       </Container>
       </Sidebar>
     );
   }
 }
 
-export default App;
+export default withAuth(App);

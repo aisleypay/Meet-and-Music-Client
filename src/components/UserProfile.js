@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class UserProfile extends Component {
 
   determineTypeOfUser() {
-    debugger
     let user = this.props.user
     if (user.user.meta_type === 'Band') {
       return this.renderBand(user)

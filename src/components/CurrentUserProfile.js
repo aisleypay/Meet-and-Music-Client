@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Recommendations from './Recommendations';
-import withAuth from '../hocs//withAuth'
+import withAuth from '../hocs/withAuth'
 import { RecommendationAdapter } from '../adapters'
 import { Button, Col} from 'reactstrap';
 
@@ -64,20 +64,16 @@ class CurrentUserProfile extends Component {
     if (user.user.meta_type === 'Band') {
       RecommendationAdapter.getBandRecommendations(this.props.user)
       .then(recommendations => this.setState({ recommendations }))
-      .catch(function() {
-        <div>Sorry! No Recommendations for You Today!</div>
-      })
     } else {
-      debugger
       RecommendationAdapter.getArtistRecommendations(this.props.user)
       .then(recommendations => this.setState({ recommendations }))
-      .catch(function() {
-        <div>Sorry! No Recommendations for You Today!</div>
-      })
     }
   }
 
   render() {
+    if (this.state.recommendations.length === 0) {
+      return <div>Loading.....</div>
+    }
     return (
       <div>
         <div className='row'>

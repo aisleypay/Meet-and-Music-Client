@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import withAuth from '../hocs/withAuth';
-import '../index.css'
-import { DecisionAdapter } from '../adapters'
+import '../index.css';
+import { DecisionAdapter } from '../adapters';
 import { Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button, CardLink} from 'reactstrap';
 
 
@@ -50,14 +50,22 @@ class Recommendations extends Component {
     console.log(this.state)
   }
 
+  artistOnlyFields = (instruments) => {
+    return <CardText>{instruments.map((i, index) => { return <li key={i.id}>{i.instrument.name}</li> })}</CardText>
+  }
+
+  bandOnlyFields = (instruments) => {
+    return <CardText>{instruments.map((i, index) => { return <li key={i.id}>{i.name}</li> })}</CardText>
+  }
+
   render() {
     return (
       <div>
-        {this.props.recommendations.map(rec => {
+        {this.props.recommendations.filter(function(r) { return r !== null} ).map(rec => {
           return (
             <Card block className="text-center" key={rec.user.id} >
               <CardTitle>{rec.name}</CardTitle>
-              <CardText>{rec.instruments.map((i, index) => { return <li key={index}>{i.name}</li> })}</CardText>
+              { this.props.user.user.meta_type === 'Artist' ? this.artistOnlyFields(rec.band_instrument_preferences) : this.bandOnlyFields(rec.instruments) }
               <CardText>{rec.genres.map((g, index) => { return <li key={index}>{g.name}</li> })}</CardText>
               <CardLink href={`/${rec.user.id}`}>Check Me Out</CardLink>
               <Button

@@ -55,8 +55,6 @@ export class UserAdapter {
   }
 }
 
-
-
 export class DecisionAdapter {
   static bandDecision(recommendeeId, user, status) {
     return fetch(`http://localhost:3000/api/v1/decisions`, {
@@ -75,7 +73,7 @@ export class DecisionAdapter {
 
 export class RecommendationAdapter {
   static getBandRecommendations(user) {
-    return fetch(`http://localhost:3000/api/v1/bands/${user.id}/searchArtists`, {
+    return fetch(`http://localhost:3000/api/v1/bands/${user.id}/recommended-artists`, {
       headers: {
         'content-type': 'application/json',
         'accept': 'application/json',
@@ -83,13 +81,10 @@ export class RecommendationAdapter {
         'id': user
       }
     }).then(res => res.json())
-    .catch(function() {
-      console.log('No Recommendations')
-    })
   }
 
   static getArtistRecommendations(user) {
-    return fetch(`http://localhost:3000/api/v1/artists/${user.id}/searchBands`, {
+    return fetch(`http://localhost:3000/api/v1/artists/${user.id}/recommended-bands`, {
       headers: {
         'content-type': 'application/json',
         'accept': 'application/json',
@@ -97,7 +92,6 @@ export class RecommendationAdapter {
         'id': user
       }
     }).then(res => res.json())
-    .then(res => console.log(res))
   }
 }
 
@@ -113,6 +107,36 @@ export class GenreAdapter {
   static allGenres() {
     return fetch('http://localhost:3000/api/v1/genres', {
       headers: headers()
+    }).then(res => res.json())
+  }
+}
+
+export class SearchAdapter {
+  static searchArtists(searchTerms) {
+    return fetch('http://localhost:3000/api/v1/artists/search-artists', {
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'Authorization': localStorage.getItem('jwt'),
+        'instrument': searchTerms.instrumentSelected,
+        'genre': searchTerms.genreSelected,
+        'zipcode': searchTerms.zipcode,
+        'radius': searchTerms.radius
+      }
+    }).then(res => res.json())
+  }
+
+  static searchBands(searchTerms) {
+    return fetch('http://localhost:3000/api/v1/bands/search-bands', {
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'Authorization': localStorage.getItem('jwt'),
+        'instrument': searchTerms.instrumentSelected,
+        'genre': searchTerms.genreSelected,
+        'zipcode': searchTerms.zipcode,
+        'radius': searchTerms.radius
+      }
     }).then(res => res.json())
   }
 }

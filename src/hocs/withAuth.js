@@ -1,5 +1,5 @@
-import React from 'react'
-import { withRouter } from 'react-router-dom'
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 
 export default function withAuth(WrappedComponent){
@@ -18,7 +18,7 @@ export default function withAuth(WrappedComponent){
           .then(user => {
             if (user.error) {
               this.props.history.push('/login')
-            } 
+            }
           })
       }
     }

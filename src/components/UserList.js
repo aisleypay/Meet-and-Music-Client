@@ -2,7 +2,6 @@ import React from 'react';
 import BandList from './BandList'
 import ArtistList from './ArtistList'
 
-
 const UserList = ({ bands, artists }) => {
 
   return (

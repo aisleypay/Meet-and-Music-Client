@@ -60,13 +60,6 @@ export default class UsersListContainer extends Component {
       })
   }
 
-  publicProfile(routerProps) {
-    const id = routerProps.match.params.id
-    const users = this.state.bands.concat(this.state.artists)
-    const user = users.find(u => u.user.id === parseInt(id, 10))
-    return <UserProfile user={user}/>
-  }
-
   render() {
     if (this.state.bands.length === 0) {
       return <div>Loading...</div>
@@ -81,8 +74,13 @@ export default class UsersListContainer extends Component {
             const user = users.find(u => u.user.id === parseInt(id, 10))
             return <CurrentUserProfile user={user} deleteAccount={this.deleteAccount}/>
           }}/>
-          <Route exact path='/:id' render={(routerProps) => { this.publicProfile(routerProps) }}/>
-          <Route exact path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/>}/>
+          <Route exact path='/:id' render={(routerProps) => {
+            const id = routerProps.match.params.id
+            const users = this.state.bands.concat(this.state.artists)
+            const user = users.find(u => u.user.id === parseInt(id, 10))
+            return <UserProfile user={user}/>
+            }}/>
+          <div><Route exact path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/> }/></div>
         </Switch>
       </Container>
     )
