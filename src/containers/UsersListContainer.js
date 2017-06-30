@@ -32,11 +32,32 @@ export default class UsersListContainer extends Component {
     UserAdapter.allArtists().then(artists => this.setState({artists}))
   }
 
-  currentUserProfile() {
-    const id = this.props.currentUser.id
-    const users = this.state.bands.concat(this.state.artists)
-    const user = users.find(u => u.user.id === parseInt(id, 10))
-    return <CurrentUserProfile user={user}/>
+  deleteAccount = (id, type) => {
+    let urlType
+    if (type === 'Band') {
+      urlType = 'bands'
+    } else {
+      urlType = 'artists'
+    }
+
+    UserAdapter.destroy(id, urlType)
+      .then( () => {
+        if (type === 'Band') {
+          this.setState( previousState => {
+            return {
+              bands: previousState.bands.filter( band => band.id !== id )
+            }
+          })
+          this.props.history.push("/")
+        } else {
+          this.setState( previousState => {
+            return {
+              artists: previousState.artists.filter( artist => artist.id !== id )
+            }
+          })
+          this.props.history.push("/")
+        }
+      })
   }
 
   publicProfile(routerProps) {
@@ -58,12 +79,10 @@ export default class UsersListContainer extends Component {
             const id = this.props.currentUser.id
             const users = this.state.bands.concat(this.state.artists)
             const user = users.find(u => u.user.id === parseInt(id, 10))
-            return <CurrentUserProfile user={user}/>
+            return <CurrentUserProfile user={user} deleteAccount={this.deleteAccount}/>
           }}/>
-          <Route exact path='/:id' render={(routerProps) => {
-            this.publicProfile(routerProps)
-          }}/>
-          <div><Route exact path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/>}/></div>
+          <Route exact path='/:id' render={(routerProps) => { this.publicProfile(routerProps) }}/>
+          <Route exact path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/>}/>
         </Switch>
       </Container>
     )

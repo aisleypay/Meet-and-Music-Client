@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import withAuth from '../hocs/withAuth';
 
 class UserProfile extends Component {
 
   determineTypeOfUser() {
+    debugger
     let user = this.props.user
     if (user.user.meta_type === 'Band') {
       return this.renderBand(user)
@@ -15,7 +15,7 @@ class UserProfile extends Component {
   genresList(genres) {
     return genres.map(g => <li key={g.id}>{g.name}</li>)
   }
-  
+
   instrumentsList(instruments) {
     return instruments.map(i => <li key={i.id}>{i.name}</li>)
   }
@@ -52,4 +52,4 @@ class UserProfile extends Component {
   }
 }
 
-export default withAuth(UserProfile)
+export default UserProfile

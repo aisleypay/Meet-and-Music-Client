@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Recommendations from './Recommendations';
 import withAuth from '../hocs//withAuth'
+import { RecommendationAdapter } from '../adapters'
+import { Button, Col} from 'reactstrap';
+
 
 class CurrentUserProfile extends Component {
   constructor(props) {
@@ -16,7 +19,6 @@ class CurrentUserProfile extends Component {
   }
 
   determineTypeOfUser() {
-    debugger
     let user = this.props.user
     if (user.user.meta_type === 'Band') {
       return this.renderBand(user)
@@ -34,12 +36,13 @@ class CurrentUserProfile extends Component {
 
   renderBand(band) {
     return (
-      <div>
+      <Col>
         <h1>{band.name}</h1>
-        <h2>{band.state}</h2>
-        <h2>{band.zipcode}</h2>
-        <ul>{this.genresList(band.genres)}</ul>
-      </div>
+        <h2>Location: {band.state}</h2>
+        <h2>Zipcode: {band.zipcode}</h2>
+        <ul>Genres: {this.genresList(band.genres)}</ul>
+        <Button onClick={() => this.props.deleteAccount(band.id, band.user.meta_type) }>Delete Your Account</Button>
+      </Col>
     )
   }
 
@@ -47,25 +50,31 @@ class CurrentUserProfile extends Component {
     return (
       <div>
         <h1>{artist.name}</h1>
-        <h2>{artist.state}</h2>
-        <h2>{artist.zipcode}</h2>
-        <ul>{this.genresList(artist.genres)}</ul>
-        <ul>{this.instrumentsList(artist.instruments)}</ul>
+        <h2>Location: {artist.state}</h2>
+        <h2>Zipcode: {artist.zipcode}</h2>
+        <ul>Genres: {this.genresList(artist.genres)}</ul>
+        <ul>Instruments Played: {this.instrumentsList(artist.instruments)}</ul>
+        <Button onClick={() => this.props.deleteAccount(artist.id, artist.user.meta_type) }>Delete Your Account</Button>
       </div>
     )
   }
 
   getRecommendations() {
-    fetch(`http://localhost:3000/api/v1/bands/${this.props.user.id}/searchArtists`, {
-      headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-        'Authorization': localStorage.getItem('jwt'),
-        'id': this.props.user
-      }
-    }).then(res => res.json())
-    .then(recommendations => this.setState({ recommendations }))
-    console.log(this.state.recommendations)
+    let user = this.props.user
+    if (user.user.meta_type === 'Band') {
+      RecommendationAdapter.getBandRecommendations(this.props.user)
+      .then(recommendations => this.setState({ recommendations }))
+      .catch(function() {
+        <div>Sorry! No Recommendations for You Today!</div>
+      })
+    } else {
+      debugger
+      RecommendationAdapter.getArtistRecommendations(this.props.user)
+      .then(recommendations => this.setState({ recommendations }))
+      .catch(function() {
+        <div>Sorry! No Recommendations for You Today!</div>
+      })
+    }
   }
 
   render() {

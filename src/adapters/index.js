@@ -46,7 +46,16 @@ export class UserAdapter {
       })
     }).then(res => res.json())
   }
+
+  static destroy(id, type){
+    return fetch(`http://localhost:3000/api/v1/${type}/${id}`, {
+      method: 'DELETE',
+      headers: headers()
+    }).then(res => res.json() )
+  }
 }
+
+
 
 export class DecisionAdapter {
   static bandDecision(recommendeeId, user, status) {
@@ -61,6 +70,34 @@ export class DecisionAdapter {
         }
       })
     }).then(res => res.json())
+  }
+}
+
+export class RecommendationAdapter {
+  static getBandRecommendations(user) {
+    return fetch(`http://localhost:3000/api/v1/bands/${user.id}/searchArtists`, {
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'Authorization': localStorage.getItem('jwt'),
+        'id': user
+      }
+    }).then(res => res.json())
+    .catch(function() {
+      console.log('No Recommendations')
+    })
+  }
+
+  static getArtistRecommendations(user) {
+    return fetch(`http://localhost:3000/api/v1/artists/${user.id}/searchBands`, {
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'Authorization': localStorage.getItem('jwt'),
+        'id': user
+      }
+    }).then(res => res.json())
+    .then(res => console.log(res))
   }
 }
 

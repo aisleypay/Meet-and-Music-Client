@@ -30,7 +30,6 @@ class Recommendations extends Component {
         console.log('not working')
       })
     }
-    console.log(this.state)
   }
 
   handleRejectClick = (e) => {

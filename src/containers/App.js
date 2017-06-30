@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom'
 import { AuthAdapter } from '../adapters'
 import LoginForm from '../components/LoginForm'
-import withAuth from '../hocs/withAuth'
 import UsersListContainer from './UsersListContainer'
 import SignUpForm from '../components/SignUpForm'
 import '../App.css';
@@ -79,6 +78,7 @@ class App extends Component {
   }
 
   renderUsers = () => {
+    debugger
       return (
         <div>
           <UsersListContainer currentUser={this.state.auth.user}/>
@@ -109,6 +109,7 @@ class App extends Component {
        state: user.state,
        zipcode: parseInt(user.zipcode),
        setList: user.setList,
+       radius_preference: user.radius_preference,
        user_genres_attributes: genresList,
        user_attributes: {username: user.username, password: user.password },
        band_instrument_preferences_attributes: instrumentsList
@@ -122,6 +123,7 @@ class App extends Component {
         zipcode: user.zipcode,
         age: user.age,
         setList: user.setList,
+        radius_preference: user.radius_preference,
         experience_in_years: user.experience_in_years,
         user_genres_attributes: genresList,
         artist_instruments_attributes: instrumentsList,
@@ -180,4 +182,4 @@ class App extends Component {
   }
 }
 
-export default withAuth(App);
+export default App;

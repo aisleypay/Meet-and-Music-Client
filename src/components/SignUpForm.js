@@ -111,11 +111,11 @@ export default class SignUpForm extends Component {
           <Input type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.handleChange}/>
         </FormGroup>
         <FormGroup>
-          <Label for="examplePassword">Password</Label>
+          <Label for="password">Password</Label>
           <Input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange}/>
         </FormGroup>
         <FormGroup>
-          <Label for="userType">Are You a Band or an Artist?</Label>
+          <Label for="userType">Are You a Band or an3 Artist?</Label>
           <Input type="select" name="type" value={this.state.type} onChange={this.handleChange}>
             <option>Band</option>
             <option>Artist</option>
