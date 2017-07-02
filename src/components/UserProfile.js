@@ -38,6 +38,7 @@ class UserProfile extends Component {
         <h2>{artist.state}</h2>
         <h2>{artist.zipcode}</h2>
         <ul>{this.genresList(artist.genres)}</ul>
+      // only difference from renderBand
         <ul>{this.instrumentsList(artist.instruments)}</ul>
       </div>
     )
