@@ -117,6 +117,7 @@ class App extends Component {
 
       UserAdapter.createBand(band)
     } else {
+      // DRY it up, create a base object and add keys as needed
       let artist = {
         name: user.name,
         state: user.state,
