@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
+// similar to BandList
 const ArtistList = ({ artists }) => {
   return (
     <div>
