@@ -1,5 +1,6 @@
 export class AuthAdapter {
   static logIn(loginParams) {
+    // can also use axios
     return fetch('http://localhost:3000/api/v1/auth', {
         method: 'POST',
         headers: headers(),
