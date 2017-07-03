@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import {InstrumentAdapter, GenreAdapter} from '../adapters'
+import {InstrumentAdapter, GenreAdapter} from '../adapters';
+import PropTypes from 'prop-types';
 
 
 export default class SearchBar extends Component {
@@ -10,10 +11,10 @@ export default class SearchBar extends Component {
       instrumentsAll: [],
       genresAll: [],
       selectedUserType: '',
-      instrumentSelected: '',
-      genreSelected: '',
+      instrumentSelected: 'All',
+      genreSelected: 'All',
       zipcode: '',
-      radius: 0
+      radius: 15
     }
   }
 
@@ -61,7 +62,7 @@ export default class SearchBar extends Component {
           <Input type="select" name="instrumentSelected" onChange={this.handleChange}>
             {this.state.instrumentsAll.map(i => {
               return <option key={i.id} value={i.id}>{i.name}</option>
-            })}
+            }).concat(<option value={'All'}>All</option>)}
           </Input>
         </FormGroup>
         <FormGroup>
@@ -69,18 +70,34 @@ export default class SearchBar extends Component {
           <Input type="select" name="genreSelected" onChange={this.handleChange} >
             {this.state.genresAll.map(g => {
               return <option key={g.id} value={g.id}>{g.name}</option>
-            })}
+            }).concat(<option value={'All'}>All</option>)}
           </Input>
         </FormGroup>
         <FormGroup>
           <Label for="radius">Radius {this.state.radius} Miles</Label>
           <Input type="range" name="radius" min="0" max="50" id="radius" step="1" onChange={this.handleChange} value={this.state.radius}></Input>
         </FormGroup>
-        <FormGroup inline>
+        <FormGroup>
           <Input type="search" name="zipcode" placeholder="Search Zipcode" value={this.state.zipcode} onChange={this.handleChange} />
         </FormGroup>
         <Button>Submit</Button>
       </Form>
     )
   }
+}
+
+SearchBar.defaultProps = {
+  zipcode: '07067',
+  radius: 15,
+  selectedUserType: 'Band',
+  instrumentSelected: 'All',
+  genreSelected: 'All'
+}
+
+SearchBar.propTypes = {
+  zipcode: PropTypes.string.isRequired,
+  radius: PropTypes.number.isRequired,
+  selectedUserType: PropTypes.string.isRequired,
+  instrumentSelected: PropTypes.string.isRequired,
+  genreSelected: PropTypes.string.isRequired
 }

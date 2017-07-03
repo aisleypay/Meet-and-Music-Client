@@ -132,10 +132,12 @@ class App extends Component {
     if (searchTerms.selectedUserType === 'Artist') {
       SearchAdapter.searchArtists(searchTerms)
       .then(searchedUsers => this.setState({ searchedUsers }))
+      debugger
       this.props.history.push('/search-results')
     } else {
       SearchAdapter.searchBands(searchTerms)
       .then(searchedUsers => this.setState({ searchedUsers }))
+      debugger
       this.props.history.push('/search-results')
     }
   }
@@ -172,7 +174,7 @@ class App extends Component {
            <Route path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
            <Route path='/signup' render={() => <SignUpForm onSubmit={this.createUser}/> }/>
            <Route path='/search-results' render={() => <SearchResults results={this.state.searchUsers} /> }/>
-           <Route path='/' render={() => <UsersListContainer currentUser={this.state.auth.user} searchedUsers={this.state.searchUsers} />} />
+           <Route path='/' render={() => <UsersListContainer currentUser={this.state.auth.user} />} />
          </Switch>
        </Container>
       </Sidebar>

@@ -3,6 +3,7 @@ import { Container, Card, CardImg, CardTitle, CardBlock, CardSubtitle, CardText 
 import {Link } from 'react-router-dom'
 
 const SearchResults = ({ results }) => {
+
   return (
     <Container>
     {results.map(r => {

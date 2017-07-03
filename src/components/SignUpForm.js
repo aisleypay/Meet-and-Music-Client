@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
-import {InstrumentAdapter, GenreAdapter} from '../adapters'
+import {InstrumentAdapter, GenreAdapter} from '../adapters';
+import PropTypes from 'prop-types';
 
 export default class SignUpForm extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class SignUpForm extends Component {
       name: '',
       state: '',
       zipcode: '',
-      radius_preference: '',
+      radius_preference: 15,
       setList: '',
       selectedLookingTalent: '',
       experience_in_years: 0
@@ -170,4 +171,19 @@ export default class SignUpForm extends Component {
       </Form>
     );
   }
+}
+
+SignUpForm.defaultProps = {
+  radius_preference: 15
+}
+
+SignUpForm.propTypes = {
+  genresAll: PropTypes.arrayOf(PropTypes.string).isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
+  zipcode: PropTypes.string.isRequired,
+  radius_preference: PropTypes.number.isRequired,
 }
