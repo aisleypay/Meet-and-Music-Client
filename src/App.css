@@ -30,3 +30,31 @@
   width: 155px;
   border-radius: 100px;
 }
+
+.search-results {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0px;
+  margin-right: 0px;
+  justify-content: space-around;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  padding: 0px;
+  flex-direction: row;
+
+}
+
+.search-item {
+  margin: 10px;
+  max-width: 30%;
+  max-height: 30%;
+  flex: 1 1 30%;
+}
+
+.search-item .card-img {
+  max-width: 100%;
+  max-height: 100%;
+}

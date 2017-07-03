@@ -85,15 +85,15 @@ export default class SignUpForm extends Component {
 
     let htmlOptions = document.getElementById('selectGenres').selectedOptions;
     for (let g in htmlOptions) {
-      if (isNaN(parseInt(htmlOptions[g].value)) !== true) {
-        selectedGenres.push(parseInt(htmlOptions[g].value))
+      if (isNaN(parseInt(htmlOptions[g].value, 10)) !== true) {
+        selectedGenres.push(parseInt(htmlOptions[g].value, 10))
       }
     }
 
     let htmlIOptions = document.getElementById('selectInstruments').selectedOptions;
     for (let instr in htmlIOptions) {
-      if (isNaN(parseInt(htmlIOptions[instr].value)) !== true) {
-        selectedInstruments.push(parseInt(htmlIOptions[instr].value))
+      if (isNaN(parseInt(htmlIOptions[instr].value, 10)) !== true) {
+        selectedInstruments.push(parseInt(htmlIOptions[instr].value, 10))
       }
     }
 

@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { Route, Switch, Link } from 'react-router-dom'
-import { AuthAdapter } from '../adapters'
-import withAuth from '../hocs/withAuth'
-import LoginForm from '../components/LoginForm'
-import UsersListContainer from './UsersListContainer'
-import SignUpForm from '../components/SignUpForm'
+import { Route, Switch, Link } from 'react-router-dom';
+import { AuthAdapter } from '../adapters';
+import withAuth from '../hocs/withAuth';
+import LoginForm from '../components/LoginForm';
+import UsersListContainer from './UsersListContainer';
+import SignUpForm from '../components/SignUpForm';
 import Sidebar from 'react-sidebar';
 import { Container, Row, Button, Media } from 'reactstrap';
-import { UserAdapter, SearchAdapter } from '../adapters'
+import { UserAdapter, SearchAdapter } from '../adapters';
 import SearchBar from '../components/SearchBar';
-import SearchResults from '../components/SearchResults.js'
+import SearchResults from '../components/SearchResults.js';
+import CurrentUserProfile from '../components/CurrentUserProfile';
+import UserProfile from '../components/UserProfile';
 import '../App.css';
 
 
@@ -32,7 +34,8 @@ class App extends Component {
     this.logIn = this.logIn.bind(this)
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
-    this.createUser = this.createUser.bind(this)
+    this.createUser = this.createUser.bind(this);
+    this.searchUsers = this.searchUsers.bind(this);
   }
 
   onSetSidebarOpen(open) {
@@ -102,7 +105,7 @@ class App extends Component {
       let band = {
        name: user.name,
        state: user.state,
-       zipcode: parseInt(user.zipcode),
+       zipcode: parseInt(user.zipcode, 10),
        setList: user.setList,
        radius_preference: user.radius_preference,
        user_genres_attributes: genresList,
@@ -132,14 +135,12 @@ class App extends Component {
     if (searchTerms.selectedUserType === 'Artist') {
       SearchAdapter.searchArtists(searchTerms)
       .then(searchedUsers => this.setState({ searchedUsers }))
-      debugger
-      this.props.history.push('/search-results')
     } else {
       SearchAdapter.searchBands(searchTerms)
       .then(searchedUsers => this.setState({ searchedUsers }))
-      debugger
-      this.props.history.push('/search-results')
     }
+
+    this.props.history.push('/search-results')
   }
 
   render() {
@@ -147,7 +148,7 @@ class App extends Component {
       <Container>
         <Media object data-src="https://www.alternativenation.net/wp-content/uploads/2016/04/nirvana93.jpg" alt="Generic placeholder image" />
         <Row><Link to='/profile'>Your Profile </Link></Row>
-        <Row><Link to='/'>Artists and Bands Listings </Link></Row>
+        <Row><Link to='/'>Home</Link></Row>
         <SearchBar handleSearch={this.searchUsers}/>
         <Row><Link to='/login'>Sign In</Link></Row>
         <Row><Button onClick={this.handleClickSignOut}>Sign Out</Button></Row>
@@ -157,7 +158,7 @@ class App extends Component {
 
     const sidebarStyles = {
       sidebar: {
-        width: 240
+        width: 260
       }
     };
 
@@ -169,14 +170,23 @@ class App extends Component {
 
     return (
       <Sidebar sidebar={sidebarContent} styles={sidebarStyles} open={this.state.sidebarOpen} docked={this.state.sidebarDocked} onSetOpen={this.onSetSidebarOpen}>
-       <Container>
-         <Switch>
-           <Route path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
-           <Route path='/signup' render={() => <SignUpForm onSubmit={this.createUser}/> }/>
-           <Route path='/search-results' render={() => <SearchResults results={this.state.searchUsers} /> }/>
-           <Route path='/' render={() => <UsersListContainer currentUser={this.state.auth.user} />} />
-         </Switch>
-       </Container>
+       <Switch>
+         <Route exact path='/' render={() => <UsersListContainer currentUser={this.state.auth.user} />} />
+         <Route exact path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
+         <Route exact path='/signup' render={() => <SignUpForm onSubmit={this.createUser}/> }/>
+         <Route exact path='/search-results' render={() => <SearchResults results={this.state.searchedUsers} /> }/>
+         <Route exact path='/profile' render={() => {
+             const id = this.props.currentUser.id
+             const users = this.state.bands.concat(this.state.artists)
+             const user = users.find(u => u.user.id === parseInt(id, 10))
+             return <CurrentUserProfile user={user} deleteAccount={this.deleteAccount}/>
+           }}/>
+           <Route exact path='/:id' render={(routerProps) => {
+             const id = routerProps.match.params.id
+             const user = this.state.searchedUsers.find(u => u.user.id === parseInt(id, 10))
+             return <UserProfile user={user}/>
+           }}/>
+       </Switch>
       </Sidebar>
     );
   }
