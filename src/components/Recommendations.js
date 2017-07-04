@@ -1,72 +1,41 @@
 import React, {Component} from 'react';
 import withAuth from '../hocs/withAuth';
 import '../index.css';
-import { DecisionAdapter } from '../adapters';
-import { Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button, CardLink} from 'reactstrap';
-
+import { Card, CardText, CardTitle, Button, CardLink} from 'reactstrap';
 
 class Recommendations extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      accepted: [],
-      rejected: []
-    }
-  }
 
   handleContactClick = (e) => {
     let recommendeeId = e.target.getAttribute('data-recommendee');
     let recommendeeType = e.target.getAttribute('data-userType');
 
-    if (recommendeeType === 'Artist') {
-      DecisionAdapter.bandDecision(recommendeeId, this.props.user, true)
-      .then(decision => this.setState((pstate) => {
-        return {
-          accepted: [...pstate.accepted, decision]
-        }
-      }))
-      .catch(function() {
-        console.log('not working')
-      })
-    }
+    this.props.handleContactClick(recommendeeId, recommendeeType)
   }
 
   handleRejectClick = (e) => {
     let recommendeeId = e.target.getAttribute('data-recommendee');
     let recommendeeType = e.target.getAttribute('data-userType');
 
-    if (recommendeeType === 'Artist') {
-      DecisionAdapter.bandDecision(recommendeeId, this.props.user, false)
-      .then(decision => this.setState((pstate) => {
-        return {
-          rejected: [...pstate.rejected, decision]
-        }
-      }))
-      .catch(function() {
-        console.log('not working')
-      })
-    }
-    console.log(this.state)
+    this.props.handleRejection(recommendeeId, recommendeeType)
   }
 
-  artistOnlyFields = (instruments) => {
-    return <CardText>{instruments.map((i, index) => { return <li key={i.id}>{i.instrument.name}</li> })}</CardText>
+  artistOnlyFields = (instruments,name) => {
+    return <CardText>{instruments.map((i, index) => { return <li key={Math.random() * 100000 +1}>{i.instrument.name}</li> })}</CardText>
   }
 
-  bandOnlyFields = (instruments) => {
-    return <CardText>{instruments.map((i, index) => { return <li key={i.id}>{i.name}</li> })}</CardText>
+  bandOnlyFields = (instruments, name) => {
+    return <CardText>{instruments.map((i, index) => { return <li key={Math.random() * 100000 +1}>{i.name}</li> })}</CardText>
   }
 
   render() {
     return (
       <div>
-        {this.props.recommendations.filter(function(r) { return r !== null} ).map(rec => {
+        {this.props.recommendations.filter(function(r) { return r !== null} ).map((rec, idx) => {
           return (
-            <Card block className="text-center" key={rec.user.id} >
+            <Card block className="text-center" key={idx} >
               <CardTitle>{rec.name}</CardTitle>
-              { this.props.user.user.meta_type === 'Artist' ? this.artistOnlyFields(rec.band_instrument_preferences) : this.bandOnlyFields(rec.instruments) }
-              <CardText>{rec.genres.map((g, index) => { return <li key={index}>{g.name}</li> })}</CardText>
+              { this.props.user.meta_type === 'Artist' ? this.artistOnlyFields(rec.band_instrument_preferences) : this.bandOnlyFields(rec.instruments, rec.name) }
+              <CardText>{rec.genres.map((g, index) => { return <li key={Math.random() * 100000 +1}>{g.name}</li> })}</CardText>
               <CardLink href={`/${rec.user.id}`}>Check Me Out</CardLink>
               <Button
                 data-recommendee={rec.user.id}

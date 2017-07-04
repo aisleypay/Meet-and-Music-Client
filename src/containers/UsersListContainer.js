@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Switch, Route} from 'react-router-dom'
-import {UserAdapter} from '../adapters'
-import CurrentUserProfile from '../components/CurrentUserProfile'
-import UserList from '../components/UserList'
-import {Container} from 'reactstrap';
+import {UserAdapter} from '../adapters';
+import {Link} from 'react-router-dom'
+import { Carousel } from 'react-responsive-carousel';
+import '../main.min.css'
+import '../carousel.min.css'
 
 export default class UsersListContainer extends Component {
   constructor(props) {
@@ -14,57 +14,51 @@ export default class UsersListContainer extends Component {
       artists: []
     }
 
-    this.retrieveAllBands = this.retrieveAllBands.bind(this)
-    this.retrieveAllArtists = this.retrieveAllArtists.bind(this)
+    this.retrieveFeaturedBands = this.retrieveFeaturedBands.bind(this)
+    this.retrieveFeaturedArtists = this.retrieveFeaturedArtists.bind(this)
   }
 
   componentDidMount() {
-    this.retrieveAllBands();
-    this.retrieveAllArtists();
+    this.retrieveFeaturedBands();
+    this.retrieveFeaturedArtists();
   }
 
-  retrieveAllBands() {
-    UserAdapter.allBands().then(bands => this.setState({ bands: bands }))
+  retrieveFeaturedBands() {
+    UserAdapter.retrieveFeaturedBands().then(bands => this.setState({ bands }))
   }
 
-  retrieveAllArtists() {
-    UserAdapter.allArtists().then(artists => this.setState({artists}))
-  }
-
-  deleteAccount = (id, type) => {
-    let urlType
-    if (type === 'Band') {
-      urlType = 'bands'
-    } else {
-      urlType = 'artists'
-    }
-
-    UserAdapter.destroy(id, urlType)
-      .then( () => {
-        if (type === 'Band') {
-          this.setState( previousState => {
-            return {
-              bands: previousState.bands.filter( band => band.id !== id )
-            }
-          })
-          this.props.history.push("/")
-        } else {
-          this.setState( previousState => {
-            return {
-              artists: previousState.artists.filter( artist => artist.id !== id )
-            }
-          })
-          this.props.history.push("/")
-        }
-      })
+  retrieveFeaturedArtists() {
+    UserAdapter.retrieveFeaturedArtists().then(artists => this.setState({ artists }))
   }
 
   render() {
-
+    if (this.state.artists.length === 0 || this.state.bands.length === 0) {
+      return <header>Loading....</header>
+    }
     return (
-      <div>Hello</div>
+      <section>
+        <Carousel showArrows={true} dynamicHeight autoPlay infiniteLoop>
+          {this.state.artists.map(a => {
+            return (
+              <div key={a.user.id}>
+                <Link to={`/${a.user.id}`}><p className="legend">{a.name}</p></Link>
+                <img src={a.profile_pic} alt="Broken Link"/>
+              </div>
+            )
+          })}
+        </Carousel>
+
+        <Carousel showArrows={true} dynamicHeight>
+          {this.state.bands.map(b => {
+            return (
+              <div key={b.user.id}>
+                <Link to={`/${b.user.id}`}><p className="legend">{b.name}</p></Link>
+                <img src={b.profile_pic} alt="Broken Link"/>
+              </div>
+            )
+          })}
+        </Carousel>
+      </section>
     )
   }
 }
-
-// <div><Route exact path='/' render={() => <UserList bands={this.state.bands} artists={this.state.artists}/> }/></div>

@@ -1,7 +1,7 @@
 import React, { Component} from 'react';
 import { Card, CardImg, CardTitle, CardBlock, CardSubtitle, CardText, Row } from 'reactstrap';
-import {Link, Switch } from 'react-router-dom';
-import {Route} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 
 class SearchResults extends Component {
   render() {

@@ -60,16 +60,16 @@ export default class SearchBar extends Component {
           <Label for="instruments">Select an Instrument</Label>
           <Input type="select" name="instrumentSelected" onChange={this.handleChange}>
             {this.state.instrumentsAll.map(i => {
-              return <option key={i.id} value={i.id}>{i.name}</option>
-            }).concat(<option value={'All'}>All</option>)}
+              return <option key={i.id+i.name} value={i.id}>{i.name}</option>
+            }).concat(<option key='All' value={'All'}>All</option>)}
           </Input>
         </FormGroup>
         <FormGroup>
           <Label for="genres">Select a Genre</Label>
           <Input type="select" name="genreSelected" onChange={this.handleChange} >
             {this.state.genresAll.map(g => {
-              return <option key={g.id} value={g.id}>{g.name}</option>
-            }).concat(<option value={'All'}>All</option>)}
+              return <option key={g.id+g.name} value={g.id}>{g.name}</option>
+            }).concat(<option key='All' value={'All'}>All</option>)}
           </Input>
         </FormGroup>
         <FormGroup>

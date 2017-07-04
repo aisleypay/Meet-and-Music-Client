@@ -7,7 +7,7 @@ export class AuthAdapter {
       }).then(res => res.json() )
   }
 
-  static currenUser(){
+  static currentUser(){
     return fetch('http://localhost:3000/api/v1/current_user', {
       headers: headers()
     }).then(res => res.json())
@@ -15,17 +15,24 @@ export class AuthAdapter {
 }
 
 export class UserAdapter {
-  static allBands() {
-    return fetch('http://localhost:3000/api/v1/bands', {
+  static retrieveFeaturedBands() {
+    return fetch('http://localhost:3000/api/v1/bands/featured', {
       headers: headers()
     }).then(res => res.json())
   }
 
-  static allArtists() {
-    return fetch('http://localhost:3000/api/v1/artists', {
+  static retrieveFeaturedArtists() {
+    return fetch('http://localhost:3000/api/v1/artists/featured', {
       headers: headers()
     }).then(res => res.json())
   }
+
+  static UserProfile(id) {
+    return fetch(`http://localhost:3000/api/v1/users/${id}`, {
+      headers: headers()
+    }).then(res => res.json())
+  }
+
 
   static createBand(band) {
     return fetch('http://localhost:3000/api/v1/bands', {

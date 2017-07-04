@@ -2,15 +2,6 @@ import React, { Component } from 'react';
 
 class UserProfile extends Component {
 
-  determineTypeOfUser() {
-    let user = this.props.user
-    if (user.user.meta_type === 'Band') {
-      return this.renderBand(user)
-    } else {
-      return this.renderArtist(user)
-    }
-  }
-
   genresList(genres) {
     return genres.map(g => <li key={g.id}>{g.name}</li>)
   }
@@ -19,33 +10,28 @@ class UserProfile extends Component {
     return instruments.map(i => <li key={i.id}>{i.name}</li>)
   }
 
-  renderBand(band) {
+  renderUser(user, type) {
     return (
       <div>
-        <h1>{band.name}</h1>
-        <h2>{band.state}</h2>
-        <h2>{band.zipcode}</h2>
-        <ul>{this.genresList(band.genres)}</ul>
-      </div>
-    )
-  }
-
-  renderArtist(artist) {
-    return (
-      <div>
-        <h1>{artist.name}</h1>
-        <h2>{artist.state}</h2>
-        <h2>{artist.zipcode}</h2>
-        <ul>{this.genresList(artist.genres)}</ul>
-        <ul>{this.instrumentsList(artist.instruments)}</ul>
+        <img src={user.profile_pic} alt="Link Broken"/>
+        <h1>{user.name}</h1>
+        <h2>{user.state}</h2>
+        <h2>{user.zipcode}</h2>
+        { type === 'Artist' ? <h2>{user.age}</h2> : null}
+        { type === 'Artist' ? <h2>{user.experience_in_years}</h2> : null}
+        <ul>{this.genresList(user.genres)}</ul>
+        { type === 'Artist' ? <ul>{this.instrumentsList(user.instruments)}</ul> : null}
       </div>
     )
   }
 
   render() {
+    if (this.props.user === "") {
+      return <div>Loading...</div>
+    }
     return (
       <div>
-        {this.determineTypeOfUser()}
+        {this.renderUser(this.props.user.meta, this.props.user.meta_type)}
       </div>
     )
   }

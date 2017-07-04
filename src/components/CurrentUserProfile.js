@@ -1,89 +1,125 @@
 import React, { Component } from 'react';
 import Recommendations from './Recommendations';
-import withAuth from '../hocs/withAuth'
-import { RecommendationAdapter } from '../adapters'
-import { Button, Col} from 'reactstrap';
-
+import withAuth from '../hocs/withAuth';
+import { RecommendationAdapter } from '../adapters';
+import DecisionList from './DecisionList';
+import {Row, Col, Button} from 'reactstrap';
+import { DecisionAdapter } from '../adapters';
 
 class CurrentUserProfile extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      recommendations: []
+      recommendations: [],
+      accepted: [],
+      rejected: []
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getRecommendations()
   }
 
-  determineTypeOfUser() {
-    let user = this.props.user
-    if (user.user.meta_type === 'Band') {
-      return this.renderBand(user)
-    } else {
-      return this.renderArtist(user)
-    }
-  }
-
   genresList(genres) {
-    return genres.map(g => <li key={g.id}>{g.name}</li>)
+    return genres.map(g => <li key={Math.random() * 100000 +1}>{g.name}</li>)
   }
+
   instrumentsList(instruments) {
-    return instruments.map(i => <li key={i.id}>{i.name}</li>)
+    return instruments.map(i => <li key={Math.random() * 100000 +1}>{i.name}</li>)
   }
 
-  renderBand(band) {
-    return (
-      <Col>
-        <h1>{band.name}</h1>
-        <h2>Location: {band.state}</h2>
-        <h2>Zipcode: {band.zipcode}</h2>
-        <ul>Genres: {this.genresList(band.genres)}</ul>
-        <Button onClick={() => this.props.deleteAccount(band.id, band.user.meta_type) }>Delete Your Account</Button>
-      </Col>
-    )
-  }
-
-  renderArtist(artist) {
+  renderUser(user, type) {
     return (
       <div>
-        <h1>{artist.name}</h1>
-        <h2>Location: {artist.state}</h2>
-        <h2>Zipcode: {artist.zipcode}</h2>
-        <ul>Genres: {this.genresList(artist.genres)}</ul>
-        <ul>Instruments Played: {this.instrumentsList(artist.instruments)}</ul>
-        <Button onClick={() => this.props.deleteAccount(artist.id, artist.user.meta_type) }>Delete Your Account</Button>
+        <img src={user.profile_pic} alt="Link Broken"/>
+        <h1>{user.name}</h1>
+        <h2>{user.state}</h2>
+        <h2>{user.zipcode}</h2>
+        { type === 'Artist' ? <h2>{user.age}</h2> : null}
+        { <ul>{this.genresList(this.props.user.user_genres)}</ul>}
+        { type === 'Artist' ? <h2>{user.experience_in_years}</h2> : null}
+        { type === 'Artist' ? <ul>{this.instrumentsList(this.props.user_instruments)}</ul> : null}
       </div>
     )
   }
 
-  getRecommendations() {
+  getRecommendations = () => {
     let user = this.props.user
-    if (user.user.meta_type === 'Band') {
-      RecommendationAdapter.getBandRecommendations(this.props.user)
+
+    if (user.meta_type === 'Band') {
+      RecommendationAdapter.getBandRecommendations(user.user_info)
       .then(recommendations => this.setState({ recommendations }))
+      return <Recommendations recommendations={this.state.recommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected} />
     } else {
-      RecommendationAdapter.getArtistRecommendations(this.props.user)
+      RecommendationAdapter.getArtistRecommendations(this.props.user.user_info)
       .then(recommendations => this.setState({ recommendations }))
+      return <Recommendations recommendations={this.state.recommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected}/>
     }
   }
 
-  render() {
-    if (this.state.recommendations.length === 0) {
-      return <div>Loading.....</div>
+  addWillContact = (recommendeeId, recommendeeType) => {
+    if (recommendeeType === 'Artist') {
+      DecisionAdapter.bandDecision(recommendeeId, this.props.user, true)
+      .then(decision => this.setState((pstate) => {
+        return {
+          accepted: [...pstate.accepted, decision]
+        }
+      }))
+      .catch(function() {
+        console.log('not working')
+      })
     }
+
+    console.log(this.state)
+  }
+
+  addRejected = (recommendeeId, recommendeeType) => {
+    if (recommendeeType === 'Artist') {
+      DecisionAdapter.bandDecision(recommendeeId, this.props.user, false)
+      .then(decision => this.setState((pstate) => {
+        return {
+          rejected: [...pstate.rejected, decision]
+        }
+      }))
+      .catch(function() {
+        console.log('not working')
+      })
+    }
+
+    console.log(this.state)
+  }
+
+  handleRejected = (e) => {
+    return <DecisionList users={this.state.rejected} />
+  }
+
+  handleWillContact = (e) => {
+    return <DecisionList users={this.state.accepted} />
+
+  }
+
+  render() {
+    if (this.props.user === {} || this.state.recommendations === []) {
+      return <div>Loading...</div>
+    }
+
     return (
       <div>
-        <div className='row'>
-          {this.determineTypeOfUser()}
-        </div>
-        <div className='row justify-content-center'>
-          <div className='col-md-10'>
-            <Recommendations recommendations={this.state.recommendations} user={this.props.user} />
-          </div>
-        </div>
+        <Row>
+          <Col>
+            {this.renderUser(this.props.user.user_info, this.props.user.meta_type)}
+          </Col>
+          <Col>
+            <Button onClick={this.handleWillContact}>Will Contact List</Button>
+            <Button onClick={this.handleRejected}>Rejected List</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {this.getRecommendations()}
+          </Col>
+        </Row>
       </div>
     )
   }

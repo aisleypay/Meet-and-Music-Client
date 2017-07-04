@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import { AuthAdapter } from '../adapters';
+import { AuthAdapter, UserAdapter, SearchAdapter} from '../adapters';
 import withAuth from '../hocs/withAuth';
 import LoginForm from '../components/LoginForm';
 import UsersListContainer from './UsersListContainer';
 import SignUpForm from '../components/SignUpForm';
 import Sidebar from 'react-sidebar';
 import { Container, Row, Button, Media } from 'reactstrap';
-import { UserAdapter, SearchAdapter } from '../adapters';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults.js';
 import CurrentUserProfile from '../components/CurrentUserProfile';
@@ -28,7 +27,8 @@ class App extends Component {
       mql: mql,
       docked: props.docked,
       open: props.open,
-      searchedUsers: []
+      searchedUsers: [],
+      individualUser: ''
     }
 
     this.logIn = this.logIn.bind(this)
@@ -57,7 +57,7 @@ class App extends Component {
 
   componentDidMount() {
     if (localStorage.getItem('jwt')) {
-      AuthAdapter.currenUser()
+      AuthAdapter.currentUser()
         .then(user => {
           if (!user.error) {
             this.setState({
@@ -79,6 +79,7 @@ class App extends Component {
           auth: { isLoggedIn: true, user: user}
         })
         localStorage.setItem('jwt', user.jwt )
+        console.log(this.state.auth.user)
         this.props.history.push(`/profile`)
       }
     })
@@ -143,6 +144,35 @@ class App extends Component {
     this.props.history.push('/search-results')
   }
 
+  deleteAccount = (id, type) => {
+    let urlType
+    if (type === 'Band') {
+      urlType = 'bands'
+    } else {
+      urlType = 'artists'
+    }
+
+    UserAdapter.destroy(id, urlType)
+      .then( () => {
+        if (type === 'Band') {
+          this.setState( previousState => {
+            return {
+              bands: previousState.bands.filter( band => band.id !== id )
+            }
+          })
+
+          this.props.history.push("/")
+        } else {
+          this.setState( previousState => {
+            return {
+              artists: previousState.artists.filter( artist => artist.id !== id )
+            }
+          })
+          this.props.history.push("/")
+        }
+      })
+  }
+
   render() {
     var sidebarContent = (
       <Container>
@@ -175,17 +205,14 @@ class App extends Component {
          <Route exact path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
          <Route exact path='/signup' render={() => <SignUpForm onSubmit={this.createUser}/> }/>
          <Route exact path='/search-results' render={() => <SearchResults results={this.state.searchedUsers} /> }/>
-         <Route exact path='/profile' render={() => {
-             const id = this.props.currentUser.id
-             const users = this.state.bands.concat(this.state.artists)
-             const user = users.find(u => u.user.id === parseInt(id, 10))
-             return <CurrentUserProfile user={user} deleteAccount={this.deleteAccount}/>
-           }}/>
-           <Route exact path='/:id' render={(routerProps) => {
-             const id = routerProps.match.params.id
-             const user = this.state.searchedUsers.find(u => u.user.id === parseInt(id, 10))
-             return <UserProfile user={user}/>
-           }}/>
+         <Route exact path='/profile' render={() => <CurrentUserProfile user={this.state.auth.user} deleteAccount={this.deleteAccount}/>
+           }/>
+         <Route exact path='/:id' render={(routerProps) => {
+           const id = routerProps.match.params.id
+           UserAdapter.UserProfile(id)
+           .then(user => this.setState({ individualUser: user }))
+           return <UserProfile user={this.state.individualUser}/>
+         }}/>
        </Switch>
       </Sidebar>
     );
