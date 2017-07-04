@@ -76,6 +76,12 @@ export class DecisionAdapter {
       })
     }).then(res => res.json())
   }
+
+  static getDecisions() {
+    return fetch(`http://localhost:3000/api/v1/decisions`, {
+      headers: headers()
+    }).then(res => res.json())
+  }
 }
 
 export class RecommendationAdapter {

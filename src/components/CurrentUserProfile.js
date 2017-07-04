@@ -3,8 +3,9 @@ import Recommendations from './Recommendations';
 import withAuth from '../hocs/withAuth';
 import { RecommendationAdapter } from '../adapters';
 import DecisionList from './DecisionList';
-import {Row, Col, Button} from 'reactstrap';
+import {Row, Col} from 'reactstrap';
 import { DecisionAdapter } from '../adapters';
+import { Link, Route, Switch } from 'react-router-dom';
 
 class CurrentUserProfile extends Component {
   constructor(props) {
@@ -15,10 +16,29 @@ class CurrentUserProfile extends Component {
       accepted: [],
       rejected: []
     }
+
+    this.getDecisions = this.getDecisions.bind(this)
+    this.getRecommendations = this.getRecommendations.bind(this)
+    this.renderUser = this.renderUser.bind(this)
+    this.addWillContact = this.addWillContact.bind(this)
+    this.addRejected = this.addRejected.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getRecommendations()
+    this.getDecisions(this.props.user)
+  }
+
+  getDecisions = (user) => {
+    DecisionAdapter.getDecisions()
+    .then(decisions =>  this.setState((pstate) => {
+      let accepted = decisions.filter(d => d.decider_id === user.id && d.status === true)
+      let rejected = decisions.filter(d => d.decider_id === user.id && d.status === false)
+      return {
+        accepted: accepted,
+        rejected: rejected
+      }
+    }))
   }
 
   genresList(genres) {
@@ -90,37 +110,37 @@ class CurrentUserProfile extends Component {
     console.log(this.state)
   }
 
-  handleRejected = (e) => {
-    return <DecisionList users={this.state.rejected} />
-  }
-
-  handleWillContact = (e) => {
-    return <DecisionList users={this.state.accepted} />
-
-  }
-
   render() {
     if (this.props.user === {} || this.state.recommendations === []) {
       return <div>Loading...</div>
     }
 
     return (
-      <div>
-        <Row>
-          <Col>
-            {this.renderUser(this.props.user.user_info, this.props.user.meta_type)}
-          </Col>
-          <Col>
-            <Button onClick={this.handleWillContact}>Will Contact List</Button>
-            <Button onClick={this.handleRejected}>Rejected List</Button>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            {this.getRecommendations()}
-          </Col>
-        </Row>
-      </div>
+      <Switch>
+        <Route exact path='/:id/will-contact' render={() => <DecisionList users={this.state.accepted} />}/>
+        <Route exact path='/:id/rejected' render={() => <DecisionList users={this.state.rejected} />}/>
+        <Route render={() => {
+            return (
+              <Col>
+
+                <Row>
+                  <Col>
+                    {this.renderUser(this.props.user.user_info, this.props.user.meta_type)}
+                  </Col>
+                  <Col>
+                    <Link to={`/${this.props.user.id}/will-contact`}>Will Contact</Link>
+                    <Link to={`/${this.props.user.id}/rejected`}>Previously Rejected</Link>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    {this.getRecommendations()}
+                  </Col>
+                </Row>
+              </Col>
+            )
+          }}/>
+      </Switch>
     )
   }
 }
