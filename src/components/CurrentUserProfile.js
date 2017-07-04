@@ -50,19 +50,22 @@ class CurrentUserProfile extends Component {
 
   getRecommendations = () => {
     let user = this.props.user
+    let decisions = this.state.accepted.concat(this.state.rejected).map(d => d.chosen_id)
+    let newRecommendations
 
     if (user.meta_type === 'Band') {
       RecommendationAdapter.getBandRecommendations(user.user_info)
       .then(recommendations => this.setState({ recommendations }))
 
-      let decisions = this.state.accepted.concat(this.state.rejected).map(d => d.chosen_id)
+      newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
+      return <Recommendations recommendations={newRecommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected} />
 
-      let newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
-      return <Recommendations recommendations={this.state.recommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected} />
     } else {
       RecommendationAdapter.getArtistRecommendations(this.props.user.user_info)
       .then(recommendations => this.setState({ recommendations }))
-      return <Recommendations recommendations={this.state.recommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected}/>
+
+      newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
+      return <Recommendations recommendations={newRecommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected}/>
     }
   }
 
@@ -77,7 +80,6 @@ class CurrentUserProfile extends Component {
     .catch(function() {
       console.log('not working')
     })
-    console.log(this.state)
   }
 
   addRejected = (recommendeeId, recommendeeType) => {
@@ -105,31 +107,37 @@ class CurrentUserProfile extends Component {
         <Route exact path='/profile/rejected' render={() => <DecisionList decisions={this.state.rejected} recs={this.state.recommendations} title='Previously Rejected List'/>}/>
         <Route render={() => {
             return (
-              <Col>
+              <Col className='current-user-profile-container'>
                 <Row>
-                  <Col>
+                  <Col className='current-user-profile' md={{ size: 11, offset: 3  }}>
                     <Row>
-                      <Col><img className= 'public-profile-pic' src={user.user_info.profile_pic} alt="Link Broken"/></Col>
                       <Col>
-                        <h1>{user.user_info.name}</h1>
-                        { <ul>{this.genresList(user.user_genres)}</ul>}
-                        { user.meta_type === 'Artist' ? <ul>{this.instrumentsList(user.user_instruments)}</ul> : null}
+                        <Row>
+                          <Col><img className='public-profile-pic' src={user.user_info.profile_pic} alt="Link Broken"/></Col>
+                          <Col>
+                            <h1>{user.user_info.name}</h1>
+                            { <ul>{this.genresList(user.user_genres)}</ul>}
+                            { user.meta_type === 'Artist' ? <ul>{this.instrumentsList(user.user_instruments)}</ul> : null}
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={{ size: 11, offset: 1  }}>
+                            <iframe className='play-list' src={user.user_info.youtube_playlist_link} frameBorder="0" allowfullscreen></iframe>
+                          </Col>
+                        </Row>
+                        <h2>Location: {user.user_info.state}, {user.user_info.zipcode}</h2>
+                        { user.meta_type === 'Artist' ? <h2>Age: {user.user_info.age}</h2> : null}
+                        { user.meta_type === 'Artist' ? <h2>Year of Experience: {user.user_info.experience_in_years}</h2> : null}
+                      </Col>
+                      <Col>
+                        <Link to={`/profile/will-contact`}>Will Contact</Link>
+                        <Link to={`/profile/rejected`}>Previously Rejected</Link>
                       </Col>
                     </Row>
-                    <Row>
-                      <iframe className='play-list' src={user.user_info.youtube_playlist_link} frameBorder="0" allowfullscreen></iframe>
-                    </Row>
-                    <h2>Location: {user.user_info.state}, {user.user_info.zipcode}</h2>
-                    { user.meta_type === 'Artist' ? <h2>{user.user_info.age}</h2> : null}
-                    { user.meta_type === 'Artist' ? <h2>{user.user_info.experience_in_years}</h2> : null}
-                  </Col>
-                  <Col>
-                    <Link to={`/profile/will-contact`}>Will Contact</Link>
-                    <Link to={`/profile/rejected`}>Previously Rejected</Link>
                   </Col>
                 </Row>
                 <Row>
-                  <Col>
+                  <Col md={{ size: 11, offset: 1  }}>
                     {this.getRecommendations()}
                   </Col>
                 </Row>

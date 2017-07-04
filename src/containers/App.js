@@ -200,7 +200,7 @@ class App extends Component {
 
     return (
       <Sidebar sidebar={sidebarContent} styles={sidebarStyles} open={this.state.sidebarOpen} docked={this.state.sidebarDocked} onSetOpen={this.onSetSidebarOpen}>
-        <Container>
+        <Container fluid>
           <Switch>
             <Route exact path='/' render={() => <HomePageContainer currentUser={this.state.auth.user} />} />
             <Route exact path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />

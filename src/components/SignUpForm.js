@@ -18,7 +18,9 @@ export default class SignUpForm extends Component {
       radius_preference: 15,
       setList: '',
       selectedLookingTalent: '',
-      experience_in_years: 0
+      experience_in_years: 0,
+      youtube_playlist_link:'',
+      profile_pic: ''
     }
   }
 
@@ -106,43 +108,39 @@ export default class SignUpForm extends Component {
     }
 
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit} className='sign-up-form'>
+        <header>
+          <h1>Sign Up for Meet and Music</h1>
+        </header>
         <FormGroup>
-          <Label for="username">Username</Label>
           <Input type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.handleChange}/>
         </FormGroup>
         <FormGroup>
-          <Label for="password">Password</Label>
           <Input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleChange}/>
         </FormGroup>
         <FormGroup>
-          <Label for="userType">Are You a Band or an3 Artist?</Label>
+          <Label for="userType">Are You a Band or an Artist?</Label>
           <Input type="select" name="type" value={this.state.type} onChange={this.handleChange}>
             <option>Band</option>
             <option>Artist</option>
           </Input>
         </FormGroup>
         <FormGroup>
-          <Label for="name">Name</Label>
           <Input type="text" name="name" placeholder="Name" value={this.state.name} onChange={this.handleChange}/>
         </FormGroup>
         <FormGroup>
-          <Label for="state">State</Label>
           <Input type="text" name="state" placeholder="State" value={this.state.state} onChange={this.handleChange}/>
         </FormGroup>
         <FormGroup>
-          <Label for="zipcode">Zipcode</Label>
           <Input type="number" name="zipcode" placeholder="Zipcode" value={this.state.zipcode} onChange={this.handleChange}/>
         </FormGroup>
+        <FormGroup>
+          <Input type="text" name="youtube_playlist_link" placeholder="YouTube Playlist Embed Link" value={this.state.youtube_playlist_link} onChange={this.handleChange}/>
+        </FormGroup>
+        <FormGroup>
+          <Input type="text" name="profile_pic" placeholder="Profile Pic" value={this.state.profile_pic} onChange={this.handleChange}/>
+        </FormGroup>
         {this.artistOnlyFields()}
-        <FormGroup>
-          <Label for="radius_preference">How far out are you looking for Talent?</Label>
-          <Input type="number" name="radius_preference" placeholder="Radius" value={this.state.radius_preference} onChange={this.handleChange}/>
-        </FormGroup>
-        <FormGroup>
-          <Label for="setList">Possible/Ideal Set List</Label>
-          <Input type="textarea" name="setList" placeholder="Set List" value={this.state.setList} onChange={this.handleChange}/>
-        </FormGroup>
         <FormGroup tag="fieldset">
           <legend>Are You Actively Looking for Talent?</legend>
           <FormGroup check>
@@ -156,7 +154,15 @@ export default class SignUpForm extends Component {
               <Input type="radio" name="looking_for_musicians_true" value='false' checked={this.state.selectedLookingTalent === 'false'} onChange={this.handleOptionChange}/>{' '}
               No
             </Label>
-          </FormGroup>
+        </FormGroup>
+        </FormGroup>
+        <FormGroup>
+          <Label for="radius_preference">How far out are you looking for Talent?</Label>
+          <Input type="number" name="radius_preference" placeholder="Radius" value={this.state.radius_preference} onChange={this.handleChange}/>
+        </FormGroup>
+        <FormGroup>
+          <Label for="setList">Possible/Ideal Set List</Label>
+          <Input type="textarea" name="setList" placeholder="Set List" value={this.state.setList} onChange={this.handleChange}/>
         </FormGroup>
         <FormGroup>
           <Label for="genres">What Kind of Music Do You Play?</Label>

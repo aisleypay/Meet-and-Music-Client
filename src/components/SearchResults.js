@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 
 
 class SearchResults extends Component {
+
+  renderInstruments(instruments) {
+    return instruments.map(i => `${i.name} `)
+  }
+
   render() {
     if (this.props.results === null) {
       return <article>No Results for Your Query</article>
@@ -21,8 +26,8 @@ class SearchResults extends Component {
               <CardImg src={r.profile_pic} alt="Card image cap" />
               <CardBlock>
                 <CardTitle>{r.name}</CardTitle>
-                <CardSubtitle>Card subtitle</CardSubtitle>
-                <CardText>Instrumentssss</CardText>
+                <CardSubtitle>{r.genres.map(g => `${g.name} `)}</CardSubtitle>
+                { r.user.meta_type === 'Artist' ? <CardText>Skilled In: {this.renderInstruments(r.instruments)}</CardText> : null }
                 <Link to={`/${r.user.id}`}>Check Me Out</Link>
               </CardBlock>
             </Card>

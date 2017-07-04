@@ -34,7 +34,7 @@ class UserProfile extends Component {
     }
 
     return (
-      <Col>
+      <Col className='public-profile-container'>
         <Row>
           <Col><img className= 'public-profile-pic' src={user.meta.profile_pic} alt="Link Broken"/></Col>
           <Col>

@@ -91,3 +91,39 @@
   max-height: 10%;
   border-radius: 60px;
 }
+
+.recommendation-card {
+  max-width: 40%;
+  max-height: 40%;
+  margin: 10px;
+  border-radius: 250px;
+}
+
+.recommendation-card-content {
+  background-color: rgba(255, 255, 255, .7);
+  padding: 5px;
+  margin-top: 70px;
+}
+
+.recommendation-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.current-user-profile-container {
+  display: flex;
+  flex-flow: column;
+  margin-top: 20px;
+}
+
+.recommendataion-pic {
+  border-radius: 250px;
+}
+
+.public-profile-container {
+  margin-top: 20px;
+}
+
+.sign-up-form {
+  margin: 50px;
+}
