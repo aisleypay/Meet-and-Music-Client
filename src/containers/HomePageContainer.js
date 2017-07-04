@@ -5,7 +5,7 @@ import { Carousel } from 'react-responsive-carousel';
 import '../main.min.css'
 import '../carousel.min.css'
 
-export default class UsersListContainer extends Component {
+export default class HomePageContainer extends Component {
   constructor(props) {
     super(props);
 

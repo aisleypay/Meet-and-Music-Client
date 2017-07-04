@@ -68,3 +68,26 @@
   max-width: 40% ;
   max-height: 40%;
 }
+
+.public-profile-pic {
+  max-height: 100%;
+  max-width: 100%;
+  border-radius: 200px;
+}
+
+.play-list {
+  border-radius: 60px;
+  border: black;
+  border-bottom-style: groove;
+  width: 600px;
+  height: 355px;
+  /*max-height: 100%;
+  max-width: 100%;*/
+  margin: 20px
+}
+
+.decision-pic {
+  max-width: 10%;
+  max-height: 10%;
+  border-radius: 60px;
+}

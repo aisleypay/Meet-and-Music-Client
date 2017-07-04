@@ -19,7 +19,6 @@ class CurrentUserProfile extends Component {
 
     this.getDecisions = this.getDecisions.bind(this)
     this.getRecommendations = this.getRecommendations.bind(this)
-    this.renderUser = this.renderUser.bind(this)
     this.addWillContact = this.addWillContact.bind(this)
     this.addRejected = this.addRejected.bind(this)
   }
@@ -49,21 +48,6 @@ class CurrentUserProfile extends Component {
     return instruments.map(i => <li key={Math.random() * 100000 +1}>{i.name}</li>)
   }
 
-  renderUser(user, type) {
-    return (
-      <div>
-        <img src={user.profile_pic} alt="Link Broken"/>
-        <h1>{user.name}</h1>
-        <h2>{user.state}</h2>
-        <h2>{user.zipcode}</h2>
-        { type === 'Artist' ? <h2>{user.age}</h2> : null}
-        { <ul>{this.genresList(this.props.user.user_genres)}</ul>}
-        { type === 'Artist' ? <h2>{user.experience_in_years}</h2> : null}
-        { type === 'Artist' ? <ul>{this.instrumentsList(this.props.user_instruments)}</ul> : null}
-      </div>
-    )
-  }
-
   getRecommendations = () => {
     let user = this.props.user
 
@@ -79,57 +63,65 @@ class CurrentUserProfile extends Component {
   }
 
   addWillContact = (recommendeeId, recommendeeType) => {
-    if (recommendeeType === 'Artist') {
-      DecisionAdapter.bandDecision(recommendeeId, this.props.user, true)
-      .then(decision => this.setState((pstate) => {
-        return {
-          accepted: [...pstate.accepted, decision]
-        }
-      }))
-      .catch(function() {
-        console.log('not working')
-      })
-    }
-
+    DecisionAdapter.makeDecision(recommendeeId, this.props.user, true)
+    .then(decision => this.setState((pstate) => {
+      return {
+        accepted: [...pstate.accepted, decision]
+      }
+    }))
+    .catch(function() {
+      console.log('not working')
+    })
     console.log(this.state)
   }
 
   addRejected = (recommendeeId, recommendeeType) => {
-    if (recommendeeType === 'Artist') {
-      DecisionAdapter.bandDecision(recommendeeId, this.props.user, false)
-      .then(decision => this.setState((pstate) => {
-        return {
-          rejected: [...pstate.rejected, decision]
-        }
-      }))
-      .catch(function() {
-        console.log('not working')
-      })
-    }
-
+    DecisionAdapter.makeDecision(recommendeeId, this.props.user, false)
+    .then(decision => this.setState((pstate) => {
+      return {
+        rejected: [...pstate.rejected, decision]
+      }
+    }))
+    .catch(function() {
+      console.log('not working')
+    })
     console.log(this.state)
   }
 
   render() {
+    const { user } = this.props
+
     if (this.props.user === {} || this.state.recommendations === []) {
       return <div>Loading...</div>
     }
 
     return (
       <Switch>
-        <Route exact path='/:id/will-contact' render={() => <DecisionList users={this.state.accepted} />}/>
-        <Route exact path='/:id/rejected' render={() => <DecisionList users={this.state.rejected} />}/>
+        <Route exact path='/profile/will-contact' render={() => <DecisionList users={this.state.accepted} recs={this.state.recommendations} title='Will Contact List' />}/>
+        <Route exact path='/profile/rejected' render={() => <DecisionList users={this.state.rejected} recs={this.state.recommendations} title='Previously Rejected List'/>}/>
         <Route render={() => {
             return (
               <Col>
-
                 <Row>
                   <Col>
-                    {this.renderUser(this.props.user.user_info, this.props.user.meta_type)}
+                    <Row>
+                      <Col><img className= 'public-profile-pic' src={user.user_info.profile_pic} alt="Link Broken"/></Col>
+                      <Col>
+                        <h1>{user.user_info.name}</h1>
+                        { <ul>{this.genresList(user.user_genres)}</ul>}
+                        { user.meta_type === 'Artist' ? <ul>{this.instrumentsList(user.user_instruments)}</ul> : null}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <iframe className='play-list' src={user.user_info.youtube_playlist_link} frameBorder="0" allowfullscreen></iframe>
+                    </Row>
+                    <h2>Location: {user.user_info.state}, {user.user_info.zipcode}</h2>
+                    { user.meta_type === 'Artist' ? <h2>{user.user_info.age}</h2> : null}
+                    { user.meta_type === 'Artist' ? <h2>{user.user_info.experience_in_years}</h2> : null}
                   </Col>
                   <Col>
-                    <Link to={`/${this.props.user.id}/will-contact`}>Will Contact</Link>
-                    <Link to={`/${this.props.user.id}/rejected`}>Previously Rejected</Link>
+                    <Link to={`/profile/will-contact`}>Will Contact</Link>
+                    <Link to={`/profile/rejected`}>Previously Rejected</Link>
                   </Col>
                 </Row>
                 <Row>

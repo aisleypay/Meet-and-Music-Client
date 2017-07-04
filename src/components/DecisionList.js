@@ -1,10 +1,16 @@
 import React from 'react';
+import { Table } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-const DecisionList = ({ users }) => {
-  debugger
+const DecisionList = ({ users, recs, title }) => {
+  const usersIds = users.map(u => u.id)
+  const people = recs.filter(r => usersIds.includes(r.id))
+
   return (
     <section>
-      <table>
+      <Link to='/profile'>Back to Profile</Link>
+      <header><h1>{title}</h1></header>
+      <Table hover bordered responsive>
         <thead>
         <tr>
           <th>Name</th>
@@ -13,17 +19,17 @@ const DecisionList = ({ users }) => {
         </tr>
         </thead>
         <tbody>
-          {users.map(u => {
+          {people.map(u => {
             return (
               <tr>
-                <td>{u.name}</td>
+                <td><img className= 'decision-pic' src={u.profile_pic} alt='Broken Link'/> {u.name}</td>
                 <td>Email</td>
-                <td>{u.created_at}</td>
+                <td>{users.find(a => a.id === u.id).created_at}</td>
               </tr>
             )
           })}
         </tbody>
-      </table>
+      </Table>
     </section>
   )
 }

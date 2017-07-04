@@ -63,7 +63,7 @@ export class UserAdapter {
 }
 
 export class DecisionAdapter {
-  static bandDecision(recommendeeId, user, status) {
+  static makeDecision(recommendeeId, user, status) {
     return fetch(`http://localhost:3000/api/v1/decisions`, {
       method: 'POST',
       headers: headers(),

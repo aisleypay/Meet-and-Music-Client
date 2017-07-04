@@ -3,7 +3,7 @@ import { Route, Switch, Link } from 'react-router-dom';
 import { AuthAdapter, UserAdapter, SearchAdapter} from '../adapters';
 import withAuth from '../hocs/withAuth';
 import LoginForm from '../components/LoginForm';
-import UsersListContainer from './UsersListContainer';
+import HomePageContainer from './HomePageContainer';
 import SignUpForm from '../components/SignUpForm';
 import Sidebar from 'react-sidebar';
 import { Container, Row, Button, Media } from 'reactstrap';
@@ -200,20 +200,22 @@ class App extends Component {
 
     return (
       <Sidebar sidebar={sidebarContent} styles={sidebarStyles} open={this.state.sidebarOpen} docked={this.state.sidebarDocked} onSetOpen={this.onSetSidebarOpen}>
-       <Switch>
-         <Route exact path='/' render={() => <UsersListContainer currentUser={this.state.auth.user} />} />
-         <Route exact path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
-         <Route exact path='/signup' render={() => <SignUpForm onSubmit={this.createUser}/> }/>
-         <Route exact path='/search-results' render={() => <SearchResults results={this.state.searchedUsers} /> }/>
-         <Route exact path='/profile' render={() => <CurrentUserProfile user={this.state.auth.user} deleteAccount={this.deleteAccount}/>
-           }/>
-         <Route exact path='/:id' render={(routerProps) => {
-           const id = routerProps.match.params.id
-           UserAdapter.UserProfile(id)
-           .then(user => this.setState({ individualUser: user }))
-           return <UserProfile user={this.state.individualUser}/>
-         }}/>
-       </Switch>
+        <Container>
+          <Switch>
+            <Route exact path='/' render={() => <HomePageContainer currentUser={this.state.auth.user} />} />
+            <Route exact path='/login' render={() => <LoginForm onSubmit={this.logIn} />} />
+            <Route exact path='/signup' render={() => <SignUpForm onSubmit={this.createUser}/> }/>
+            <Route exact path='/search-results' render={() => <SearchResults results={this.state.searchedUsers} /> }/>
+            <Route path='/profile' render={() => <CurrentUserProfile user={this.state.auth.user} deleteAccount={this.deleteAccount}/>
+              }/>
+            <Route exact path='/:id' render={(routerProps) => {
+              const id = routerProps.match.params.id
+              UserAdapter.UserProfile(id)
+              .then(user => this.setState({ individualUser: user }))
+              return <UserProfile user={this.state.individualUser}/>
+            }}/>
+          </Switch>
+        </Container>
       </Sidebar>
     );
   }

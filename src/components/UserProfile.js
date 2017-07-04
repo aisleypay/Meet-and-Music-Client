@@ -1,38 +1,40 @@
 import React, { Component } from 'react';
+import { Button, Col, Row } from 'reactstrap';
 
 class UserProfile extends Component {
 
   genresList(genres) {
-    return genres.map(g => <li key={g.id}>{g.name}</li>)
+    return genres.map(g => <li key={Math.random() * 100000 +1}>{g.name}</li>)
   }
 
   instrumentsList(instruments) {
-    return instruments.map(i => <li key={i.id}>{i.name}</li>)
-  }
-
-  renderUser(user, type) {
-    return (
-      <div>
-        <img src={user.profile_pic} alt="Link Broken"/>
-        <h1>{user.name}</h1>
-        <h2>{user.state}</h2>
-        <h2>{user.zipcode}</h2>
-        { type === 'Artist' ? <h2>{user.age}</h2> : null}
-        { type === 'Artist' ? <h2>{user.experience_in_years}</h2> : null}
-        <ul>{this.genresList(user.genres)}</ul>
-        { type === 'Artist' ? <ul>{this.instrumentsList(user.instruments)}</ul> : null}
-      </div>
-    )
+    return instruments.map(i => <li key={Math.random() * 100000 +1}>{i.name}</li>)
   }
 
   render() {
-    if (this.props.user === "") {
+    const { user } = this.props
+
+    if (user === "") {
       return <div>Loading...</div>
     }
+
     return (
-      <div>
-        {this.renderUser(this.props.user.meta, this.props.user.meta_type)}
-      </div>
+      <Col>
+        <Row>
+          <Col><img className= 'public-profile-pic' src={user.meta.profile_pic} alt="Link Broken"/></Col>
+          <Col>
+            <h1>{user.meta.name}</h1><Button>Email</Button>
+            <ul>Genres: {this.genresList(user.meta.genres)}</ul>
+            { user.meta_type === 'Artist' ? <ul>Instruments: {this.instrumentsList(user.meta.instruments)}</ul> : null}
+          </Col>
+        </Row>
+        <Row>
+          <iframe className='play-list' src={user.meta.youtube_playlist_link} frameBorder="0" allowfullscreen></iframe>
+        </Row>
+        <h2>Location: {user.meta.state}, {user.meta.zipcode}</h2>
+        { user.meta_type === 'Artist' ? <h2>Age: {user.meta.age}</h2> : null}
+        { user.meta_type === 'Artist' ? <h2>Year of Experience: {user.meta.experience_in_years}</h2> : null}
+      </Col>
     )
   }
 }
