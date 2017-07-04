@@ -24,8 +24,8 @@ class CurrentUserProfile extends Component {
   }
 
   componentDidMount() {
-    this.getRecommendations()
     this.getDecisions(this.props.user)
+    this.getRecommendations()
   }
 
   getDecisions = (user) => {
@@ -54,6 +54,10 @@ class CurrentUserProfile extends Component {
     if (user.meta_type === 'Band') {
       RecommendationAdapter.getBandRecommendations(user.user_info)
       .then(recommendations => this.setState({ recommendations }))
+
+      let decisions = this.state.accepted.concat(this.state.rejected).map(d => d.chosen_id)
+
+      let newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
       return <Recommendations recommendations={this.state.recommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected} />
     } else {
       RecommendationAdapter.getArtistRecommendations(this.props.user.user_info)
@@ -63,6 +67,7 @@ class CurrentUserProfile extends Component {
   }
 
   addWillContact = (recommendeeId, recommendeeType) => {
+    console.log(this.state)
     DecisionAdapter.makeDecision(recommendeeId, this.props.user, true)
     .then(decision => this.setState((pstate) => {
       return {
@@ -85,7 +90,6 @@ class CurrentUserProfile extends Component {
     .catch(function() {
       console.log('not working')
     })
-    console.log(this.state)
   }
 
   render() {
@@ -97,8 +101,8 @@ class CurrentUserProfile extends Component {
 
     return (
       <Switch>
-        <Route exact path='/profile/will-contact' render={() => <DecisionList users={this.state.accepted} recs={this.state.recommendations} title='Will Contact List' />}/>
-        <Route exact path='/profile/rejected' render={() => <DecisionList users={this.state.rejected} recs={this.state.recommendations} title='Previously Rejected List'/>}/>
+        <Route exact path='/profile/will-contact' render={() => <DecisionList decisions={this.state.accepted} recs={this.state.recommendations} title='Will Contact List' />}/>
+        <Route exact path='/profile/rejected' render={() => <DecisionList decisions={this.state.rejected} recs={this.state.recommendations} title='Previously Rejected List'/>}/>
         <Route render={() => {
             return (
               <Col>
