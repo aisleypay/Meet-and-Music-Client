@@ -3,7 +3,7 @@ import Recommendations from './Recommendations';
 import withAuth from '../hocs/withAuth';
 import { RecommendationAdapter } from '../adapters';
 import DecisionList from './DecisionList';
-import {Row, Col} from 'reactstrap';
+import {Row, Col, Button} from 'reactstrap';
 import { DecisionAdapter } from '../adapters';
 import { Link, Route, Switch } from 'react-router-dom';
 
@@ -21,11 +21,11 @@ class CurrentUserProfile extends Component {
     this.getRecommendations = this.getRecommendations.bind(this)
     this.addWillContact = this.addWillContact.bind(this)
     this.addRejected = this.addRejected.bind(this)
+    this.renderRecommendations = this.renderRecommendations.bind(this)
   }
 
   componentDidMount() {
     this.getDecisions(this.props.user)
-    this.getRecommendations()
   }
 
   getDecisions = (user) => {
@@ -50,23 +50,20 @@ class CurrentUserProfile extends Component {
 
   getRecommendations = () => {
     let user = this.props.user
-    let decisions = this.state.accepted.concat(this.state.rejected).map(d => d.chosen_id)
-    let newRecommendations
 
     if (user.meta_type === 'Band') {
       RecommendationAdapter.getBandRecommendations(user.user_info)
       .then(recommendations => this.setState({ recommendations }))
-
-      newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
-      return <Recommendations recommendations={newRecommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected} />
-
     } else {
       RecommendationAdapter.getArtistRecommendations(this.props.user.user_info)
       .then(recommendations => this.setState({ recommendations }))
-
-      newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
-      return <Recommendations recommendations={newRecommendations} user={user} handleContactClick={this.addWillContact} handleRejection={this.addRejected}/>
     }
+  }
+
+  renderRecommendations = () => {
+    let decisions = this.state.accepted.concat(this.state.rejected).map(function(d) {return d.chosen_id})
+    let newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
+    return <Recommendations recommendations={newRecommendations} user={this.props.user} handleContactClick={this.addWillContact} handleRejection={this.addRejected} />
   }
 
   addWillContact = (recommendeeId, recommendeeType) => {
@@ -94,17 +91,25 @@ class CurrentUserProfile extends Component {
     })
   }
 
+  handleDeleteClick = (e) => {
+    this.props.deleteAccount(this.props.user.user_info.id, this.props.user.meta_type)
+  }
+
   render() {
     const { user } = this.props
 
-    if (this.props.user === {} || this.state.recommendations === []) {
+    if (user === {} ) {
       return <div>Loading...</div>
+    }
+
+    if (this.state.recommendations.length === 0) {
+      this.getRecommendations()
     }
 
     return (
       <Switch>
-        <Route exact path='/profile/will-contact' render={() => <DecisionList decisions={this.state.accepted} recs={this.state.recommendations} title='Will Contact List' />}/>
-        <Route exact path='/profile/rejected' render={() => <DecisionList decisions={this.state.rejected} recs={this.state.recommendations} title='Previously Rejected List'/>}/>
+        <Route exact path='/profile/will-contact' render={() => <DecisionList sendEmail={this.props.sendEmail} decisions={this.state.accepted} recs={this.state.recommendations} title='Will Contact List' />}/>
+        <Route exact path='/profile/rejected' render={() => <DecisionList decisions={this.state.rejected} recs={this.state.recommendations} sendEmail={this.props.sendEmail} title='Previously Rejected List'/> }/>
         <Route render={() => {
             return (
               <Col className='current-user-profile-container'>
@@ -122,7 +127,7 @@ class CurrentUserProfile extends Component {
                         </Row>
                         <Row>
                           <Col md={{ size: 11, offset: 1  }}>
-                            <iframe className='play-list' src={user.user_info.youtube_playlist_link} frameBorder="0" allowfullscreen></iframe>
+                            <iframe className='play-list' src={user.user_info.youtube_playlist_link} frameBorder="0"></iframe>
                           </Col>
                         </Row>
                         <h2>Location: {user.user_info.state}, {user.user_info.zipcode}</h2>
@@ -132,13 +137,14 @@ class CurrentUserProfile extends Component {
                       <Col>
                         <Link to={`/profile/will-contact`}>Will Contact</Link>
                         <Link to={`/profile/rejected`}>Previously Rejected</Link>
+                        <Button onClick={this.handleDeleteClick}>Delete Account</Button>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
                 <Row>
                   <Col md={{ size: 11, offset: 1  }}>
-                    {this.getRecommendations()}
+                    {this.renderRecommendations()}
                   </Col>
                 </Row>
               </Col>

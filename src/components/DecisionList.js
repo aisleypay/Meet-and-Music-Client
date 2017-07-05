@@ -1,11 +1,10 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-const DecisionList = ({ decisions, recs, title }) => {
+const DecisionList = ({ decisions, recs, title, sendEmail}) => {
   const usersIds = decisions.map(d => d.chosen_id)
   const people = recs.filter(r => usersIds.includes(r.user.id))
-  debugger
   return (
     <section>
       <Link to='/profile'>Back to Profile</Link>
@@ -23,8 +22,8 @@ const DecisionList = ({ decisions, recs, title }) => {
             return (
               <tr>
                 <td><img className= 'decision-pic' src={p.profile_pic} alt='Broken Link'/> {p.name}</td>
-                <td>Email</td>
-                <td>{decisions.find(d => d.chosen_id === p.user.id).created_at}</td>
+                <td><Button onClick={() => sendEmail(decisions[0].decider_id, p)}>{p.user.email}</Button></td>
+                <td>{(new Date(decisions.find(d => d.chosen_id === p.user.id).created_at)).toLocaleDateString()}</td>
               </tr>
             )
           })}

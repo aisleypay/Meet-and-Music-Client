@@ -33,7 +33,6 @@ export class UserAdapter {
     }).then(res => res.json())
   }
 
-
   static createBand(band) {
     return fetch('http://localhost:3000/api/v1/bands', {
       method: 'POST',
@@ -58,6 +57,16 @@ export class UserAdapter {
     return fetch(`http://localhost:3000/api/v1/${type}/${id}`, {
       method: 'DELETE',
       headers: headers()
+    }).then(res => res.json() )
+  }
+
+  static reachOutEmail(id, recipient) {
+    return fetch(`http://localhost:3000/api/v1/users/${id}/reach-out`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({
+        recipient: recipient
+      })
     }).then(res => res.json() )
   }
 }
