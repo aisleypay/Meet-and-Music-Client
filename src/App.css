@@ -127,3 +127,22 @@
 .sign-up-form {
   margin: 50px;
 }
+
+.home-page-title {
+  font-family: 'Bungee Shade', cursive;
+  font-size: 120px;
+  text-align: center;
+  margin: 80px;
+  color: purple;
+}
+
+.homepage {
+  margin: 20px;
+}
+
+
+/*font-family: 'Monoton', cursive;
+font-family: 'Frijole', cursive;
+font-family: 'Press Start 2P', cursive;
+font-family: 'Bowlby One SC', cursive;
+font-family: 'Bungee Shade', cursive;*/

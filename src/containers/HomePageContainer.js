@@ -36,8 +36,8 @@ export default class HomePageContainer extends Component {
       return <header>Loading....</header>
     }
     return (
-      <section>
-        <Carousel showArrows={true} dynamicHeight autoPlay infiniteLoop>
+      <section className='homepage'>
+        <Carousel className='featured-artists' showThumbs={false} showArrows={true} dynamicHeight autoPlay infiniteLoop>
           {this.state.artists.map(a => {
             return (
               <div key={a.user.id}>
@@ -47,8 +47,8 @@ export default class HomePageContainer extends Component {
             )
           })}
         </Carousel>
-
-        <Carousel showArrows={true} dynamicHeight>
+        <section><h1 className='home-page-title'>Meet and Music</h1></section>
+        <Carousel className='featured-bands' showThumbs={false} showArrows={true} dynamicHeight>
           {this.state.bands.map(b => {
             return (
               <div key={b.user.id}>
