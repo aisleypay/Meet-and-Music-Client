@@ -11,7 +11,8 @@ import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults.js';
 import CurrentUserProfile from '../components/CurrentUserProfile';
 import UserProfile from '../components/UserProfile';
-import '../App.css';
+import '../styles/App.css';
+import '../styles/nav_bar.css'
 
 const mql = window.matchMedia(`(min-width: 800px)`);
 
@@ -174,7 +175,7 @@ class App extends Component {
 
   render() {
     var sidebarContent = (
-      <Container>
+      <Container className='nav-bar'>
         <Media object data-src="https://www.alternativenation.net/wp-content/uploads/2016/04/nirvana93.jpg" alt="Generic placeholder image"/>
         <Row>
           <Link to='/profile'>Your Profile</Link>
@@ -197,7 +198,12 @@ class App extends Component {
 
     const sidebarStyles = {
       sidebar: {
-        width: 260
+        width: 260,
+        backgroundColor: 'rgba(0,0,0,1)'
+      },
+      content: {
+        backgroundImage: "url('https://static.pexels.com/photos/145707/pexels-photo-145707.jpeg')",
+        backgroundSize: "cover"
       }
     };
 
@@ -214,7 +220,7 @@ class App extends Component {
         open={this.state.sidebarOpen}
         docked={this.state.sidebarDocked}
         onSetOpen={this.onSetSidebarOpen}>
-        <Container fluid>
+        <Container fluid className='master'>
           <Switch>
             <Route exact path='/' render={() => <HomePageContainer currentUser={this.state.auth.user}/>}/>
             <Route exact path='/login' render={() => <LoginForm onSubmit={this.logIn}/>}/>

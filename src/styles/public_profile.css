@@ -1,0 +1,35 @@
+.public-profile-container {
+ font-family: 'Work Sans';
+ background-image: url('../assets/brickwall.png');
+}
+
+.public-profile-pic {
+  zoom: 10%;
+}
+
+.public-profile-container h1 {
+  font-family: 'Bungee Shade', cursive;
+  font-size: 40px;
+  color: purple;
+}
+
+.public-play-list {
+  height: 60vh;
+  width: 100vw;
+}
+
+.top-summary {
+  padding-left: 10px;
+  /*height: 10vh;
+  width: 100vh;*/
+}
+
+.top-summary {
+  font-size: 18px;
+  line-height: 70%;
+}
+
+.public-email-button {
+  margin: 10px;
+  height: 35%;
+}

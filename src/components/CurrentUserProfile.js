@@ -127,7 +127,7 @@ class CurrentUserProfile extends Component {
                         </Row>
                         <Row>
                           <Col md={{ size: 11, offset: 1  }}>
-                            <iframe className='play-list' src={user.user_info.youtube_playlist_link} frameBorder="0"></iframe>
+                            <iframe className='current-user-profileplay-list' src={user.user_info.youtube_playlist_link} frameBorder="0"></iframe>
                           </Col>
                         </Row>
                         <h2>Location: {user.user_info.state}, {user.user_info.zipcode}</h2>

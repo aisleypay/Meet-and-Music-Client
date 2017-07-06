@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  font-family: 'Work Sans';
+  background-image: url('../assets/brickwall.png');
 }
 
 .App-logo {
@@ -23,6 +25,10 @@
   to { transform: rotate(360deg); }
 }
 
+.master {
+  padding: 0px;
+}
+
 .profile-pic {
   padding: 5px;
   margin-left: 12px;
@@ -34,8 +40,6 @@
 .search-results {
   display: flex;
   flex-wrap: wrap;
-  margin: 0px;
-  margin-right: 0px;
   justify-content: space-around;
   display: -webkit-box;
   display: -moz-box;
@@ -44,7 +48,7 @@
   display: flex;
   padding: 0px;
   flex-direction: row;
-
+  background-image: url('../assets/brickwall.png');
 }
 
 .search-item {
@@ -57,6 +61,7 @@
 .search-item .card-img {
   max-width: 100%;
   max-height: 100%;
+  object-fit: cover;
 }
 
 .carousel-slider {
@@ -67,12 +72,6 @@
 .carousel .slide img {
   max-width: 40% ;
   max-height: 40%;
-}
-
-.public-profile-pic {
-  max-height: 100%;
-  max-width: 100%;
-  border-radius: 200px;
 }
 
 .play-list {
@@ -113,15 +112,10 @@
 .current-user-profile-container {
   display: flex;
   flex-flow: column;
-  margin-top: 20px;
 }
 
 .recommendataion-pic {
   border-radius: 250px;
-}
-
-.public-profile-container {
-  margin-top: 20px;
 }
 
 .sign-up-form {
@@ -139,10 +133,3 @@
 .homepage {
   margin: 20px;
 }
-
-
-/*font-family: 'Monoton', cursive;
-font-family: 'Frijole', cursive;
-font-family: 'Press Start 2P', cursive;
-font-family: 'Bowlby One SC', cursive;
-font-family: 'Bungee Shade', cursive;*/
