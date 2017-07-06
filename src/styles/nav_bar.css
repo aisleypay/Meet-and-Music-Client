@@ -3,5 +3,9 @@
   font-weight: bold;
   color: #9b9b9b;
   text-align: center;
-  padding: 21px 25px; 
+  padding: 21px 25px;
+}
+
+.footer {
+  margin-top: 125%;
 }

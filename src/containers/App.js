@@ -6,7 +6,7 @@ import LoginForm from '../components/LoginForm';
 import HomePageContainer from './HomePageContainer';
 import SignUpForm from '../components/SignUpForm';
 import Sidebar from 'react-sidebar';
-import {Container, Row, Button, Media} from 'reactstrap';
+import {Container, Row, Button, Media, Col} from 'reactstrap';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults.js';
 import CurrentUserProfile from '../components/CurrentUserProfile';
@@ -192,6 +192,12 @@ class App extends Component {
         </Row>
         <Row>
           <Link to='/signup'>Sign Up</Link>
+        </Row>
+        <Row>
+          <Col className='footer'>
+            <Row>Meet and Music ©</Row>
+            <Row>A Paisley Creation</Row>
+          </Col>
         </Row>
       </Container>
     )
