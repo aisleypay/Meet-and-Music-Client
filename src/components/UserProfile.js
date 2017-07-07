@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Button, Col, Row} from 'reactstrap';
 import {InstrumentAdapter, UserAdapter} from '../adapters';
 import '../styles/public_profile.css';
-import FA from 'react-fontawesome';
 
 class UserProfile extends Component {
   constructor(props) {

@@ -6,7 +6,7 @@ import LoginForm from '../components/LoginForm';
 import HomePageContainer from './HomePageContainer';
 import SignUpForm from '../components/SignUpForm';
 import Sidebar from 'react-sidebar';
-import {Container, Row, Button, Media, Col} from 'reactstrap';
+import {Container, Row, Button, Col} from 'reactstrap';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults.js';
 import CurrentUserProfile from '../components/CurrentUserProfile';
@@ -155,7 +155,9 @@ class App extends Component {
 
   deleteAccount = (id, type) => {
     let urlType
-    type === 'Band' ? urlType = 'bands' : urlType = 'artists'
+    type === 'Band'
+      ? urlType = 'bands'
+      : urlType = 'artists'
 
     UserAdapter.destroy(id, urlType).then(() => {
       localStorage.clear()
@@ -176,23 +178,26 @@ class App extends Component {
   render() {
     var sidebarContent = (
       <Container className='nav-bar'>
-        <Media object data-src="https://www.alternativenation.net/wp-content/uploads/2016/04/nirvana93.jpg" alt="Generic placeholder image"/>
-        <Row>
-          <Link to='/profile'>Your Profile</Link>
-        </Row>
-        <Row>
-          <Link to='/'>Home</Link>
-        </Row>
+        <Col>
+          <Row>
+            <Col><img src='logo2.svg' alt='broken link'></img></Col>
+          </Row>
+          <Button className="btn btn-link" size='sm'>
+            <Link to='/profile'>Your Profile</Link>
+          </Button>
+          <Button className="btn btn-link" size='sm'>
+            <Link to='/'>Home</Link>
+          </Button>
+        </Col>
         <SearchBar handleSearch={this.searchUsers}/>
-        <Row>
+        <Button className="btn btn-link" size='sm'>
           <Link to='/login'>Sign In</Link>
-        </Row>
-        <Row>
-          <Button onClick={this.handleClickSignOut}>Sign Out</Button>
-        </Row>
-        <Row>
+        </Button>
+        <br/>
+        <Button className="btn btn-link" size='sm' onClick={this.handleClickSignOut}>Sign Out</Button><br/>
+        <Button className="btn btn-link" size='sm'>
           <Link to='/signup'>Sign Up</Link>
-        </Row>
+        </Button>
         <Row>
           <Col className='footer'>
             <Row>Meet and Music ©</Row>
@@ -205,11 +210,13 @@ class App extends Component {
     const sidebarStyles = {
       sidebar: {
         width: 260,
-        backgroundColor: 'rgba(0,0,0,1)'
+        backgroundColor: 'rgba(0,0,0,1)',
+        textAlign: 'center'
       },
       content: {
         backgroundImage: "url('https://static.pexels.com/photos/145707/pexels-photo-145707.jpeg')",
-        // backgroundSize: "cover"
+        backgroundSize: "cover",
+        textAlign: 'center'
       }
     };
 
@@ -220,12 +227,7 @@ class App extends Component {
     };
 
     return (
-      <Sidebar
-        sidebar={sidebarContent}
-        styles={sidebarStyles}
-        open={this.state.sidebarOpen}
-        docked={this.state.sidebarDocked}
-        onSetOpen={this.onSetSidebarOpen}>
+      <Sidebar sidebar={sidebarContent} styles={sidebarStyles} open={this.state.sidebarOpen} docked={this.state.sidebarDocked} onSetOpen={this.onSetSidebarOpen}>
         <Container fluid className='master'>
           <Switch>
             <Route exact path='/' render={() => <HomePageContainer currentUser={this.state.auth.user}/>}/>

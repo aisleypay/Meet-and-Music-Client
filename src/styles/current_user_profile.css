@@ -47,6 +47,20 @@
   font-weight: bold;
 }
 
+.specifics {
+  display: flex;
+  flex-direction: column;
+}
+
+.specifics .title {
+  font-size: 40px;
+  font-family: 'Monton';
+}
+
+.specifics p {
+  font-size: 20px;
+}
+
 .recommendation-card {
   margin: 10px;
   max-width: 30%;
@@ -73,6 +87,7 @@
   display: -webkit-flex;
   padding: 0px;
   flex-direction: row;
+  margin: 1%;
 }
 
 .recommendation-pic {

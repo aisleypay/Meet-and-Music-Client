@@ -1,6 +1,5 @@
 import React from 'react';
 import { Table, Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
 
 const DecisionList = ({ decisions, recs, title, sendEmail}) => {
   const usersIds = decisions.map(d => d.chosen_id)

@@ -7,11 +7,9 @@ import {
   Button,
   CardLink,
   CardImg,
-  CardImgOverlay,
   Row,
   CardBlock,
   CardSubtitle,
-  Col
 } from 'reactstrap';
 var FontAwesome = require('react-fontawesome');
 

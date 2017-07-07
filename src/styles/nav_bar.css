@@ -2,10 +2,22 @@
   font-family: 'Work Sans';
   font-weight: bold;
   color: #9b9b9b;
-  text-align: center;
+  /*text-align: center;*/
   padding: 21px 25px;
 }
 
+.search-bar {
+  /*padding: 0px;*/
+  margin-bottom: 60px;
+  margin-top: 15px;
+}
+
 .footer {
-  margin-top: 125%;
+  margin-top: 25%;
+}
+
+.nav-bar img {
+  height: 10vh;
+  padding: 0px;
+  margin-bottom: 15px;
 }

@@ -15,7 +15,6 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 import {DecisionAdapter} from '../adapters';
-import {Link, Route, Switch} from 'react-router-dom';
 import '../styles/current_user_profile.css';
 
 class CurrentUserProfile extends Component {
@@ -197,15 +196,19 @@ class CurrentUserProfile extends Component {
                   </Col>
                 </Row>
                 <hr/>
-                <h2>Specifics</h2>
-                {user.meta_type === 'Artist' ? <p>Age: {user.user_info.age}</p> : null}
-                {user.meta_type === 'Artist' ? <p>Years of Experience: {user.user_info.experience_in_years}</p>
-                  : null}
-                  <p>Location: {user.user_info.state}, {user.user_info.zipcode}</p>
-                <p>Radius Preference: {user.user_info.radius_preference}</p>
-                <p>{user.username}</p>
-                <p>{user.email}</p>
-                <Button onClick={this.handleDeleteClick}>Delete Account</Button>
+                <Row className='specifics'>
+                  <Col sm='12' lg={{ size:4, offset: 4 }}>
+                    <p className='title'>Specifics</p>
+                    {user.meta_type === 'Artist' ? <p>Age: {user.user_info.age}</p> : null}
+                    {user.meta_type === 'Artist' ? <p>Years of Experience: {user.user_info.experience_in_years}</p>
+                    : null}
+                    <p>Location: {user.user_info.state}, {user.user_info.zipcode}</p>
+                    <p>Radius Preference: {user.user_info.radius_preference}</p>
+                    <p>{user.username}</p>
+                    <p>{user.email}</p>
+                  <Button size='md' onClick={this.handleDeleteClick}>Delete Account</Button>
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </TabPane>

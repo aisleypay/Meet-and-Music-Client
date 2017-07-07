@@ -1,6 +1,9 @@
+const devUrl = 'http://localhost:3000/api/v1'
+const prodUrl = `https://meet-and-music0api.herokuapp.com/api/v1`
+
 export class AuthAdapter {
   static logIn(loginParams) {
-    return fetch('http://localhost:3000/api/v1/auth', {
+    return fetch(`${prodUrl}/auth`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify(loginParams)
@@ -8,7 +11,7 @@ export class AuthAdapter {
   }
 
   static currentUser(){
-    return fetch('http://localhost:3000/api/v1/current_user', {
+    return fetch(`${prodUrl}/current_user`, {
       headers: headers()
     }).then(res => res.json())
   }
@@ -16,25 +19,25 @@ export class AuthAdapter {
 
 export class UserAdapter {
   static retrieveFeaturedBands() {
-    return fetch('http://localhost:3000/api/v1/bands/featured', {
+    return fetch(`${prodUrl}/bands/featured`, {
       headers: headers()
     }).then(res => res.json())
   }
 
   static retrieveFeaturedArtists() {
-    return fetch('http://localhost:3000/api/v1/artists/featured', {
+    return fetch(`${prodUrl}/artists/featured`, {
       headers: headers()
     }).then(res => res.json())
   }
 
   static UserProfile(id) {
-    return fetch(`http://localhost:3000/api/v1/users/${id}`, {
+    return fetch(`${prodUrl}/users/${id}`, {
       headers: headers()
     }).then(res => res.json())
   }
 
   static createBand(band) {
-    return fetch('http://localhost:3000/api/v1/bands', {
+    return fetch(`${prodUrl}/bands`, {
       method: 'POST',
       headers: headers(),
       body: JSON.stringify({
@@ -44,7 +47,7 @@ export class UserAdapter {
   }
 
   static createArtist(artist) {
-    return fetch('http://localhost:3000/api/v1/artists', {
+    return fetch(`${prodUrl}/artists`, {
       method: 'POST',
       headers: headers(),
       body: JSON.stringify({
@@ -54,14 +57,14 @@ export class UserAdapter {
   }
 
   static destroy(id, type){
-    return fetch(`http://localhost:3000/api/v1/${type}/${id}`, {
+    return fetch(`${prodUrl}/${type}/${id}`, {
       method: 'DELETE',
       headers: headers()
     }).then(res => res.json() )
   }
 
   static reachOutEmail(id, recipient) {
-    return fetch(`http://localhost:3000/api/v1/users/${id}/reach-out`, {
+    return fetch(`${prodUrl}/users/${id}/reach-out`, {
       method: 'POST',
       headers: headers(),
       body: JSON.stringify({
@@ -73,7 +76,7 @@ export class UserAdapter {
 
 export class DecisionAdapter {
   static makeDecision(recommendeeId, user, status) {
-    return fetch(`http://localhost:3000/api/v1/decisions`, {
+    return fetch(`${prodUrl}/decisions`, {
       method: 'POST',
       headers: headers(),
       body: JSON.stringify({
@@ -87,7 +90,7 @@ export class DecisionAdapter {
   }
 
   static getDecisions() {
-    return fetch(`http://localhost:3000/api/v1/decisions`, {
+    return fetch(`${prodUrl}/decisions`, {
       headers: headers()
     }).then(res => res.json())
   }
@@ -95,7 +98,7 @@ export class DecisionAdapter {
 
 export class RecommendationAdapter {
   static getBandRecommendations(user) {
-    return fetch(`http://localhost:3000/api/v1/bands/${user.id}/recommended-artists`, {
+    return fetch(`${prodUrl}/bands/${user.id}/recommended-artists`, {
       headers: {
         'content-type': 'application/json',
         'accept': 'application/json',
@@ -106,7 +109,7 @@ export class RecommendationAdapter {
   }
 
   static getArtistRecommendations(user) {
-    return fetch(`http://localhost:3000/api/v1/artists/${user.id}/recommended-bands`, {
+    return fetch(`${prodUrl}/artists/${user.id}/recommended-bands`, {
       headers: {
         'content-type': 'application/json',
         'accept': 'application/json',
@@ -119,7 +122,7 @@ export class RecommendationAdapter {
 
 export class InstrumentAdapter {
   static allInstruments() {
-    return fetch('http://localhost:3000/api/v1/instruments', {
+    return fetch(`${prodUrl}/instruments`, {
       headers: headers()
     }).then(res => res.json())
   }
@@ -127,7 +130,7 @@ export class InstrumentAdapter {
 
 export class GenreAdapter {
   static allGenres() {
-    return fetch('http://localhost:3000/api/v1/genres', {
+    return fetch(`${prodUrl}/genres`, {
       headers: headers()
     }).then(res => res.json())
   }
@@ -135,7 +138,7 @@ export class GenreAdapter {
 
 export class SearchAdapter {
   static searchArtists(searchTerms) {
-    return fetch('http://localhost:3000/api/v1/artists/search-artists', {
+    return fetch(`${prodUrl}/artists/search-artists`, {
       headers: {
         'content-type': 'application/json',
         'accept': 'application/json',
@@ -149,7 +152,7 @@ export class SearchAdapter {
   }
 
   static searchBands(searchTerms) {
-    return fetch('http://localhost:3000/api/v1/bands/search-bands', {
+    return fetch(`${prodUrl}/bands/search-bands`, {
       headers: {
         'content-type': 'application/json',
         'accept': 'application/json',

@@ -37,23 +37,13 @@ export default class HomePageContainer extends Component {
     }
     return (
       <section className='homepage'>
-        <Carousel className='featured-artists' showThumbs={false} showArrows={true} dynamicHeight autoPlay infiniteLoop>
-          {this.state.artists.map(a => {
+        <Carousel className='presentation-mode' showThumbs={false} showArrows={true} autoPlay infiniteLoop>
+          {this.state.artists.concat(this.state.bands).map(a => {
             return (
               <div key={a.user.id}>
                 <Link to={`/${a.user.id}`}><p className="legend">{a.name}</p></Link>
+                <h1 className='legend home-page-title'>Meet and Music</h1>
                 <img src={a.profile_pic} alt="Broken Link"/>
-              </div>
-            )
-          })}
-        </Carousel>
-        <section><h1 className='home-page-title'>Meet and Music</h1></section>
-        <Carousel className='featured-bands' showThumbs={false} showArrows={true} dynamicHeight>
-          {this.state.bands.map(b => {
-            return (
-              <div key={b.user.id}>
-                <Link to={`/${b.user.id}`}><p className="legend">{b.name}</p></Link>
-                <img src={b.profile_pic} alt="Broken Link"/>
               </div>
             )
           })}
@@ -62,3 +52,14 @@ export default class HomePageContainer extends Component {
     )
   }
 }
+
+// <Carousel className='featured-bands' showThumbs={false} showArrows={true} dynamicHeight>
+  // {this.state.bands.map(b => {
+  //   return (
+  //     <div key={b.user.id}>
+  //       <Link to={`/${b.user.id}`}><p className="legend">{b.name}</p></Link>
+  //       <img src={b.profile_pic} alt="Broken Link"/>
+  //     </div>
+  //   )
+  // })}
+// </Carousel>

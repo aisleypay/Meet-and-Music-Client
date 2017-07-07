@@ -44,13 +44,13 @@
 }
 
 .carousel-slider {
-  width: 700px;
-  height: 300px;
+  /*width: 700px;
+  height: 300px;*/
 }
 
 .carousel .slide img {
-  max-width: 40% ;
-  max-height: 40%;
+  /*max-width: 40% ;
+  max-height: 40%;*/
 }
 
 .play-list {
@@ -81,11 +81,11 @@
   font-family: 'Bungee Shade', cursive;
   font-size: 120px;
   text-align: center;
-  margin: 80px;
+  margin: 40px;
   color: purple;
   text-shadow: 1px 1px 1px pink;
 }
 
 .homepage {
-  margin: 20px;
+  /*margin: 20px;*/
 }
