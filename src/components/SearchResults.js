@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Card, CardImg, CardTitle, CardBlock, CardSubtitle, CardText, Row } from 'reactstrap';
+import { Card, CardImg, CardTitle, CardBlock, CardSubtitle, CardText, Row, Button} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 
@@ -23,12 +23,14 @@ class SearchResults extends Component {
         {this.props.results.map(r => {
           return (
             <Card className='search-item'>
-              <CardImg src={r.profile_pic} alt="Card image cap" />
               <CardBlock>
                 <CardTitle>{r.name}</CardTitle>
                 <CardSubtitle>{r.genres.map(g => `${g.name} `)}</CardSubtitle>
                 { r.user.meta_type === 'Artist' ? <CardText>Skilled In: {this.renderInstruments(r.instruments)}</CardText> : null }
-                <Link to={`/${r.user.id}`}>Check Me Out</Link>
+              </CardBlock>
+              <CardImg src={r.profile_pic} alt="Card image cap" />
+              <CardBlock>
+                <Button size='md' block><Link to={`/${r.user.id}`}>Check Me Out</Link></Button>
               </CardBlock>
             </Card>
           )

@@ -1,16 +1,35 @@
 .public-profile-container {
- font-family: 'Work Sans';
+ font-family: 'Work Sans', sans-serif;
  background-image: url('../assets/brickwall.png');
 }
 
+.public-pic-col {
+  text-align: center;
+}
+
 .public-profile-pic {
-  zoom: 10%;
+  zoom: 15%;
+  box-shadow: 1px 2px 3px rgba(0,0,0,.5);
 }
 
 .public-profile-container h1 {
   font-family: 'Bungee Shade', cursive;
   font-size: 40px;
   color: purple;
+}
+
+#headingOne {
+  text-align: center;
+}
+
+.public-profile-container .title {
+  font-family: 'Bungee Shade', cursive;
+  font-size: 40px;
+  color: purple;
+}
+
+.public-profile-container .setlist pre {
+  text-align: center;
 }
 
 .public-play-list {
@@ -20,16 +39,28 @@
 
 .top-summary {
   padding-left: 10px;
-  /*height: 10vh;
-  width: 100vh;*/
-}
-
-.top-summary {
   font-size: 18px;
   line-height: 70%;
+  font-weight: 2000;
+}
+
+.top-summary .left-info {
+  padding-top: 55px;
+  text-align: right;
 }
 
 .public-email-button {
   margin: 10px;
   height: 35%;
+}
+
+hr {
+  background: url('../assets/divider.svg') no-repeat center;
+  margin: 0px;
+  padding: 0px;
+  display: block;
+  border: none;
+  height: 30px;
+  zoom: 2.9;
+  mix-blend-mode: darken;
 }

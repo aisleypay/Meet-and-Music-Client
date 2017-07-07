@@ -5,11 +5,10 @@ import { Link } from 'react-router-dom';
 const DecisionList = ({ decisions, recs, title, sendEmail}) => {
   const usersIds = decisions.map(d => d.chosen_id)
   const people = recs.filter(r => usersIds.includes(r.user.id))
+
   return (
     <section>
-      <Link to='/profile'>Back to Profile</Link>
-      <header><h1>{title}</h1></header>
-      <Table hover bordered responsive>
+      <Table hover bordered striped responsive size='lg' className='decision-table'>
         <thead>
         <tr>
           <th>Name</th>

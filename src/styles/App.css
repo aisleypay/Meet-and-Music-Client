@@ -4,27 +4,6 @@
   background-image: url('../assets/brickwall.png');
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .master {
   padding: 0px;
 }
@@ -45,7 +24,6 @@
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
-  display: flex;
   padding: 0px;
   flex-direction: row;
   background-image: url('../assets/brickwall.png');
@@ -59,9 +37,10 @@
 }
 
 .search-item .card-img {
+  box-shadow: 1px 2px 3px rgba(0,0,0,.5);
   max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
+  min-height: 1522px;
+  zoom: .2
 }
 
 .carousel-slider {
@@ -80,46 +59,22 @@
   border-bottom-style: groove;
   width: 600px;
   height: 355px;
-  /*max-height: 100%;
-  max-width: 100%;*/
   margin: 20px
-}
-
-.decision-pic {
-  max-width: 10%;
-  max-height: 10%;
-  border-radius: 60px;
-}
-
-.recommendation-card {
-  max-width: 40%;
-  max-height: 40%;
-  margin: 10px;
-  border-radius: 250px;
-}
-
-.recommendation-card-content {
-  background-color: rgba(255, 255, 255, .7);
-  padding: 5px;
-  margin-top: 70px;
-}
-
-.recommendation-list {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.current-user-profile-container {
-  display: flex;
-  flex-flow: column;
-}
-
-.recommendataion-pic {
-  border-radius: 250px;
 }
 
 .sign-up-form {
   margin: 50px;
+  color: rgb(255, 255, 255);
+  background-color: rgba(0, 0, 0, .7);
+  padding: 60px;
+  border-radius: 20px;
+  font-family: 'Work Sans';
+}
+
+.sign-up-form h1 {
+  font-family: 'Bungee Shade', cursive;
+  text-align: center;
+  margin-bottom: 50px
 }
 
 .home-page-title {
@@ -128,6 +83,7 @@
   text-align: center;
   margin: 80px;
   color: purple;
+  text-shadow: 1px 1px 1px pink;
 }
 
 .homepage {

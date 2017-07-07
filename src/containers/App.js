@@ -209,7 +209,7 @@ class App extends Component {
       },
       content: {
         backgroundImage: "url('https://static.pexels.com/photos/145707/pexels-photo-145707.jpeg')",
-        backgroundSize: "cover"
+        // backgroundSize: "cover"
       }
     };
 

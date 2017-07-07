@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {UserAdapter} from '../adapters';
 import {Link} from 'react-router-dom'
 import { Carousel } from 'react-responsive-carousel';
-import '../main.min.css'
-import '../carousel.min.css'
+import '../styles/main.min.css'
+import '../styles/carousel.min.css'
 
 export default class HomePageContainer extends Component {
   constructor(props) {

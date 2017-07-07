@@ -1,11 +1,22 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Recommendations from './Recommendations';
 import withAuth from '../hocs/withAuth';
-import { RecommendationAdapter } from '../adapters';
+import {RecommendationAdapter} from '../adapters';
 import DecisionList from './DecisionList';
-import {Row, Col, Button} from 'reactstrap';
-import { DecisionAdapter } from '../adapters';
-import { Link, Route, Switch } from 'react-router-dom';
+import {
+  Row,
+  Col,
+  Button,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane
+} from 'reactstrap';
+import classnames from 'classnames';
+import {DecisionAdapter} from '../adapters';
+import {Link, Route, Switch} from 'react-router-dom';
+import '../styles/current_user_profile.css';
 
 class CurrentUserProfile extends Component {
   constructor(props) {
@@ -14,7 +25,8 @@ class CurrentUserProfile extends Component {
     this.state = {
       recommendations: [],
       accepted: [],
-      rejected: []
+      rejected: [],
+      activeTab: '1'
     }
 
     this.getDecisions = this.getDecisions.bind(this)
@@ -22,71 +34,75 @@ class CurrentUserProfile extends Component {
     this.addWillContact = this.addWillContact.bind(this)
     this.addRejected = this.addRejected.bind(this)
     this.renderRecommendations = this.renderRecommendations.bind(this)
+    this.toggle = this.toggle.bind(this);
+
   }
 
   componentDidMount() {
     this.getDecisions(this.props.user)
   }
 
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({activeTab: tab});
+    }
+  }
+
   getDecisions = (user) => {
-    DecisionAdapter.getDecisions()
-    .then(decisions =>  this.setState((pstate) => {
+    DecisionAdapter.getDecisions().then(decisions => this.setState((pstate) => {
       let accepted = decisions.filter(d => d.decider_id === user.id && d.status === true)
       let rejected = decisions.filter(d => d.decider_id === user.id && d.status === false)
-      return {
-        accepted: accepted,
-        rejected: rejected
-      }
+      return {accepted: accepted, rejected: rejected}
     }))
   }
 
   genresList(genres) {
-    return genres.map(g => <li key={Math.random() * 100000 +1}>{g.name}</li>)
+    return genres.map(g => <li key={Math.random() * 100000 + 1}>{g.name}</li>)
   }
 
   instrumentsList(instruments) {
-    return instruments.map(i => <li key={Math.random() * 100000 +1}>{i.name}</li>)
+    return instruments.map(i => <li key={Math.random() * 100000 + 1}>{i.name}</li>)
   }
 
   getRecommendations = () => {
     let user = this.props.user
 
     if (user.meta_type === 'Band') {
-      RecommendationAdapter.getBandRecommendations(user.user_info)
-      .then(recommendations => this.setState({ recommendations }))
+      RecommendationAdapter.getBandRecommendations(user.user_info).then(recommendations => this.setState({recommendations}))
     } else {
-      RecommendationAdapter.getArtistRecommendations(this.props.user.user_info)
-      .then(recommendations => this.setState({ recommendations }))
+      RecommendationAdapter.getArtistRecommendations(this.props.user.user_info).then(recommendations => this.setState({recommendations}))
     }
   }
 
   renderRecommendations = () => {
-    let decisions = this.state.accepted.concat(this.state.rejected).map(function(d) {return d.chosen_id})
+    let decisions = this.state.accepted.concat(this.state.rejected).map(function(d) { return d.chosen_id })
     let newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
-    return <Recommendations recommendations={newRecommendations} user={this.props.user} handleContactClick={this.addWillContact} handleRejection={this.addRejected} />
+
+    return <Recommendations recommendations={newRecommendations} user={this.props.user} handleContactClick={this.addWillContact} handleRejection={this.addRejected}/>
   }
 
   addWillContact = (recommendeeId, recommendeeType) => {
-    console.log(this.state)
-    DecisionAdapter.makeDecision(recommendeeId, this.props.user, true)
-    .then(decision => this.setState((pstate) => {
+    DecisionAdapter.makeDecision(recommendeeId, this.props.user, true).then(decision => this.setState((pstate) => {
       return {
-        accepted: [...pstate.accepted, decision]
+        accepted: [
+          ...pstate.accepted,
+          decision
+        ]
       }
-    }))
-    .catch(function() {
+    })).catch(function() {
       console.log('not working')
     })
   }
 
   addRejected = (recommendeeId, recommendeeType) => {
-    DecisionAdapter.makeDecision(recommendeeId, this.props.user, false)
-    .then(decision => this.setState((pstate) => {
+    DecisionAdapter.makeDecision(recommendeeId, this.props.user, false).then(decision => this.setState((pstate) => {
       return {
-        rejected: [...pstate.rejected, decision]
+        rejected: [
+          ...pstate.rejected,
+          decision
+        ]
       }
-    }))
-    .catch(function() {
+    })).catch(function() {
       console.log('not working')
     })
   }
@@ -96,61 +112,145 @@ class CurrentUserProfile extends Component {
   }
 
   render() {
-    const { user } = this.props
+    const {user} = this.props
 
-    if (user === {} ) {
+    if (user === {}) {
       return <div>Loading...</div>
     }
 
     if (this.state.recommendations.length === 0) {
       this.getRecommendations()
     }
+    console.log(user)
 
     return (
-      <Switch>
-        <Route exact path='/profile/will-contact' render={() => <DecisionList sendEmail={this.props.sendEmail} decisions={this.state.accepted} recs={this.state.recommendations} title='Will Contact List' />}/>
-        <Route exact path='/profile/rejected' render={() => <DecisionList decisions={this.state.rejected} recs={this.state.recommendations} sendEmail={this.props.sendEmail} title='Previously Rejected List'/> }/>
-        <Route render={() => {
-            return (
-              <Col className='current-user-profile-container'>
+      <div className='current-user-profile-container'>
+        <h1>{user.user_info.name}</h1>
+        <Nav tabs>
+          <NavItem>
+            <NavLink className={classnames({
+              active: this.state.activeTab === '1'
+            })} onClick={() => {
+              this.toggle('1');
+            }}>
+              About Me
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={classnames({
+              active: this.state.activeTab === '2'
+            })} onClick={() => {
+              this.toggle('2');
+            }}>
+              Playlist
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={classnames({
+              active: this.state.activeTab === '3'
+            })} onClick={() => {
+              this.toggle('3');
+            }}>
+              Set List
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={classnames({
+              active: this.state.activeTab === '4'
+            })} onClick={() => {
+              this.toggle('4');
+            }}>
+              Recommendations
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={classnames({
+              active: this.state.activeTab === '5'
+            })} onClick={() => {
+              this.toggle('5');
+            }}>
+              Will Contact
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className={classnames({
+              active: this.state.activeTab === '6'
+            })} onClick={() => {
+              this.toggle('6');
+            }}>
+              Rejections
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={this.state.activeTab}>
+          <TabPane tabId="1">
+            <Row>
+              <Col className='details'>
+                <hr />
+                <img className='public-profile-pic' src={user.user_info.profile_pic} alt="Link Broken"/>
+                <hr />
                 <Row>
-                  <Col className='current-user-profile' md={{ size: 11, offset: 3  }}>
-                    <Row>
-                      <Col>
-                        <Row>
-                          <Col><img className='public-profile-pic' src={user.user_info.profile_pic} alt="Link Broken"/></Col>
-                          <Col>
-                            <h1>{user.user_info.name}</h1>
-                            { <ul>{this.genresList(user.user_genres)}</ul>}
-                            { user.meta_type === 'Artist' ? <ul>{this.instrumentsList(user.user_instruments)}</ul> : null}
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={{ size: 11, offset: 1  }}>
-                            <iframe className='current-user-profileplay-list' src={user.user_info.youtube_playlist_link} frameBorder="0"></iframe>
-                          </Col>
-                        </Row>
-                        <h2>Location: {user.user_info.state}, {user.user_info.zipcode}</h2>
-                        { user.meta_type === 'Artist' ? <h2>Age: {user.user_info.age}</h2> : null}
-                        { user.meta_type === 'Artist' ? <h2>Year of Experience: {user.user_info.experience_in_years}</h2> : null}
-                      </Col>
-                      <Col>
-                        <Link to={`/profile/will-contact`}>Will Contact</Link>
-                        <Link to={`/profile/rejected`}>Previously Rejected</Link>
-                        <Button onClick={this.handleDeleteClick}>Delete Account</Button>
-                      </Col>
-                    </Row>
+                  <Col lg={{size: 8, offset: 1}} className='skills'></Col>
+                  <Col className='info' lg={{size: 3, pull: 5}}>
+                    { <ul>{this.genresList(user.user_genres)}</ul>}
+                    { user.meta_type === 'Artist' ? <ul>{this.instrumentsList(user.user_instruments)}</ul> : <ul>{this.instrumentsList(user.instrument_preferences)}</ul>}
                   </Col>
                 </Row>
-                <Row>
-                  <Col md={{ size: 11, offset: 1  }}>
-                    {this.renderRecommendations()}
-                  </Col>
-                </Row>
+                <hr/>
+                <h2>Specifics</h2>
+                {user.meta_type === 'Artist' ? <p>Age: {user.user_info.age}</p> : null}
+                {user.meta_type === 'Artist' ? <p>Years of Experience: {user.user_info.experience_in_years}</p>
+                  : null}
+                  <p>Location: {user.user_info.state}, {user.user_info.zipcode}</p>
+                <p>Radius Preference: {user.user_info.radius_preference}</p>
+                <p>{user.username}</p>
+                <p>{user.email}</p>
+                <Button onClick={this.handleDeleteClick}>Delete Account</Button>
               </Col>
-            )
-          }}/>
-      </Switch>
+            </Row>
+          </TabPane>
+          <TabPane tabId="2">
+            <Row>
+              <Col>
+                <hr />
+                <iframe className='current-user-profileplay-list' src={user.user_info.youtube_playlist_link} frameBorder="0"></iframe>
+                <hr/>
+                <h3>Tip! When you update your YouTube playlist, this playlist will automatically update</h3>
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="3">
+            <Row>
+              <Col sm="12" lg='12'>
+                <hr/>
+                <pre>{user.user_info.setList}</pre>
+                <hr/>
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="4">
+            <Row>
+              <Col sm="12" lg='12'>
+                {this.renderRecommendations()}
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="5">
+            <Row>
+              <Col sm='12' lg={{ size: '8', push: '2'}} md={{ size: '8', push: '2'}}>
+                <DecisionList sendEmail={this.props.sendEmail} decisions={this.state.accepted} recs={this.state.recommendations}/>
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="6">
+            <Row>
+              <Col className='decisions' sm='12' lg={{ size: '8', push: '2'}} md={{ size: '8', push: '2'}}>
+                <DecisionList decisions={this.state.rejected} recs={this.state.recommendations} sendEmail={this.props.sendEmail}/>
+              </Col>
+            </Row>
+          </TabPane>
+        </TabContent>
+      </div>
     )
   }
 }

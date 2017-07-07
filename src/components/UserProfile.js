@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Col, Row} from 'reactstrap';
 import {InstrumentAdapter, UserAdapter} from '../adapters';
-import '../styles/public_profile.css'
+import '../styles/public_profile.css';
+import FA from 'react-fontawesome';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -44,59 +45,72 @@ class UserProfile extends Component {
     if (this.state.user === "") {
       return <div>Loading...</div>
     }
-
     return (
       <Col className='public-profile-container'>
         <Row className='top-summary'>
-          <Col>
-            <Row><h1>{this.state.user.meta.name}</h1>
-            <Button className='public-email-button' onClick={() => sendEmail(currentUser.id, this.state.user)}>Email</Button>
+          <Col lg='8'>
+            <Row>
+              <h1>{this.state.user.meta.name}</h1>
+              <Button className='public-email-button' onClick={() => sendEmail(currentUser.id, this.state.user)}>Email</Button>
             </Row>
-            <Row>{this.state.user.meta_type === 'Artist'
-              ? <p>Instruments: {this.instrumentsList(this.state.user.meta.instruments)}</p>
-              : <p>Looking For: {this.instrumentPreferencesList(this.state.user.meta.band_instrument_preferences)}</p>
-          }</Row>
-          <Row><p>Genres: {this.genresList(this.state.user.meta.genres)}</p></Row>
+            <Row>
+              { this.state.user.meta_type === 'Artist'
+                ? <p>Instruments: {this.instrumentsList(this.state.user.meta.instruments)}</p>
+                : <p>Looking For: {this.instrumentPreferencesList(this.state.user.meta.band_instrument_preferences)}</p>
+              }
+            </Row>
+            <Row>
+              <p>Genres: {this.genresList(this.state.user.meta.genres)}</p>
+            </Row>
           </Col>
-        </Row>
-        <Row className='video-l'>
-          <iframe className='public-play-list' src={this.state.user.meta.youtube_playlist_link} frameBorder="0"></iframe>
+          <Col className='left-info' lg={{ size: '2', push: '2'}}>
+            <p>{this.state.user.meta.state}, {this.state.user.meta.zipcode}</p>
+            {this.state.user.meta_type === 'Artist' ? <p>Age: {this.state.user.meta.age}</p> : null}
+            {this.state.user.meta_type === 'Artist' ? <p>Year of Experience: {this.state.user.meta.experience_in_years}</p> : null}
+          </Col>
         </Row>
         <Row>
+          <iframe className='public-play-list' src={this.state.user.meta.youtube_playlist_link} frameBorder="0"></iframe>
+        </Row>
+        <hr/>
+        <Row>
           <Col>
-            <Col><img className='public-profile-pic' src={this.state.user.meta.profile_pic} alt="Link Broken"/></Col>
-
+            <Col className='public-pic-col'>
+              <img className='public-profile-pic' src={this.state.user.meta.profile_pic} alt="Link Broken"/>
+              </Col>
+            </Col>
+        </Row>
+        <hr />
+        <Row className='setlist'>
+          <Col>
+            <section className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div className="panel panel-default">
+                <div className="panel-heading" role="tab" id="headingOne">
+                  <h4 className="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" className='title'>
+                      Set List
+                    </a>
+                  </h4>
+                </div>
+                <div className="panel-teaser panel-body" >
+                  <pre>{this.state.user.meta.setList.slice(0, 50)}</pre>
+                </div>
+                <div id="collapseOne" className="panel-collapse collapse in"
+                     role="tabpanel" aria-labelledby="headingOne">
+                  <div className="panel-body">
+                    <pre>{this.state.user.meta.setList.slice(51)}</pre>
+                  </div>
+                </div>
+              </div>
+            </section>
           </Col>
         </Row>
-        <h2>Location: {this.state.user.meta.state}, {this.state.user.meta.zipcode}</h2>
-        {this.state.user.meta_type === 'Artist' ? <h2>Age: {this.state.user.meta.age}</h2> : null}
-        {this.state.user.meta_type === 'Artist' ? <h2>Year of Experience: {this.state.user.meta.experience_in_years}</h2> : null}
+        <hr />
       </Col>
     )
   }
 }
 
 
-// <Col className='public-profile-container'>
-//   <Row>
-//     <Col><img className='public-profile-pic' src={this.state.user.meta.profile_pic} alt="Link Broken"/></Col>
-//   </Row>
-//   <Row>
-//     <iframe className='play-list' src={this.state.user.meta.youtube_playlist_link} frameBorder="0"></iframe>
-//   </Row>
-//   <Row>
-//     <Col>
-//       <h1>{this.state.user.meta.name}</h1>
-//       <Button onClick={() => sendEmail(currentUser.id, this.state.user)}>Email</Button>
-//       <ul>Genres: {this.genresList(this.state.user.meta.genres)}</ul>
-//       {this.state.user.meta_type === 'Artist'
-//         ? <p>Instruments: {this.instrumentsList(this.state.user.meta.instruments)}</p>
-//         : <p>Looking For: {this.instrumentPreferencesList(this.state.user.meta.band_instrument_preferences)}</p>
-//       }
-//     </Col>
-//   </Row>
-//   <h2>Location: {this.state.user.meta.state}, {this.state.user.meta.zipcode}</h2>
-//   {this.state.user.meta_type === 'Artist' ? <h2>Age: {this.state.user.meta.age}</h2> : null}
-//   {this.state.user.meta_type === 'Artist' ? <h2>Year of Experience: {this.state.user.meta.experience_in_years}</h2> : null}
-// </Col>
 export default UserProfile

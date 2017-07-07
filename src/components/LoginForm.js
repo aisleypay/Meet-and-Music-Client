@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import '../styles/login.css';
-import {Col} from 'reactstrap';
+import {Col, Row, Button} from 'reactstrap';
 
 class LoginForm extends Component {
 
-  constructor(){
+  constructor() {
     super()
     this.state = {
       username: '',
@@ -14,28 +14,35 @@ class LoginForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange(e){
+  handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     })
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault()
-    this.props.onSubmit( this.state )
+    this.props.onSubmit(this.state)
     this.setState({username: '', password: ''})
   }
 
-  render(){
+  render() {
     return (
-      <Col sm={{ size: 12, offset: 3 }} className='login'>
+      <Col sm={{
+        size: 12,
+        offset: 3
+      }} className='login'>
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
-          <label>Username</label>
-          <input type='text' value={this.state.username} name="username" onChange={this.handleChange}/>
-          <label>Password</label>
-          <input type='password' value={this.state.password} name="password" onChange={this.handleChange}/>
-          <input type="submit" />
+          <Row>
+            <Col>
+              <input type='text' value={this.state.username} name="username" onChange={this.handleChange} placeholder='Username'/>
+            </Col>
+            <Col>
+              <input type='password' value={this.state.password} name="password" onChange={this.handleChange} placeholder='Password'/>
+            </Col>
+          </Row>
+          <Button size='md' type='submit' block>Log In</Button>
         </form>
       </Col>
     )
