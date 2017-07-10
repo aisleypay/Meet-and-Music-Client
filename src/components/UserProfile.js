@@ -39,7 +39,7 @@ class UserProfile extends Component {
   }
 
   render() {
-    const {id, sendEmail, currentUser} = this.props
+    const {sendEmail, currentUser} = this.props
 
     if (this.state.user === "") {
       return <div>Loading...</div>
@@ -65,11 +65,11 @@ class UserProfile extends Component {
           <Col className='left-info' lg={{ size: '2', push: '2'}}>
             <p>{this.state.user.meta.state}, {this.state.user.meta.zipcode}</p>
             {this.state.user.meta_type === 'Artist' ? <p>Age: {this.state.user.meta.age}</p> : null}
-            {this.state.user.meta_type === 'Artist' ? <p>Year of Experience: {this.state.user.meta.experience_in_years}</p> : null}
+            {this.state.user.meta_type === 'Artist' ? <p>Years of Experience: {this.state.user.meta.experience_in_years}</p> : null}
           </Col>
         </Row>
         <Row>
-          <iframe className='public-play-list' src={this.state.user.meta.youtube_playlist_link} frameBorder="0"></iframe>
+          <iframe className='public-play-list' src={this.state.user.meta.youtube_playlist_link} title='YouTube Playlist' frameBorder="0"></iframe>
         </Row>
         <hr/>
         <Row>

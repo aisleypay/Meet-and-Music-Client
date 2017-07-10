@@ -20,7 +20,8 @@ export default class SignUpForm extends Component {
       selectedLookingTalent: '',
       experience_in_years: 0,
       youtube_playlist_link:'',
-      profile_pic: ''
+      profile_pic: '',
+      email: ''
     }
   }
 
@@ -114,6 +115,9 @@ export default class SignUpForm extends Component {
             <h1>Sign Up for Meet and Music</h1>
           </header>
           <FormGroup>
+            <Input type="text" name="email" placeholder="Email" value={this.state.email} onChange={this.handleChange}/>
+          </FormGroup>
+          <FormGroup>
             <Input type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.handleChange}/>
           </FormGroup>
           <FormGroup>
@@ -158,7 +162,7 @@ export default class SignUpForm extends Component {
                 </FormGroup>
               </FormGroup>
               <FormGroup>
-                <Label for="radius_preference">How far out are you looking for Talent?</Label>
+                <Label for="radius_preference">How far out are you looking for Talent? (miles)</Label>
                 <Input type="number" name="radius_preference" placeholder="Radius" value={this.state.radius_preference} onChange={this.handleChange}/>
               </FormGroup>
               <FormGroup>
@@ -192,6 +196,7 @@ SignUpForm.propTypes = {
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
   zipcode: PropTypes.string.isRequired,

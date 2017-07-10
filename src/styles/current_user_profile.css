@@ -3,9 +3,9 @@
   flex-flow: column;
   font-family: 'Work Sans', sans-serif;
   background-image: url('../assets/brickwall.png');
-  padding-bottom: 45%;
+  /*padding-bottom: 45%;
   padding-right: 5%;
-  padding-left: 15px;
+  padding-left: 15px;*/
 }
 
 .current-user-profile-container h3 {
@@ -63,8 +63,8 @@
 
 .recommendation-card {
   margin: 10px;
-  max-width: 30%;
-  max-height: 30%;
+  /*max-width: 30%;
+  max-height: 30%;*/
   flex: 1 1 30%;
 }
 

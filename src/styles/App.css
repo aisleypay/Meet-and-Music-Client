@@ -43,15 +43,6 @@
   zoom: .2
 }
 
-.carousel-slider {
-  /*width: 700px;
-  height: 300px;*/
-}
-
-.carousel .slide img {
-  /*max-width: 40% ;
-  max-height: 40%;*/
-}
 
 .play-list {
   border-radius: 60px;
@@ -79,13 +70,8 @@
 
 .home-page-title {
   font-family: 'Bungee Shade', cursive;
-  font-size: 120px;
+  font-size: 30px;
   text-align: center;
-  margin: 40px;
-  color: purple;
-  text-shadow: 1px 1px 1px pink;
-}
-
-.homepage {
-  /*margin: 20px;*/
+  color: #D2FDFF;
+  text-shadow: 1px 1px 1px purple;
 }

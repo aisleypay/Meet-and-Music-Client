@@ -117,7 +117,8 @@ class App extends Component {
         user_genres_attributes: genresList,
         user_attributes: {
           username: user.username,
-          password: user.password
+          password: user.password,
+          email: user.email
         },
         band_instrument_preferences_attributes: instrumentsList
       }
@@ -136,7 +137,8 @@ class App extends Component {
         artist_instruments_attributes: instrumentsList,
         user_attributes: {
           username: user.username,
-          password: user.password
+          password: user.password,
+          email: user.email
         }
       }
       UserAdapter.createArtist(artist)
@@ -178,7 +180,6 @@ class App extends Component {
   render() {
     var sidebarContent = (
       <Container className='nav-bar'>
-        <Col>
           <Row>
             <Col><img src='logo2.svg' alt='broken link'></img></Col>
           </Row>
@@ -188,7 +189,6 @@ class App extends Component {
           <Button className="btn btn-link" size='sm'>
             <Link to='/'>Home</Link>
           </Button>
-        </Col>
         <SearchBar handleSearch={this.searchUsers}/>
         <Button className="btn btn-link" size='sm'>
           <Link to='/login'>Sign In</Link>

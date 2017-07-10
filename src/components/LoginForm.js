@@ -32,12 +32,14 @@ class LoginForm extends Component {
         size: 12,
         offset: 3
       }} className='login'>
-        <h1>Login</h1>
+        <Row><h1>Login</h1></Row>
         <form onSubmit={this.handleSubmit}>
           <Row>
             <Col>
               <input type='text' value={this.state.username} name="username" onChange={this.handleChange} placeholder='Username'/>
             </Col>
+          </Row>
+          <Row>
             <Col>
               <input type='password' value={this.state.password} name="password" onChange={this.handleChange} placeholder='Password'/>
             </Col>

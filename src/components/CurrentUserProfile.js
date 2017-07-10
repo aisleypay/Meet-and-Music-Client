@@ -216,7 +216,7 @@ class CurrentUserProfile extends Component {
             <Row>
               <Col>
                 <hr />
-                <iframe className='current-user-profileplay-list' src={user.user_info.youtube_playlist_link} frameBorder="0"></iframe>
+                <iframe className='current-user-profileplay-list' src={user.user_info.youtube_playlist_link} title='YouTube Playlist' frameBorder="0"></iframe>
                 <hr/>
                 <h3>Tip! When you update your YouTube playlist, this playlist will automatically update</h3>
               </Col>
