@@ -1,5 +1,5 @@
 .login {
-  margin-top: 15%;
+  margin-top: 12%;
   margin-left: 25%;
   max-width: 40%;
   max-height: 100%;
@@ -9,17 +9,21 @@
   font-family: 'Monton';
 }
 
-.login h1 {
-  font-family: 'Monoton';
-  font-size: 80px;
+.login .form {
+  padding-top: 20%;
   text-align: center;
 }
 
-.login .row {
-  margin: 10px;
-  margin-bottom: 20px;
+.login h1 {
+  font-family: 'Monoton';
+  font-size: 80px;
 }
 
 .login input {
+  margin: 10px;
   width: 100%;
+}
+
+.login-submit {
+  margin-left: 10px;
 }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import withAuth from '../hocs/withAuth';
+import FontAwesome from 'react-fontawesome';
 import {
   Card,
   CardText,
@@ -9,9 +10,8 @@ import {
   CardImg,
   Row,
   CardBlock,
-  CardSubtitle,
+  CardSubtitle
 } from 'reactstrap';
-var FontAwesome = require('react-fontawesome');
 
 class Recommendations extends Component {
 
@@ -47,35 +47,28 @@ class Recommendations extends Component {
               <CardBlock >
                 <div className='float-right'>
                   <Button>
-                    <FontAwesome
-                      name='hand-peace-o'
-                      size='2x'
-                      onClick={this.handleContactClick}
-                      data-recommendee={rec.user.id}
-                      data-userType={`${rec.user.meta_type}`}/>
+                    <FontAwesome name='hand-peace-o' size='2x' onClick={this.handleContactClick} data-recommendee={rec.user.id} data-userType={`${rec.user.meta_type}`}/>
                   </Button>
                   <Button>
-                    <FontAwesome
-                      name='thumbs-o-down'
-                      size='2x'
-                      data-recommendee={rec.user.id}
-                      data-userType={`${rec.user.meta_type}`}
-                      onClick={this.handleRejectClick}/>
+                    <FontAwesome name='thumbs-o-down' size='2x' data-recommendee={rec.user.id} data-userType={`${rec.user.meta_type}`} onClick={this.handleRejectClick}/>
                   </Button>
                 </div>
-                <CardTitle>{rec.name}</CardTitle>
-
-                <CardSubtitle>
+                <div >
+                  <CardTitle>{rec.name}</CardTitle>
+                  <CardSubtitle>
                     {this.props.user.meta_type === 'Artist'
                       ? this.artistOnlyFields(rec.band_instrument_preferences)
                       : this.bandOnlyFields(rec.instruments, rec.name)
                     }
-                </CardSubtitle>
+                  </CardSubtitle>
+                </div>
               </CardBlock>
               <CardImg className='recommendation-pic' src={rec.profile_pic} alt="Broken Link"/>
               <CardBlock>
                 <CardText>Genres: {rec.genres.map((g, index) => `${g.name} `)}</CardText>
-                <Button size='md' block><CardLink href={`/${rec.user.id}`}>Check Me Out</CardLink></Button>
+                <Button size='md' block>
+                  <CardLink href={`/${rec.user.id}`}>Check Me Out</CardLink>
+                </Button>
               </CardBlock>
             </Card>
           )

@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {Button, Form, FormGroup, Label, Input, Col} from 'reactstrap';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Col
+} from 'reactstrap';
 import {InstrumentAdapter, GenreAdapter} from '../adapters';
 import PropTypes from 'prop-types';
 
@@ -19,7 +26,7 @@ export default class SignUpForm extends Component {
       setList: '',
       selectedLookingTalent: '',
       experience_in_years: 0,
-      youtube_playlist_link:'',
+      youtube_playlist_link: '',
       profile_pic: '',
       email: ''
     }
@@ -109,7 +116,16 @@ export default class SignUpForm extends Component {
     }
 
     return (
-      <Col xs='12' sm='12' md={{ size: 10, offset: 2 }} lg={{ size: 8, offset: 2 }} xl={{ size: 8, offset: 2 }} >
+      <Col xs='12' sm='12' md={{
+        size: 10,
+        offset: 2
+      }} lg={{
+        size: 8,
+        offset: 2
+      }} xl={{
+        size: 8,
+        offset: 2
+      }} className='sign-up'>
         <Form onSubmit={this.handleSubmit} className='sign-up-form'>
           <header>
             <h1>Sign Up for Meet and Music</h1>
@@ -151,44 +167,43 @@ export default class SignUpForm extends Component {
             <FormGroup check>
               <Label check>
                 <Input type="radio" name="looking_for_musicians_true" value='true' checked={this.state.selectedLookingTalent === 'true'} onChange={this.handleOptionChange}/>{' '}
-                  Yes
-                </Label>
-              </FormGroup>
-              <FormGroup check>
-                <Label check>
-                  <Input type="radio" name="looking_for_musicians_true" value='false' checked={this.state.selectedLookingTalent === 'false'} onChange={this.handleOptionChange}/>{' '}
-                    No
-                  </Label>
-                </FormGroup>
-              </FormGroup>
-              <FormGroup>
-                <Label for="radius_preference">How far out are you looking for Talent? (miles)</Label>
-                <Input type="number" name="radius_preference" placeholder="Radius" value={this.state.radius_preference} onChange={this.handleChange}/>
-              </FormGroup>
-              <FormGroup>
-                <Label for="setList">Possible/Ideal Set List</Label>
-                <Input type="textarea" name="setList" placeholder="Set List" value={this.state.setList} onChange={this.handleChange}/>
-              </FormGroup>
-              <FormGroup>
-                <Label for="genres">What Kind of Music Do You Play?</Label>
-                <Input type="select" id="selectGenres" name="genres" onChange={this.handleGenresChange} multiple>
-                  {this.state.genresAll.map(g => {
-                    return <option key={g.id} value={g.id}>{g.name}</option>
-                  })}
-                </Input>
-              </FormGroup>
-              {this.bandOnlyFields()}
-              <Button>Submit</Button>
-            </Form>
-
+                Yes
+              </Label>
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input type="radio" name="looking_for_musicians_true" value='false' checked={this.state.selectedLookingTalent === 'false'} onChange={this.handleOptionChange}/>{' '}
+                No
+              </Label>
+            </FormGroup>
+          </FormGroup>
+          <FormGroup>
+            <Label for="radius_preference">How far out are you looking for Talent? (miles)</Label>
+            <Input type="number" name="radius_preference" placeholder="Radius" value={this.state.radius_preference} onChange={this.handleChange}/>
+          </FormGroup>
+          <FormGroup>
+            <Label for="setList">Possible/Ideal Set List</Label>
+            <Input type="textarea" name="setList" placeholder="Set List" value={this.state.setList} onChange={this.handleChange}/>
+          </FormGroup>
+          <FormGroup>
+            <Label for="genres">What Kind of Music Do You Play?</Label>
+            <Input type="select" id="selectGenres" name="genres" onChange={this.handleGenresChange} multiple>
+              {this.state.genresAll.map(g => {
+                return <option key={g.id} value={g.id}>{g.name}</option>
+              })}
+            </Input>
+          </FormGroup>
+          {this.bandOnlyFields()}
+          <Button>Submit</Button>
+        </Form>
       </Col>
-    );
+    )
   }
 }
 
 SignUpForm.defaultProps = {
   radius_preference: 15,
-  type: 'Band',
+  type: 'Band'
 }
 
 SignUpForm.propTypes = {
@@ -200,5 +215,5 @@ SignUpForm.propTypes = {
   name: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
   zipcode: PropTypes.string.isRequired,
-  radius_preference: PropTypes.number.isRequired,
+  radius_preference: PropTypes.number.isRequired
 }

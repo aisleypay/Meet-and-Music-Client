@@ -1,6 +1,6 @@
 .public-profile-container {
- font-family: 'Work Sans', sans-serif;
- background-image: url('../assets/brickwall.png');
+  font-family: 'Work Sans', sans-serif;
+  background-image: url('../assets/brickwall.png');
 }
 
 .public-pic-col {
@@ -9,7 +9,7 @@
 
 .public-profile-pic {
   zoom: 15%;
-  box-shadow: 1px 2px 3px rgba(0,0,0,.5);
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, .5);
 }
 
 .public-profile-container h1 {
@@ -44,7 +44,7 @@
   font-weight: 2000;
 }
 
-.top-summary .left-info {
+.top-summary .right-info {
   padding-top: 55px;
   text-align: right;
 }

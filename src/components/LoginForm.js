@@ -28,25 +28,22 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <Col sm={{
-        size: 12,
-        offset: 3
-      }} className='login'>
-        <Row><h1>Login</h1></Row>
-        <form onSubmit={this.handleSubmit}>
-          <Row>
-            <Col>
+      <Row>
+        <Col className='form' sm={{ size: 12 }}>
+          <Row className='login'>
+            <h1>Login</h1>
+            <form onSubmit={this.handleSubmit}>
               <input type='text' value={this.state.username} name="username" onChange={this.handleChange} placeholder='Username'/>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
               <input type='password' value={this.state.password} name="password" onChange={this.handleChange} placeholder='Password'/>
-            </Col>
+              <Row>
+                <Col className='login-submit'>
+                  <Button size='md' type='submit' block>Log In</Button>
+                </Col>
+              </Row>
+            </form>
           </Row>
-          <Button size='md' type='submit' block>Log In</Button>
-        </form>
-      </Col>
+        </Col>
+      </Row>
     )
   }
 }

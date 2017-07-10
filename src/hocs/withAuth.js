@@ -1,10 +1,9 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
-
-export default function withAuth(WrappedComponent){
+export default function withAuth(WrappedComponent) {
   class withAuth extends React.Component {
-    componentDidMount(){
+    componentDidMount() {
       if (!localStorage.getItem('jwt')) {
         this.props.history.push('/login')
       } else {
@@ -14,17 +13,16 @@ export default function withAuth(WrappedComponent){
             'accept': 'application/json',
             'Authorization': localStorage.getItem('jwt')
           }
-        }).then(res => res.json())
-          .then(user => {
-            if (user.error) {
-              this.props.history.push('/login')
-            }
-          })
+        }).then(res => res.json()).then(user => {
+          if (user.error) {
+            this.props.history.push('/login')
+          }
+        })
       }
     }
 
-    render(){
-      return <WrappedComponent {...this.props} />
+    render() {
+      return <WrappedComponent {...this.props}/>
     }
   }
   return withRouter(withAuth)

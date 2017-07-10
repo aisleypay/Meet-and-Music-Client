@@ -3,9 +3,6 @@
   flex-flow: column;
   font-family: 'Work Sans', sans-serif;
   background-image: url('../assets/brickwall.png');
-  /*padding-bottom: 45%;
-  padding-right: 5%;
-  padding-left: 15px;*/
 }
 
 .current-user-profile-container h3 {
@@ -27,6 +24,7 @@
 .current-user-profile-container pre {
   text-align: center;
 }
+
 .current-user-profileplay-list {
   padding: 15px;
   height: 67vh;
@@ -38,7 +36,6 @@
   background-size: 50%;
   -webkit-transform: rotate(-15deg);
   transform: rotate(-15deg);
-
 }
 
 .info {
@@ -61,11 +58,19 @@
   font-size: 20px;
 }
 
+.recommendation-card .card-title {
+  text-align: left;
+}
+
 .recommendation-card {
   margin: 10px;
-  /*max-width: 30%;
-  max-height: 30%;*/
+  max-width: 30%;
+  max-height: 30%;
   flex: 1 1 30%;
+}
+
+.recommendation-card .card-text {
+  text-align: left;
 }
 
 .decision-table th {
@@ -73,6 +78,7 @@
   font-size: 30px;
   line-height: 1;
 }
+
 .decisions {
   text-align: center;
 }
@@ -91,7 +97,7 @@
 }
 
 .recommendation-pic {
-  box-shadow: 1px 2px 3px rgba(0,0,0,.5);
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, .5);
   max-width: 100%;
   max-height: 100%;
   zoom: .2

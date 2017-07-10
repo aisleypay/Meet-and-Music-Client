@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {UserAdapter} from '../adapters';
 import {Link} from 'react-router-dom'
-import { Carousel } from 'react-responsive-carousel';
+import {Carousel} from 'react-responsive-carousel';
 import '../styles/main.min.css'
 import '../styles/carousel.min.css'
 
@@ -24,11 +24,11 @@ export default class HomePageContainer extends Component {
   }
 
   retrieveFeaturedBands() {
-    UserAdapter.retrieveFeaturedBands().then(bands => this.setState({ bands }))
+    UserAdapter.retrieveFeaturedBands().then(bands => this.setState({bands}))
   }
 
   retrieveFeaturedArtists() {
-    UserAdapter.retrieveFeaturedArtists().then(artists => this.setState({ artists }))
+    UserAdapter.retrieveFeaturedArtists().then(artists => this.setState({artists}))
   }
 
   render() {
@@ -41,7 +41,9 @@ export default class HomePageContainer extends Component {
           {this.state.artists.concat(this.state.bands).map(a => {
             return (
               <div key={a.user.id}>
-                <Link to={`/${a.user.id}`}><p className="legend">{a.name}</p></Link>
+                <Link to={`/${a.user.id}`}>
+                  <p className="legend">{a.name}</p>
+                </Link>
                 <p className='home-page-title'>Meet and Music</p>
                 <img src={a.profile_pic} alt="Broken Link"/>
               </div>

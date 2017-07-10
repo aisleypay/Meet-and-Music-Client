@@ -107,41 +107,30 @@ class App extends Component {
       return {instrument_id: i}
     })
 
-    if (user.type === 'Band') {
-      let band = {
-        name: user.name,
-        state: user.state,
-        zipcode: parseInt(user.zipcode, 10),
-        setList: user.setList,
-        radius_preference: user.radius_preference,
-        user_genres_attributes: genresList,
-        user_attributes: {
-          username: user.username,
-          password: user.password,
-          email: user.email
-        },
-        band_instrument_preferences_attributes: instrumentsList
+    let user_info = {
+      name: user.name,
+      state: user.state,
+      zipcode: parseInt(user.zipcode, 10),
+      setList: user.setList,
+      radius_preference: user.radius_preference,
+      user_genres_attributes: genresList,
+      user_attributes: {
+        username: user.username,
+        password: user.password,
+        email: user.email
       }
+    }
 
-      UserAdapter.createBand(band)
+    if (user.type === 'Band') {
+      user_info['band_instrument_preferences_attributes'] = instrumentsList
+      UserAdapter.createBand(user_info)
+
     } else {
-      let artist = {
-        name: user.name,
-        state: user.state,
-        zipcode: user.zipcode,
-        age: user.age,
-        setList: user.setList,
-        radius_preference: user.radius_preference,
-        experience_in_years: user.experience_in_years,
-        user_genres_attributes: genresList,
-        artist_instruments_attributes: instrumentsList,
-        user_attributes: {
-          username: user.username,
-          password: user.password,
-          email: user.email
-        }
-      }
-      UserAdapter.createArtist(artist)
+      user_info['artist_instruments_attributes'] = instrumentsList
+      user_info['experience_in_years'] = user.experience_in_years
+      user_info['age'] = user.age
+
+      UserAdapter.createArtist(user_info)
     }
   }
 
@@ -157,9 +146,7 @@ class App extends Component {
 
   deleteAccount = (id, type) => {
     let urlType
-    type === 'Band'
-      ? urlType = 'bands'
-      : urlType = 'artists'
+    type === 'Band' ? urlType = 'bands' : urlType = 'artists'
 
     UserAdapter.destroy(id, urlType).then(() => {
       localStorage.clear()
@@ -178,7 +165,7 @@ class App extends Component {
   }
 
   render() {
-    var sidebarContent = (
+    const sidebarContent = (
       <Container className='nav-bar'>
           <Row>
             <Col><img src='logo2.svg' alt='broken link'></img></Col>
@@ -201,7 +188,6 @@ class App extends Component {
         <Row>
           <Col className='footer'>
             <Row>Meet and Music ©</Row>
-            <Row>A Paisley Creation</Row>
           </Col>
         </Row>
       </Container>
@@ -209,7 +195,7 @@ class App extends Component {
 
     const sidebarStyles = {
       sidebar: {
-        width: 260,
+        width: '15%',
         backgroundColor: 'rgba(0,0,0,1)',
         textAlign: 'center'
       },
@@ -220,7 +206,7 @@ class App extends Component {
       }
     };
 
-    var sidebarProps = {
+    const sidebarProps = {
       sidebar: this.state.sidebarOpen,
       docked: this.state.sidebarDocked,
       onSetOpen: this.onSetSidebarOpen

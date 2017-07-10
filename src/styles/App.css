@@ -6,6 +6,8 @@
 
 .master {
   padding: 0px;
+  height: 100vh;
+  background-image: url('../assets/brickwall.png');
 }
 
 .profile-pic {
@@ -51,6 +53,11 @@
   width: 600px;
   height: 355px;
   margin: 20px
+}
+
+.sign-up {
+  padding: 5px;
+  background-image: url('../assets/brickwall.png');
 }
 
 .sign-up-form {

@@ -49,8 +49,8 @@ class CurrentUserProfile extends Component {
 
   getDecisions = (user) => {
     DecisionAdapter.getDecisions().then(decisions => this.setState((pstate) => {
-      let accepted = decisions.filter(d => d.decider_id === user.id && d.status === true)
-      let rejected = decisions.filter(d => d.decider_id === user.id && d.status === false)
+      const accepted = decisions.filter(d => d.decider_id === user.id && d.status === true)
+      const rejected = decisions.filter(d => d.decider_id === user.id && d.status === false)
       return {accepted: accepted, rejected: rejected}
     }))
   }
@@ -63,9 +63,7 @@ class CurrentUserProfile extends Component {
     return instruments.map(i => <li key={Math.random() * 100000 + 1}>{i.name}</li>)
   }
 
-  getRecommendations = () => {
-    let user = this.props.user
-
+  getRecommendations = (user) => {
     if (user.meta_type === 'Band') {
       RecommendationAdapter.getBandRecommendations(user.user_info).then(recommendations => this.setState({recommendations}))
     } else {
@@ -74,8 +72,8 @@ class CurrentUserProfile extends Component {
   }
 
   renderRecommendations = () => {
-    let decisions = this.state.accepted.concat(this.state.rejected).map(function(d) { return d.chosen_id })
-    let newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
+    const decisions = this.state.accepted.concat(this.state.rejected).map(function(d) { return d.chosen_id })
+    const newRecommendations = this.state.recommendations.filter(r => !decisions.includes(r.user.id))
 
     return <Recommendations recommendations={newRecommendations} user={this.props.user} handleContactClick={this.addWillContact} handleRejection={this.addRejected}/>
   }
@@ -110,17 +108,25 @@ class CurrentUserProfile extends Component {
     this.props.deleteAccount(this.props.user.user_info.id, this.props.user.meta_type)
   }
 
+  isEmpty = (myObject) => {
+    for(let key in myObject) {
+        if (myObject.hasOwnProperty(key)) {
+            return false;
+        }
+    }
+    return true;
+}
+
   render() {
     const {user} = this.props
 
-    if (user === {}) {
+    if (this.isEmpty(user)) {
       return <div>Loading...</div>
     }
 
     if (this.state.recommendations.length === 0) {
-      this.getRecommendations()
+      this.getRecommendations(user)
     }
-    console.log(user)
 
     return (
       <div className='current-user-profile-container'>

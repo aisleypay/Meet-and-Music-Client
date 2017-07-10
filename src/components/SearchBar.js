@@ -63,11 +63,13 @@ export default class SearchBar extends Component {
               <p>Who Are You Looking For?</p>
               <FormGroup check>
                 <Label className='radio-band' check>
-                <Input type="radio" name="band" value='Band' checked={this.state.selectedUserType === 'Band'} onChange={this.handleOptionChange}/>{' '}
-                  Band</Label>
+                  <Input type="radio" name="band" value='Band' checked={this.state.selectedUserType === 'Band'} onChange={this.handleOptionChange}/>{' '}
+                    Band
+                </Label>
                 <Label check >
-                <Input type="radio" name="artist" value='Artist' checked={this.state.selectedUserType === 'Artist'} onChange={this.handleOptionChange}/>{' '}
-                  Artist < /Label>
+                  <Input type="radio" name="artist" value='Artist' checked={this.state.selectedUserType === 'Artist'} onChange={this.handleOptionChange}/>{' '}
+                    Artist
+                </Label>
               </FormGroup>
             </FormGroup>
             {this.artistOnlyField()}

@@ -62,7 +62,7 @@ class UserProfile extends Component {
               <p>Genres: {this.genresList(this.state.user.meta.genres)}</p>
             </Row>
           </Col>
-          <Col className='left-info' lg={{ size: '2', push: '2'}}>
+          <Col className='float-right right-info'>
             <p>{this.state.user.meta.state}, {this.state.user.meta.zipcode}</p>
             {this.state.user.meta_type === 'Artist' ? <p>Age: {this.state.user.meta.age}</p> : null}
             {this.state.user.meta_type === 'Artist' ? <p>Years of Experience: {this.state.user.meta.experience_in_years}</p> : null}

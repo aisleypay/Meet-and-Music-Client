@@ -1,7 +1,15 @@
-import React, { Component} from 'react';
-import { Card, CardImg, CardTitle, CardBlock, CardSubtitle, CardText, Row, Button} from 'reactstrap';
-import { Link } from 'react-router-dom';
-
+import React, {Component} from 'react';
+import {
+  Card,
+  CardImg,
+  CardTitle,
+  CardBlock,
+  CardSubtitle,
+  CardText,
+  Row,
+  Button
+} from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 class SearchResults extends Component {
 
@@ -26,11 +34,15 @@ class SearchResults extends Component {
               <CardBlock>
                 <CardTitle>{r.name}</CardTitle>
                 <CardSubtitle>{r.genres.map(g => `${g.name} `)}</CardSubtitle>
-                { r.user.meta_type === 'Artist' ? <CardText>Skilled In: {this.renderInstruments(r.instruments)}</CardText> : null }
+                {r.user.meta_type === 'Artist'
+                  ? <CardText>Skilled In: {this.renderInstruments(r.instruments)}</CardText>
+                  : null}
               </CardBlock>
-              <CardImg src={r.profile_pic} alt="Card image cap" />
+              <CardImg src={r.profile_pic} alt="Card image cap"/>
               <CardBlock>
-                <Button size='md' block><Link to={`/${r.user.id}`}>Check Me Out</Link></Button>
+                <Button size='md' block>
+                  <Link to={`/${r.user.id}`}>Check Me Out</Link>
+                </Button>
               </CardBlock>
             </Card>
           )
