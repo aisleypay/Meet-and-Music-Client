@@ -2,43 +2,30 @@ import React, {Component} from 'react';
 import {UserAdapter} from '../adapters';
 import {Link} from 'react-router-dom'
 import {Carousel} from 'react-responsive-carousel';
+import { connect } from 'react-redux';
+import { featuredBands, featuredArtists } from '../actions'
+import _ from 'lodash';
 import '../styles/main.min.css'
 import '../styles/carousel.min.css'
 
-export default class HomePageContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      bands: [],
-      artists: []
-    }
-
-    this.retrieveFeaturedBands = this.retrieveFeaturedBands.bind(this)
-    this.retrieveFeaturedArtists = this.retrieveFeaturedArtists.bind(this)
-  }
+class HomePageContainer extends Component {
 
   componentDidMount() {
-    this.retrieveFeaturedBands();
-    this.retrieveFeaturedArtists();
-  }
-
-  retrieveFeaturedBands() {
-    UserAdapter.retrieveFeaturedBands().then(bands => this.setState({bands}))
-  }
-
-  retrieveFeaturedArtists() {
-    UserAdapter.retrieveFeaturedArtists().then(artists => this.setState({artists}))
+    this.props.featuredBands()
+    this.props.featuredArtists()
   }
 
   render() {
-    if (this.state.artists.length === 0 || this.state.bands.length === 0) {
+    if (this.props.bands === undefined || this.props.artists === undefined || this.props.bands.length === 0 || this.props.artists.length === 0) {
       return <header>Loading....</header>
     }
+
+    const users = _.concat(this.props.bands, this.props.artists)
+
     return (
       <section>
         <Carousel className='presentation-mode' showThumbs={false} showArrows={true} autoPlay infiniteLoop>
-          {this.state.artists.concat(this.state.bands).map(a => {
+          {_.map(users, a => {
             return (
               <div key={a.user.id}>
                 <Link to={`/${a.user.id}`}>
@@ -54,3 +41,12 @@ export default class HomePageContainer extends Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    bands: state.featuredBands,
+    artists: state.featuredArtists
+  };
+}
+
+export default connect(mapStateToProps, { featuredBands, featuredArtists })(HomePageContainer);
