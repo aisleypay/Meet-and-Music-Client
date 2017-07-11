@@ -17,7 +17,7 @@ class HomePageContainer extends Component {
   }
 
   render() {
-    if (this.props.bands === undefined || this.props.artists === undefined || this.props.bands.length === 0 || this.props.artists.length === 0) {
+    if (this.props.bands.length === 0 || this.props.artists.length === 0) {
       return <header>Loading....</header>
     }
 
@@ -45,8 +45,8 @@ class HomePageContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    bands: state.featuredBands,
-    artists: state.featuredArtists
+    bands: state.users.featuredBands,
+    artists: state.users.featuredArtists
   };
 }
 
@@ -57,4 +57,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePageContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageContainer)

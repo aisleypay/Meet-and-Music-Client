@@ -12,7 +12,6 @@ export const EMAIL_USER = 'email_user';
 
 export function featuredBands() {
   return (dispatch) => {
-    dispatch({ type: 'START_FETCHING_FEATURED_BANDS' });
     return fetch(`${devUrl}/bands/featured`, {
       headers: headers()
     }).then(res => res.json())
@@ -22,7 +21,6 @@ export function featuredBands() {
 
 export function featuredArtists() {
   return (dispatch) => {
-    dispatch({ type: 'START_FETCHING_FEATURED_ARTISTS' });
     return fetch(`${devUrl}/artists/featured`, {
       headers: headers()
     }).then(res => res.json())

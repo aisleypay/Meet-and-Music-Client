@@ -18,18 +18,6 @@ export class AuthAdapter {
 }
 
 export class UserAdapter {
-  static retrieveFeaturedBands() {
-    return fetch(`${devUrl}/bands/featured`, {
-      headers: headers()
-    }).then(res => res.json())
-  }
-
-  static retrieveFeaturedArtists() {
-    return fetch(`${devUrl}/artists/featured`, {
-      headers: headers()
-    }).then(res => res.json())
-  }
-
   static UserProfile(id) {
     return fetch(`${devUrl}/users/${id}`, {
       headers: headers()
