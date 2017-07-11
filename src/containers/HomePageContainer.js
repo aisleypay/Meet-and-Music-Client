@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {Carousel} from 'react-responsive-carousel';
 import { connect } from 'react-redux';
 import { featuredBands, featuredArtists } from '../actions'
+import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import '../styles/main.min.css'
 import '../styles/carousel.min.css'
@@ -42,11 +43,18 @@ class HomePageContainer extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     bands: state.featuredBands,
     artists: state.featuredArtists
   };
 }
 
-export default connect(mapStateToProps, { featuredBands, featuredArtists })(HomePageContainer);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    featuredArtists: featuredArtists,
+    featuredBands: featuredBands
+  }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageContainer);

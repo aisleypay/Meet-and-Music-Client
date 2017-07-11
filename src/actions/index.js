@@ -9,26 +9,33 @@ export const CREATE_ARTIST = 'create_artist';
 export const DELETE_USER = 'delete_user';
 export const EMAIL_USER = 'email_user';
 
-export function featuredBands() {
-  const request = fetch(`${devUrl}/bands/featured`, {
-    headers: headers()
-  }).then(res => res.json())
 
-  return {
-    type: FETCH_FEATURED_BANDS,
-    payload: request
-  };
+export function featuredBands() {
+  return (dispatch) => {
+    dispatch({ type: 'START_FETCHING_FEATURED_BANDS' });
+    return fetch(`${devUrl}/bands/featured`, {
+      headers: headers()
+    }).then(res => res.json())
+    .then(bands => dispatch({ type: FETCH_FEATURED_BANDS, payload: bands}))
+  }
 }
 
 export function featuredArtists() {
-  const request = fetch(`${devUrl}/artists/featured`, {
-    headers: headers()
-  }).then(res => res.json())
+  return (dispatch) => {
+    dispatch({ type: 'START_FETCHING_FEATURED_ARTISTS' });
+    return fetch(`${devUrl}/artists/featured`, {
+      headers: headers()
+    }).then(res => res.json())
+    .then(artists => dispatch({ type: FETCH_FEATURED_ARTISTS, payload: artists}))
+  }
+}
 
+function headers() {
   return {
-    type: FETCH_FEATURED_ARTISTS,
-    payload: request
-  };
+    'content-type': 'application/json',
+    'accept': 'application/json',
+    'Authorization': localStorage.getItem('jwt')
+  }
 }
 
 // export class UserAdapter {
@@ -75,11 +82,3 @@ export function featuredArtists() {
 //     }).then(res => res.json() )
 //   }
 // }
-
-function headers() {
-  return {
-    'content-type': 'application/json',
-    'accept': 'application/json',
-    'Authorization': localStorage.getItem('jwt')
-  }
-}
