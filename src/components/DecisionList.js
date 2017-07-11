@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table, Button} from 'reactstrap';
 
-const DecisionList = ({decisions, recs, title, sendEmail}) => {
+const DecisionList = ({ decisions, recs, title, sendEmail }) => {
   const usersIds = decisions.map(d => d.chosen_id)
   const people = recs.filter(r => usersIds.includes(r.user.id))
 
@@ -30,7 +30,7 @@ const DecisionList = ({decisions, recs, title, sendEmail}) => {
         </tbody>
       </Table>
     </section>
-  )
-}
+  );
+};
 
 export default DecisionList;

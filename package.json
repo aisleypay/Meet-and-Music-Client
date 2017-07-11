@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-plugin-react-docgen": "^1.5.0",
     "bootstrap": "^4.0.0-alpha.6",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
@@ -17,11 +18,17 @@
     "react-sidebar": "^2.3.2",
     "react-swipe-card": "^0.1.4",
     "react-transition-group": "^1.2.0",
-    "reactstrap": "^4.8.0"
+    "reactstrap": "^4.8.0",
+    "redux": "^3.7.1",
+    "webpack-hot-middleware": "^2.18.2"
   },
   "devDependencies": {
-    "react-scripts": "1.0.7",
-    "@storybook/react": "^3.1.7"
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "file:node_modules/eslint-config-airbnb",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "react-scripts": "1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
