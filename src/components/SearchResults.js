@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Card,
   CardImg,
@@ -7,30 +8,29 @@ import {
   CardSubtitle,
   CardText,
   Row,
-  Button
+  Button,
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
 
 class SearchResults extends Component {
 
   renderInstruments(instruments) {
-    return instruments.map(i => `${i.name} `)
+    return instruments.map(i => `${i.name} `);
   }
 
   render() {
     if (this.props.results === null) {
-      return <article>No Results for Your Query</article>
+      return <article>No Results for Your Query</article>;
     }
 
     if (this.props.results.length === 0) {
-      return <article>No Results for Your Query</article>
+      return <article>No Results for Your Query</article>;
     }
 
     return (
-      <Row className='search-results'>
+      <Row className="search-results">
         {this.props.results.map(r => {
           return (
-            <Card className='search-item'>
+            <Card className="search-item">
               <CardBlock>
                 <CardTitle>{r.name}</CardTitle>
                 <CardSubtitle>{r.genres.map(g => `${g.name} `)}</CardSubtitle>
@@ -38,17 +38,17 @@ class SearchResults extends Component {
                   ? <CardText>Skilled In: {this.renderInstruments(r.instruments)}</CardText>
                   : null}
               </CardBlock>
-              <CardImg src={r.profile_pic} alt="Card image cap"/>
+              <CardImg src={r.profile_pic} alt="Card image cap" />
               <CardBlock>
-                <Button size='md' block>
+                <Button size="md" block>
                   <Link to={`/${r.user.id}`}>Check Me Out</Link>
                 </Button>
               </CardBlock>
             </Card>
-          )
+          );
         })}
       </Row>
-    )
+    );
   }
 }
 

@@ -8,6 +8,7 @@
   padding: 0px;
   height: 100vh;
   background-image: url('../assets/brickwall.png');
+  margin-left: 25px;
 }
 
 .profile-pic {

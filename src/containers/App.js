@@ -1,113 +1,82 @@
-import React, {Component} from 'react';
-import {Route, Switch, Link} from 'react-router-dom';
-import {AuthAdapter, UserAdapter, SearchAdapter} from '../adapters';
+import React, { Component } from 'react';
+import { Route, Switch, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login, currentUser, signOut, createBand, createArtist, searchUsers} from '../actions';
+import { bindActionCreators } from 'redux';
 import withAuth from '../hocs/withAuth';
 import LoginForm from '../components/LoginForm';
 import HomePageContainer from './HomePageContainer';
 import SignUpForm from '../components/SignUpForm';
 import Sidebar from 'react-sidebar';
-import {Container, Row, Button, Col} from 'reactstrap';
+import { Container, Row, Button, Col } from 'reactstrap';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults.js';
-import CurrentUserProfile from '../components/CurrentUserProfile';
-import UserProfile from '../components/UserProfile';
+import CurrentUserProfile from './CurrentUserProfile';
+import UserProfile from './UserProfile';
 import '../styles/App.css';
-import '../styles/nav_bar.css'
+import '../styles/nav_bar.css';
 
-const mql = window.matchMedia(`(min-width: 800px)`);
+const mql = window.matchMedia('(min-width: 800px)');
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      auth: {
-        isLoggedIn: false,
-        user: {}
-      },
-      mql: mql,
+      mql,
       docked: props.docked,
       open: props.open,
-      searchedUsers: [],
-      individualUser: ''
-    }
+    };
 
-    this.logIn = this.logIn.bind(this)
+    this.logIn = this.logIn.bind(this);
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     this.createUser = this.createUser.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
-  }
-
-  onSetSidebarOpen(open) {
-    this.setState({sidebarOpen: open});
+    this.handleClickSignOut = this.handleClickSignOut.bind(this);
+    this.searchUsers = this.searchUsers.bind(this);
   }
 
   componentWillMount() {
     mql.addListener(this.mediaQueryChanged);
-    this.setState({mql: mql, sidebarDocked: mql.matches});
+    this.setState({ mql, sidebarDocked: mql.matches });
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem('jwt')) {
+      this.props.currentUser();
+    }
   }
 
   componentWillUnmount() {
     this.state.mql.removeListener(this.mediaQueryChanged);
   }
 
-  mediaQueryChanged() {
-    this.setState({sidebarDocked: this.state.mql.matches});
+  onSetSidebarOpen(open) {
+    this.setState({ sidebarOpen: open });
   }
 
-  componentDidMount() {
-    if (localStorage.getItem('jwt')) {
-      AuthAdapter.currentUser().then(user => {
-        if (!user.error) {
-          this.setState({
-            auth: {
-              isLoggedIn: true,
-              user: user
-            }
-          })
-        }
-      })
-    }
+  mediaQueryChanged() {
+    this.setState({ sidebarDocked: this.state.mql.matches });
   }
 
   logIn(loginParams) {
-    AuthAdapter.logIn(loginParams).then(user => {
-      if (!user.error) {
-        this.setState({
-          auth: {
-            isLoggedIn: true,
-            user: user
-          }
-        })
-        localStorage.setItem('jwt', user.jwt)
-        this.props.history.push(`/profile`)
-      }
-    })
+    this.props.login(loginParams);
+    localStorage.setItem('jwt', this.props.user.jwt);
+    this.props.history.push('/profile');
   }
 
-  handleClickSignOut = (e) => {
-    e.preventDefault()
-    localStorage.clear()
-    this.setState({
-      auth: {
-        isLoggedIn: false,
-        user: {}
-      }
-    })
-
-    this.props.history.push(`/login`)
+  handleClickSignOut(e) {
+    e.preventDefault();
+    localStorage.clear();
+    this.props.signOut();
+    this.props.history.push('/login');
   }
 
   createUser(user, genres, instruments) {
-    let genresList = genres.map(g => {
-      return {genre_id: g}
-    })
+    const genresList = genres.map(g => ({ genre_id: g }));
+    const instrumentsList = instruments.map(i => ({ instrument_id: i }));
 
-    let instrumentsList = instruments.map(i => {
-      return {instrument_id: i}
-    })
-
-    let user_info = {
+    const userInfo = {
       name: user.name,
       state: user.state,
       zipcode: parseInt(user.zipcode, 10),
@@ -117,114 +86,100 @@ class App extends Component {
       user_attributes: {
         username: user.username,
         password: user.password,
-        email: user.email
-      }
-    }
+        email: user.email,
+      },
+    };
 
     if (user.type === 'Band') {
-      user_info['band_instrument_preferences_attributes'] = instrumentsList
-      UserAdapter.createBand(user_info)
-
+      userInfo.band_instrument_preferences_attributes = instrumentsList;
+      this.props.createBand(userInfo);
     } else {
-      user_info['artist_instruments_attributes'] = instrumentsList
-      user_info['experience_in_years'] = user.experience_in_years
-      user_info['age'] = user.age
-
-      UserAdapter.createArtist(user_info)
+      userInfo.artist_instruments_attributes = instrumentsList;
+      userInfo.experience_in_years = user.experience_in_years;
+      userInfo.age = user.age;
+      this.props.createArtist(userInfo);
     }
   }
 
-  searchUsers = (searchTerms) => {
-    if (searchTerms.selectedUserType === 'Artist') {
-      SearchAdapter.searchArtists(searchTerms).then(searchedUsers => this.setState({searchedUsers}))
-    } else {
-      SearchAdapter.searchBands(searchTerms).then(searchedUsers => this.setState({searchedUsers}))
-    }
-
-    this.props.history.push('/search-results')
-  }
-
-  deleteAccount = (id, type) => {
-    let urlType
-    type === 'Band' ? urlType = 'bands' : urlType = 'artists'
-
-    UserAdapter.destroy(id, urlType).then(() => {
-      localStorage.clear()
-      this.setState({
-        auth: {
-          isLoggedIn: false,
-          user: {}
-        }
-      })
-    })
-    this.props.history.push("/login")
-  }
-
-  sendEmail = (id, recipient) => {
-    UserAdapter.reachOutEmail(id, recipient)
+  searchUsers(searchTerms) {
+    this.props.searchUsers(searchTerms);
+    this.props.history.push('/search-results');
   }
 
   render() {
     const sidebarContent = (
-      <Container className='nav-bar'>
-          <Row>
-            <Col><img src='logo2.svg' alt='broken link'></img></Col>
-          </Row>
-          <Button className="btn btn-link" size='sm'>
-            <Link to='/profile'>Your Profile</Link>
-          </Button>
-          <Button className="btn btn-link" size='sm'>
-            <Link to='/'>Home</Link>
-          </Button>
-        <SearchBar handleSearch={this.searchUsers}/>
-        <Button className="btn btn-link" size='sm'>
-          <Link to='/login'>Sign In</Link>
+      <Container className="nav-bar">
+        <Row>
+          <Col><img src="logo2.svg" alt="broken link" /></Col>
+        </Row>
+        <Button className="btn btn-link" size="sm">
+          <Link to="/profile">Your Profile</Link>
         </Button>
-        <br/>
-        <Button className="btn btn-link" size='sm' onClick={this.handleClickSignOut}>Sign Out</Button><br/>
-        <Button className="btn btn-link" size='sm'>
-          <Link to='/signup'>Sign Up</Link>
+        <Button className="btn btn-link" size="sm">
+          <Link to="/">Home</Link>
+        </Button>
+        <SearchBar handleSearch={this.searchUsers} />
+        <Button className="btn btn-link" size="sm">
+          <Link to="/login">Sign In</Link>
+        </Button>
+        <br />
+        <Button
+          className="btn btn-link"
+          size="sm"
+          onClick={this.handleClickSignOut}
+        >Sign Out
+        </Button><br />
+        <Button className="btn btn-link" size="sm">
+          <Link to="/signup">Sign Up</Link>
         </Button>
         <Row>
-          <Col className='footer'>
+          <Col className="footer">
             <Row>Meet and Music ©</Row>
           </Col>
         </Row>
       </Container>
-    )
+    );
 
     const sidebarStyles = {
       sidebar: {
         width: '15%',
         backgroundColor: 'rgba(0,0,0,1)',
-        textAlign: 'center'
+        textAlign: 'center',
       },
       content: {
         backgroundImage: "url('https://static.pexels.com/photos/145707/pexels-photo-145707.jpeg')",
-        backgroundSize: "cover",
-        textAlign: 'center'
-      }
-    };
-
-    const sidebarProps = {
-      sidebar: this.state.sidebarOpen,
-      docked: this.state.sidebarDocked,
-      onSetOpen: this.onSetSidebarOpen
+        backgroundSize: 'cover',
+        textAlign: 'center',
+      },
     };
 
     return (
-      <Sidebar sidebar={sidebarContent} styles={sidebarStyles} open={this.state.sidebarOpen} docked={this.state.sidebarDocked} onSetOpen={this.onSetSidebarOpen}>
-        <Container fluid className='master'>
+      <Sidebar
+        sidebar={sidebarContent}
+        styles={sidebarStyles}
+        open={this.state.sidebarOpen}
+        docked={this.state.sidebarDocked}
+        onSetOpen={this.onSetSidebarOpen}
+      >
+        <Container fluid className="master">
           <Switch>
-            <Route exact path='/' render={() => <HomePageContainer currentUser={this.state.auth.user}/>}/>
-            <Route exact path='/login' render={() => <LoginForm onSubmit={this.logIn}/>}/>
-            <Route exact path='/signup' render={() => <SignUpForm onSubmit={this.createUser}/>}/>
-            <Route exact path='/search-results' render={() => <SearchResults results={this.state.searchedUsers}/>}/>
-            <Route path='/profile' render={() => <CurrentUserProfile user={this.state.auth.user} deleteAccount={this.deleteAccount} sendEmail={this.sendEmail}/>}/>
-            <Route exact path='/:id' render={(routerProps) => {
-              const id = routerProps.match.params.id
-              return <UserProfile id={id} sendEmail={this.sendEmail} currentUser={this.state.auth.user}/>
-            }}/>
+            <Route exact path="/" render={() => <HomePageContainer />} />
+            <Route exact path="/login" render={() => <LoginForm onSubmit={this.logIn} />} />
+            <Route exact path="/signup" render={() => <SignUpForm onSubmit={this.createUser} />} />
+            <Route
+              exact
+              path="/search-results"
+              render={() => <SearchResults results={this.props.searchedUsers} />}
+            />
+            <Route path="/profile" render={() => <CurrentUserProfile />} />
+            <Route
+              exact
+              path="/:id"
+              render={(routerProps) => {
+                const id = routerProps.match.params.id;
+                return <UserProfile id={id} currentUser={this.props.user} />;
+              }}
+            />
           </Switch>
         </Container>
       </Sidebar>
@@ -232,4 +187,22 @@ class App extends Component {
   }
 }
 
-export default withAuth(App);
+const mapStateToProps = (state) => {
+  return {
+    user: state.users.auth.user,
+    searchedUsers: state.users.searchedUsers,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    login,
+    currentUser,
+    signOut,
+    createBand,
+    createArtist,
+    searchUsers,
+  }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAuth(App));

@@ -54,7 +54,7 @@
   height: 35%;
 }
 
-hr {
+.public-profile-container hr {
   background: url('../assets/divider.svg') no-repeat center;
   margin: 0px;
   padding: 0px;
