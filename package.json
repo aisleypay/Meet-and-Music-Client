@@ -5,6 +5,8 @@
   "dependencies": {
     "babel-plugin-react-docgen": "^1.5.0",
     "bootstrap": "^4.0.0-alpha.6",
+    "eslint": "^4.2.0",
+    "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -28,7 +30,10 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
-    "react-scripts": "1.0.7"
+    "react-scripts": "1.0.7",
+    "redux-form": "^6.8.0",
+    "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

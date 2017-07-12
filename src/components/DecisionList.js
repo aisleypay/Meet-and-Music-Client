@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Button} from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 
 const DecisionList = ({ decisions, recs, title, sendEmail }) => {
   const usersIds = decisions.map(d => d.chosen_id)
@@ -7,7 +7,7 @@ const DecisionList = ({ decisions, recs, title, sendEmail }) => {
 
   return (
     <section>
-      <Table hover bordered striped responsive size='lg' className='decision-table'>
+      <Table hover bordered striped responsive size="lg" className="decision-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -19,11 +19,22 @@ const DecisionList = ({ decisions, recs, title, sendEmail }) => {
           {people.map(p => {
             return (
               <tr>
-                <td><img className='decision-pic' src={p.profile_pic} alt='Broken Link'/> {p.name}</td>
                 <td>
-                  <Button onClick={() => sendEmail(decisions[0].decider_id, p)}>{p.user.email}</Button>
+                  <img
+                    className="decision-pic"
+                    src={p.profile_pic}
+                    alt="Broken Link"
+                  /> {p.name}
                 </td>
-                <td>{(new Date(decisions.find(d => d.chosen_id === p.user.id).created_at)).toLocaleDateString()}</td>
+                <td>
+                  <Button
+                    onClick={() => sendEmail(decisions[0].decider_id, p)}
+                  >{p.user.email}
+                  </Button>
+                </td>
+                <td>
+                  {(new Date(decisions.find(d => d.chosen_id === p.user.id).created_at)).toLocaleDateString()}
+                </td>
               </tr>
             )
           })}

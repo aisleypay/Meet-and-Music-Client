@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import withAuth from '../hocs/withAuth';
 import FontAwesome from 'react-fontawesome';
 import {
@@ -10,47 +10,47 @@ import {
   CardImg,
   Row,
   CardBlock,
-  CardSubtitle
+  CardSubtitle,
 } from 'reactstrap';
 
 class Recommendations extends Component {
 
   handleContactClick = (e) => {
-    let recommendeeId = e.target.getAttribute('data-recommendee');
-    let recommendeeType = e.target.getAttribute('data-userType');
-    this.props.handleContactClick(recommendeeId, recommendeeType)
+    const recommendeeId = e.target.getAttribute('data-recommendee');
+    const recommendeeType = e.target.getAttribute('data-userType');
+    this.props.handleContactClick(recommendeeId, recommendeeType);
   }
 
   handleRejectClick = (e) => {
-    let recommendeeId = e.target.getAttribute('data-recommendee');
-    let recommendeeType = e.target.getAttribute('data-userType');
+    const recommendeeId = e.target.getAttribute('data-recommendee');
+    const recommendeeType = e.target.getAttribute('data-userType');
 
-    this.props.handleRejection(recommendeeId, recommendeeType)
+    this.props.handleRejection(recommendeeId, recommendeeType);
   }
 
-  artistOnlyFields = (instruments, name) => {
-    return <CardText>Looking For: {instruments.map((i, index) => `${i.instrument.name} `)}</CardText>
+  artistOnlyFields(instruments, name) {
+    return <CardText>Looking For: {instruments.map(i => `${i.instrument.name} `)}</CardText>
   }
 
-  bandOnlyFields = (instruments, name) => {
-    return <CardText>Skilled In: {instruments.map((i, index) => `${i.name} `)}</CardText>
+  bandOnlyFields(instruments, name) {
+    return <CardText>Skilled In: {instruments.map(i => `${i.name} `)}</CardText>
   }
 
   render() {
     return (
-      <Row className='recommendation-list'>
-        {this.props.recommendations.filter(function(r) {
-          return r !== null
-        }).map((rec, idx) => {
+      <Row className="recommendation-list">
+        {this.props.recommendations.filter((r) => {
+          return r !== null;
+        }).map((rec) => {
           return (
             <Card className="recommendation-card">
               <CardBlock >
-                <div className='float-right'>
+                <div className="float-right">
                   <Button>
-                    <FontAwesome name='hand-peace-o' size='2x' onClick={this.handleContactClick} data-recommendee={rec.user.id} data-userType={`${rec.user.meta_type}`}/>
+                    <FontAwesome name="hand-peace-o" size="2x" onClick={this.handleContactClick} data-recommendee={rec.user.id} data-userType={`${rec.user.meta_type}`}/>
                   </Button>
                   <Button>
-                    <FontAwesome name='thumbs-o-down' size='2x' data-recommendee={rec.user.id} data-userType={`${rec.user.meta_type}`} onClick={this.handleRejectClick}/>
+                    <FontAwesome name="thumbs-o-down" size="2x" data-recommendee={rec.user.id} data-userType={`${rec.user.meta_type}`} onClick={this.handleRejectClick}/>
                   </Button>
                 </div>
                 <div >
@@ -63,19 +63,19 @@ class Recommendations extends Component {
                   </CardSubtitle>
                 </div>
               </CardBlock>
-              <CardImg className='recommendation-pic' src={rec.profile_pic} alt="Broken Link"/>
+              <CardImg className="recommendation-pic" src={rec.profile_pic} alt="Broken Link" />
               <CardBlock>
-                <CardText>Genres: {rec.genres.map((g, index) => `${g.name} `)}</CardText>
-                <Button size='md' block>
+                <CardText>Genres: {rec.genres.map(g => `${g.name} `)}</CardText>
+                <Button size="md" block>
                   <CardLink href={`/${rec.user.id}`}>Check Me Out</CardLink>
                 </Button>
               </CardBlock>
             </Card>
-          )
+          );
         })}
       </Row>
-    )
+    );
   }
 }
 
-export default withAuth(Recommendations)
+export default withAuth(Recommendations);
