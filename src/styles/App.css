@@ -6,7 +6,7 @@
 
 div .master .container-fluid {
   padding: 0px;
-  height: 100vh;
+  /*height: 100vh;*/
   background-image: url('../assets/brickwall.png');
   margin-left: 25px;
 }
@@ -27,7 +27,6 @@ div .master .container-fluid {
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
-  padding: 0px;
   flex-direction: row;
   background-image: url('../assets/brickwall.png');
 }
@@ -37,6 +36,7 @@ div .master .container-fluid {
   max-width: 30%;
   max-height: 30%;
   flex: 1 1 30%;
+  box-shadow: 1px 2px 3px rgba(0,0,0,.5);
 }
 
 .search-item .card-img {
@@ -45,7 +45,6 @@ div .master .container-fluid {
   min-height: 1522px;
   zoom: .2
 }
-
 
 .play-list {
   border-radius: 60px;

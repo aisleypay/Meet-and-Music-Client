@@ -13,6 +13,7 @@
 
 .current-user-profile-container .details {
   text-align: center;
+  background-image: url('../assets/brickwall.png');
 }
 
 .current-user-profile-container h1 {
@@ -58,6 +59,10 @@
   font-size: 20px;
 }
 
+.setlist {
+  background-image: url('../assets/brickwall.png');
+}
+
 .recommendation-card .card-title {
   text-align: left;
 }
@@ -67,6 +72,7 @@
   max-width: 30%;
   max-height: 30%;
   flex: 1 1 30%;
+  box-shadow: 1px 2px 3px rgba(0,0,0,.5);
 }
 
 .recommendation-card .card-text {
@@ -94,6 +100,7 @@
   padding: 0px;
   flex-direction: row;
   margin: 1%;
+  background-image: url('../assets/brickwall.png');
 }
 
 .recommendation-pic {
@@ -118,4 +125,8 @@
   height: 30px;
   zoom: 2.9;
   mix-blend-mode: darken;
+}
+
+.tab-pane {
+  height: 100vh;
 }

@@ -78,15 +78,15 @@ class SignUpForm extends Component {
     }
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleOptionChange(e) {
+  handleOptionChange = (e) =>{
     this.setState({ selectedLookingTalent: e.target.value });
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     const selectedGenres = [];
     const selectedInstruments = [];

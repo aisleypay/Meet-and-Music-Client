@@ -228,7 +228,7 @@ class CurrentUserProfile extends Component {
             </Row>
           </TabPane>
           <TabPane tabId="3">
-            <Row>
+            <Row className="setlist">
               <Col sm="12" lg="12">
                 <hr />
                 <pre>{user.user_info.setList}</pre>

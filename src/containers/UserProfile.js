@@ -40,7 +40,7 @@ class UserProfile extends Component {
               <h1>{user.meta.name}</h1>
               <Button
                 className="public-email-button"
-                onClick={() => reachOutEmail(currentUser.id, user)}
+                onClick={reachOutEmail(currentUser.id, user)}
               >Email
               </Button>
             </Row>

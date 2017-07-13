@@ -47,6 +47,9 @@ class HomePageContainer extends Component {
           showArrows={true}
           autoPlay
           infiniteLoop
+          dynamicHeight={false}
+          stopOnHover={true}
+          showStatus={false}
         >
           {_.map(shuffledUsers, a => {
             return (
