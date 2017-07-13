@@ -38,8 +38,8 @@
   transform: rotate(-15deg);
 }
 
-.info {
-  padding-left: 120px;
+.current-user-profile-container .info {
+  padding-left: 130px;
   font-size: 25px;
   font-weight: bold;
 }
@@ -107,4 +107,15 @@
   max-width: 35%;
   max-height: 35%;
   border-radius: 60px;
+}
+
+.current-user-profile-container hr {
+  background: url('../assets/divider.svg') no-repeat center;
+  margin: 0px;
+  padding: 0px;
+  display: block;
+  border: none;
+  height: 30px;
+  zoom: 2.9;
+  mix-blend-mode: darken;
 }

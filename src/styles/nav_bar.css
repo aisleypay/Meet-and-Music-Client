@@ -1,6 +1,6 @@
 .nav-bar {
-  font-size: 13px;
-  font-family: 'Work Sans';
+  font-size: 18px;
+  font-family: 'Nunito';
   font-weight: bold;
   color: #9b9b9b;
   padding-top: 15px;
@@ -10,7 +10,8 @@
 .search-bar {
   margin-bottom: 20px;
   margin-top: 5px;
-  font-size: 15px;
+  font-size: 90%;
+  font-weight: 400;
 }
 
 .search-bar .img {

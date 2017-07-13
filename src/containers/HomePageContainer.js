@@ -15,12 +15,29 @@ class HomePageContainer extends Component {
     this.props.featuredArtists();
   }
 
+  shuffleArray(array) {
+    let counter = array.length;
+    let temp;
+    let index;
+
+    while (counter > 0) {
+        index = Math.floor( Math.random() * counter );
+        counter--;
+
+        temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+    return array;
+  }
+
   render() {
     if (this.props.bands.length === 0 || this.props.artists.length === 0) {
       return <header>Loading....</header>
     }
 
-    const users = _.concat(this.props.bands, this.props.artists)
+    const originalUsers = _.concat(this.props.bands, this.props.artists);
+    const shuffledUsers = this.shuffleArray(originalUsers);
 
     return (
       <section>
@@ -31,7 +48,7 @@ class HomePageContainer extends Component {
           autoPlay
           infiniteLoop
         >
-          {_.map(users, a => {
+          {_.map(shuffledUsers, a => {
             return (
               <div key={a.user.id}>
                 <Link to={`/${a.user.id}`}>

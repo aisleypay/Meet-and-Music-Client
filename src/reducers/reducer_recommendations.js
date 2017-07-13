@@ -5,35 +5,35 @@ export default function (state = {
   accepted: [],
   rejected: [],
 }, action) {
-  switch(action.type) {
+  switch (action.type) {
     case MAKE_DECISION:
       if (action.payload.status === true) {
         return Object.assign({}, state, {
-          accepted: [ ... state.accepted, action.payload]
-        })
+          accepted: [...state.accepted, action.payload],
+        });
       } else {
         return Object.assign({}, state, {
-          rejected: [ ... state.rejected, action.payload]
-        })
+          rejected: [...state.rejected, action.payload],
+        });
       }
-      break;
+
     case GET_DECISIONS:
       const accepted = action.payload.decisions.filter(d => d.decider_id === action.payload.user.id && d.status === true);
       const rejected = action.payload.decisions.filter(d => d.decider_id === action.payload.user.id && d.status === false);
 
       return Object.assign({}, state, {
-        accepted: accepted,
-        rejected: rejected,
+        accepted,
+        rejected,
       });
     case GET_BAND_RECOMMENDATIONS:
       return Object.assign({}, state, {
-        recommendations: action.payload
+        recommendations: action.payload,
       });
     case GET_ARTIST_RECOMMENDATIONS:
       return Object.assign({}, state, {
-        recommendations: action.payload
-      })
+        recommendations: action.payload,
+      });
     default:
-    return state
+      return state;
   }
 }

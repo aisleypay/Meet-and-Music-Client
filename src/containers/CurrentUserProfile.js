@@ -106,7 +106,7 @@ class CurrentUserProfile extends Component {
     }
 
     return (
-      <div className="current-user-profile-container">
+      <div className="current-user-profile-container" >
         <h1>{user.user_info.name}</h1>
         <Nav tabs>
           <NavItem>

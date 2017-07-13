@@ -4,9 +4,12 @@ import { Table, Button } from 'reactstrap';
 const DecisionList = ({ decisions, recs, title, sendEmail }) => {
   const usersIds = decisions.map(d => d.chosen_id)
   const people = recs.filter(r => usersIds.includes(r.user.id))
+  const profileStyle = {
+    height: '100vh',
+  }
 
   return (
-    <section>
+    <section style={profileStyle}>
       <Table hover bordered striped responsive size="lg" className="decision-table">
         <thead>
           <tr>

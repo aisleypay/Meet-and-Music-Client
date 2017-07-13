@@ -53,7 +53,7 @@ class SearchBar extends Component {
   }
 
   render() {
-    const { instruments, genres } = this.props;
+    const { genres } = this.props;
 
     return (
       <Row className="search-bar">
@@ -85,7 +85,11 @@ class SearchBar extends Component {
             {this.artistOnlyField()}
             <FormGroup>
               <Label for="genres">Select a Genre</Label>
-              <Input type="select" name="genreSelected" size="sm" onChange={this.handleChange}>
+              <Input
+                type="select"
+                name="genreSelected"
+                size="sm"
+                onChange={this.handleChange}>
                 {genres.map((g) => {
                   return <option key={g.id + g.name} value={g.id}>{g.name}</option>
                 }).concat(

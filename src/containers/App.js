@@ -110,32 +110,35 @@ class App extends Component {
     const sidebarContent = (
       <Container className="nav-bar">
         <Row>
-          <Col><img src="logo2.svg" alt="broken link" /></Col>
-        </Row>
-        <Button className="btn btn-link" size="sm">
-          <Link to="/profile">Your Profile</Link>
-        </Button>
-        <Button className="btn btn-link" size="sm">
-          <Link to="/">Home</Link>
-        </Button>
-        <SearchBar handleSearch={this.searchUsers} />
-        <Button className="btn btn-link" size="sm">
-          <Link to="/login">Sign In</Link>
-        </Button>
-        <br />
-        <Button
-          className="btn btn-link"
-          size="sm"
-          onClick={this.handleClickSignOut}
-        >Sign Out
-        </Button><br />
-        <Button className="btn btn-link" size="sm">
-          <Link to="/signup">Sign Up</Link>
-        </Button>
-        <Row>
-          <Col className="footer">
-            <Row>Meet and Music ©</Row>
+          <Col>
+            <Col><img src="logo2.svg" alt="broken link" /></Col>
+            <Button className="btn btn-link" size="md">
+              <Link to="/profile">Your Profile</Link>
+            </Button>
+            <Button className="btn btn-link" size="md">
+              <Link to="/">Home</Link>
+            </Button>
+            <SearchBar handleSearch={this.searchUsers} />
+            <Button
+              className="btn btn-link"
+              size="md"
+            >
+              <Link to="/login">Sign In</Link>
+            </Button>
+            <br />
+            <Button
+              className="btn btn-link"
+              size="md"
+              onClick={this.handleClickSignOut}
+            >Sign Out
+            </Button><br />
+            <Button className="btn btn-link" size="md">
+              <Link to="/signup">Sign Up</Link>
+            </Button>
           </Col>
+        </Row>
+        <Row className="footer">
+          <p>Meet and Music ©</p>
         </Row>
       </Container>
     );
@@ -153,6 +156,10 @@ class App extends Component {
       },
     };
 
+    const mainStyle = {
+      padding: 0
+    }
+
     return (
       <Sidebar
         sidebar={sidebarContent}
@@ -161,7 +168,7 @@ class App extends Component {
         docked={this.state.sidebarDocked}
         onSetOpen={this.onSetSidebarOpen}
       >
-        <Container fluid className="master">
+        <Container fluid className="master" style={mainStyle}>
           <Switch>
             <Route exact path="/" render={() => <HomePageContainer />} />
             <Route exact path="/login" render={() => <LoginForm onSubmit={this.logIn} />} />
